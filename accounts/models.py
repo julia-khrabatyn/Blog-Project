@@ -16,6 +16,7 @@ class User(AbstractUser, AbstractBaseModel):
     city = models.CharField(max_length=100, null=True, blank=True)
     email = models.EmailField(unique=True)
     avatar = models.ImageField(upload_to="avatars/", null=True, blank=True)
+    tags = models.ManyToManyField("tags.Tag", blank=True, related_name="users")
 
     @property
     def published_posts(self):
