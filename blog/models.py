@@ -2,6 +2,8 @@ from django.db import models
 from core.models import AbstractBaseModel, PublishMixin
 from accounts.models import User
 from django.utils.functional import cached_property
+from django.core.validators import FileExtensionValidator
+from blog.validators import validate_image_file
 
 
 # Create your models here.
@@ -47,7 +49,15 @@ class Post(AbstractBaseModel, PublishMixin):
 class Image(AbstractBaseModel):
     """Represent image object."""
 
-    image_file = models.ImageField(upload_to="images/")
+    image_file = models.ImageField(
+        upload_to="images/",
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=["jpg", "png", "jpeg", "webp"]
+            ),
+            validate_image_file,
+        ],
+    )
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name="images"
     )
