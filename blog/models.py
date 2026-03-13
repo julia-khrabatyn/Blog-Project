@@ -20,6 +20,7 @@ class Post(AbstractBaseModel, PublishMixin):
     categories = models.ManyToManyField(
         "Category", related_name="posts", blank=True
     )
+    tags = models.ManyToManyField("tags.Tag", related_name="posts", blank=True)
 
     def __str__(self):
         return self.title.title()
@@ -116,3 +117,7 @@ class Category(AbstractBaseModel):
         ordering = ["title"]
         verbose_name = "Category"
         verbose_name_plural = "Categories"
+        indexes = [
+            models.Index(fields=["title"]),
+            models.Index(fields=["slug"]),
+        ]
