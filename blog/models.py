@@ -17,6 +17,9 @@ class Post(AbstractBaseModel, PublishMixin):
         User, on_delete=models.CASCADE, related_name="posts"
     )
     slug = models.SlugField(max_length=255, unique=True)
+    categories = models.ManyToManyField(
+        "Category", related_name="posts", blank=True
+    )
 
     def __str__(self):
         return self.title.title()
@@ -93,3 +96,23 @@ class Like(AbstractBaseModel):
         ]
         verbose_name = "Like"
         verbose_name_plural = "Likes"
+
+
+class Category(AbstractBaseModel):
+    """Represent a post category/categories."""
+
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True)
+
+    @property
+    def posts_count(self):
+        """Count all posts in category."""
+        return self.posts.count()
+
+    def __str__(self):
+        return self.title.title()
+
+    class Meta:
+        ordering = ["title"]
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
