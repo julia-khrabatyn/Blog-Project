@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from core.models import AbstractBaseModel
 from accounts.validators import validate_birth_day
 from django.core.exceptions import ValidationError
+from django.utils.functional import cached_property
 
 
 # Create your models here.
@@ -20,6 +21,11 @@ class User(AbstractUser, AbstractBaseModel):
     def published_posts(self):
         """Get all user's published posts."""
         return self.posts.filter(published=True)
+
+    @cached_property
+    def liked_posts(self):
+        """Get all posts, that user liked."""
+        return self.likes.all()
 
     def __str__(self):
         return f"{self.first_name.title()} {self.last_name.title()}"
