@@ -16,13 +16,18 @@ class User(AbstractUser, AbstractBaseModel):
     email = models.EmailField(unique=True)
     avatar = models.ImageField(upload_to="avatars/", null=True, blank=True)
 
+    @property
+    def published_posts(self):
+        """Get all user's published posts."""
+        return self.posts.filter(published=True)
+
+    def __str__(self):
+        return f"{self.first_name.title()} {self.last_name.title()}"
+
     class Meta:
         verbose_name = "User"
         verbose_name_plural = "Users"
         ordering = ["username"]
-
-    def __str__(self):
-        return f"{self.first_name.title()} {self.last_name.title()}"
 
 
 class Follow(AbstractBaseModel):
@@ -46,3 +51,7 @@ class Follow(AbstractBaseModel):
         unique_together = [("follower", "following")]
         verbose_name = "Follow"
         verbose_name_plural = "Follows"
+        indexes = [
+            models.Index(fields=["follower"]),
+            models.Index(fields=["following"]),
+        ]
