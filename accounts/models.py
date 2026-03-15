@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from core.models import AbstractBaseModel
-from accounts.validators import validate_birth_day
+from accounts.validators import validate_birth_date
 from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 
@@ -10,7 +10,7 @@ from django.utils.functional import cached_property
 class User(AbstractUser, AbstractBaseModel):
     """Represent user"""
 
-    birth_date = models.DateField(validators=[validate_birth_day])
+    birth_date = models.DateField(validators=[validate_birth_date])
     country = models.CharField(max_length=2)  # Country Code
     bio = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
