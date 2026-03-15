@@ -2,3 +2,4 @@ Django==6.0.3
 pillow==12.1.1
 python-magic==0.4.27
 uuid6==2025.0.1
+django-countries==8.2.0

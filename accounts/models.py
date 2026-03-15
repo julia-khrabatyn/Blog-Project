@@ -4,15 +4,17 @@ from core.models import AbstractBaseModel
 from accounts.validators import validate_birth_date
 from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
+from django_countries.fields import CountryField
 
 
-# Create your models here.
 class User(AbstractUser, AbstractBaseModel):
     """Represent user"""
 
     birth_date = models.DateField(validators=[validate_birth_date])
-    country = models.CharField(max_length=2)  # Country Code
-    bio = models.CharField(max_length=255, null=True, blank=True)
+    country = (
+        CountryField()
+    )  # stores the 2-letter ISO 3166-1 country code. have autocomplete in admin
+    bio = models.TextField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
     email = models.EmailField(unique=True)
     avatar = models.ImageField(upload_to="avatars/", null=True, blank=True)
