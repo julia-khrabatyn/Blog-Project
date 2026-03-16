@@ -1,11 +1,14 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
-from core.models import AbstractBaseModel
-from accounts.validators import validate_birth_date
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxLengthValidator
-from django.utils.functional import cached_property
+from django.db import models
+from django.db.models import F, Q
+
 from django_countries.fields import CountryField
+
+from core.models import AbstractBaseModel
+
+from accounts.validators import validate_birth_date
 
 
 class User(AbstractUser, AbstractBaseModel):
@@ -28,7 +31,7 @@ class User(AbstractUser, AbstractBaseModel):
         """Get all user's published posts."""
         return self.posts.filter(published=True)
 
-    @cached_property
+    @property
     def liked_posts(self):
         """Get all posts, that user liked."""
         return self.likes.all()
@@ -60,10 +63,14 @@ class Follow(AbstractBaseModel):
         return f"{self.follower} follows {self.following}"
 
     class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["follower", "following"], name="unique_follow"
+            ),
+            models.Constraint(
+                check=~Q(follower=F("following")), name="prevent_self_follow"
+            ),
+        ]
         unique_together = [("follower", "following")]
         verbose_name = "Follow"
         verbose_name_plural = "Follows"
-        indexes = [
-            models.Index(fields=["follower"]),
-            models.Index(fields=["following"]),
-        ]
