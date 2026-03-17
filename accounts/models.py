@@ -44,6 +44,7 @@ class CustomUserManager(BaseUserManager):
 class User(AbstractUser, AbstractBaseModel):
     """Represent user"""
 
+    REQUIRED_FIELDS = ["email", "birth_date", "country"]
     birth_date = models.DateField(
         validators=[validate_birth_date],
         help_text="Your date of birth. Must be 13+ years for registartion",

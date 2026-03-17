@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     "django_extensions",
 ]
 
+AUTH_USER_MODEL = "accounts.User"
+
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 
 CONSTANCE_CONFIG = {
@@ -141,8 +143,8 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 if DEBUG:
-    INSTALLED_APPS += "debug_toolbar"
-    MIDDLEWARE += "debug_toolbar.middleware.DebugToolbarMiddleware"
+    INSTALLED_APPS += ["debug_toolbar"]
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
     INTERNAL_IPS = [
         "127.0.0.1",
     ]
