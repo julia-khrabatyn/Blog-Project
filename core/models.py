@@ -2,14 +2,21 @@ from django.db import models
 from uuid6 import uuid7
 
 
-# Create your models here.
-class AbstractBaseModel(models.Model):
+class UUIdMixin(models.Model):
+    """Mixin that added UUID PK to models"""
+
+    id = models.UUIDField(default=uuid7, primary_key=True, editable=False)
+
+    class Meta:
+        abstract = True
+
+
+class AbstractBaseModel(UUIdMixin):
     """
     Abstract base model with created_at and
     updated_at fields for other models.
     """
 
-    id = models.UUIDField(default=uuid7, primary_key=True, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
