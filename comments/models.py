@@ -1,18 +1,23 @@
 from django.db import models
-from core.models import AbstractBaseModel
 
-# Create your models here.
+from core.models import AbstractBaseModel
 
 
 class Comment(AbstractBaseModel):
     """Represent comments."""
 
-    text = models.TextField()
+    text = models.TextField(help_text="Your comment")
     post = models.ForeignKey(
-        "blog.Post", on_delete=models.CASCADE, related_name="comments"
+        "blog.Post",
+        on_delete=models.CASCADE,
+        related_name="comments",
+        help_text="The post this comment belongs to.",
     )
     user = models.ForeignKey(
-        "accounts.User", on_delete=models.CASCADE, related_name="comments"
+        "accounts.User",
+        on_delete=models.CASCADE,
+        related_name="comments",
+        help_text="The author of this comment.",
     )
 
     def __str__(self):
@@ -22,7 +27,3 @@ class Comment(AbstractBaseModel):
         ordering = ["-created_at"]
         verbose_name = "Comment"
         verbose_name_plural = "Comments"
-        indexes = [
-            models.Index(fields=["post"]),
-            models.Index(fields=["user"]),
-        ]
