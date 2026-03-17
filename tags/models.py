@@ -1,13 +1,12 @@
 from django.db import models
-from core.models import AbstractBaseModel
+
+from core.models import AbstractBaseModel, SlugMixin
 
 
-# Create your models here.
-class Tag(AbstractBaseModel):
+class Tag(AbstractBaseModel, SlugMixin):
     """Represent Tag object"""
 
-    title = models.CharField(max_length=50)
-    slug = models.SlugField(max_length=50, unique=True)
+    title = models.CharField(max_length=50, help_text="Tag title")
 
     def __str__(self):
         return self.title.lower()
