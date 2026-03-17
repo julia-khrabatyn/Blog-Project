@@ -19,3 +19,8 @@ def validate_birth_date(value: date):
     )
     if age < 13:
         raise ValidationError("Birth date can not be less than 13 y.o. !")
+
+    if (
+        age > 123
+    ):  # absolute record - 122 years and 164 days - Jeanne Louise Calment was a French supercentenarian!
+        raise ValidationError("Please enter a vaild birth date!")
