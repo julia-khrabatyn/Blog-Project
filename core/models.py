@@ -23,7 +23,6 @@ class AbstractBaseModel(UUIdMixin):
 
     class Meta:
         abstract = True
-        # ordering = ["-created_at"]
 
 
 class PublishMixin(models.Model):

@@ -45,7 +45,20 @@ INSTALLED_APPS = [
     "comments",
     "tags",
     "django_countries",
+    "constance",
+    "constance.backends.database",
 ]
+
+CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
+
+CONSTANCE_CONFIG = {
+    "MAX_IMAGE_SIZE_MB": (5, "Max image size in MB", int),
+    "ALLOWED_IMAGE_TYPES": (
+        "image/jpeg,image/webp,image/png",
+        "Allowed mime-type for image files",
+        str,
+    ),
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

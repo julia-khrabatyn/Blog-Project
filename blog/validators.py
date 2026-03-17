@@ -1,19 +1,27 @@
 import magic
+from constance import config
 from django.core.exceptions import ValidationError
-from typing import IO
-
-ALLOWED_IMG_TYPES = ["image/jpeg", "image/jpg", "image/webp", "image/png"]
-MAX_SIZE = 5 * 1024 * 1024  # 5 MB
+from django.core.files import File
 
 
-def validate_image_file(value: IO):
+def validate_image_file(value: File):
     """Validate image type and size using magic."""
-    if value.size > MAX_SIZE:
-        raise ValidationError("Error! File size must be under 5 MB!")
-
-    file_mime = magic.from_buffer(value.read(1024), mime=True)
-    value.seek(0)
-    if file_mime not in ALLOWED_IMG_TYPES:
+    max_size = config.MAX_IMAGE_SIZE_MB * 1024 * 1024
+    allowed_img_types = config.ALLOWED_IMAGE_TYPES.split(",")
+    if value.size > max_size:
         raise ValidationError(
-            "Error! Incorrect image file type! Upload .png, .jpg, .jpeg, .webp files only!"
+            f"Error! File size must be under {config.MAX_IMAGE_SIZE_MB}!"
+        )
+
+    try:
+        file_mime = magic.from_buffer(value.read(1024), mime=True)
+    except Exception as e:
+        raise ValidationError("Could not determine file type!")
+
+    finally:
+        value.seek(0)
+
+    if file_mime not in allowed_img_types:
+        raise ValidationError(
+            f"Error! Incorrect image file type! Upload: {config.ALLOWED_IMAGE_TYPES} files only!"
         )
