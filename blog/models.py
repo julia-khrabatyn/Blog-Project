@@ -74,7 +74,7 @@ class Image(AbstractBaseModel):
             ),
             validate_image_file,
         ],
-        help_text="Upload your image (use can use only .png, .jpeg, .jpg, .webp files)",
+        help_text="Upload your image (allowed formats: .png, .jpeg, .jpg, .webp files; max file size: 5 MB)",
     )
     post = models.ForeignKey(
         Post,
