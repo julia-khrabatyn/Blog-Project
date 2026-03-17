@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "django_countries",
     "constance",
     "constance.backends.database",
+    "django_extensions",
 ]
 
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
