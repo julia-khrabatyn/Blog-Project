@@ -1,26 +1,41 @@
-from django.db import models
-from core.models import AbstractBaseModel, PublishMixin
-from accounts.models import User
-from django.utils.functional import cached_property
 from django.core.validators import FileExtensionValidator
+from django.db import models
+from core.models import AbstractBaseModel, PublishMixin, SlugMixin
+
+from accounts.models import User
+
 from blog.validators import validate_image_file
 
 
-# Create your models here.
-class Post(AbstractBaseModel, PublishMixin):
+class Post(AbstractBaseModel, PublishMixin, SlugMixin):
     """Represent blog Post."""
 
-    title = models.CharField(max_length=255)
-    text = models.TextField()
-    description = models.CharField(max_length=255, null=True, blank=True)
+    title = models.CharField(max_length=255, help_text="Your post title")
+    text = models.TextField(help_text="Your post text")
+    description = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text="Post description (optional)",
+    )
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="posts"
+        User,
+        on_delete=models.CASCADE,
+        related_name="posts",
+        help_text="User, created post",
     )
-    slug = models.SlugField(max_length=255, unique=True)
     categories = models.ManyToManyField(
-        "Category", related_name="posts", blank=True
+        "Category",
+        related_name="posts",
+        blank=True,
+        help_text="Post category (optional)",
     )
-    tags = models.ManyToManyField("tags.Tag", related_name="posts", blank=True)
+    tags = models.ManyToManyField(
+        "tags.Tag",
+        related_name="posts",
+        blank=True,
+        help_text="your post tag (optional)",
+    )
 
     def __str__(self):
         return self.title.title()
@@ -32,7 +47,7 @@ class Post(AbstractBaseModel, PublishMixin):
         """
         return self.text[:100]
 
-    @cached_property
+    @property
     def like_count(self):
         """Get all post's likes"""
         return self.likes.count()

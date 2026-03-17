@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 from uuid6 import uuid7
 
 
@@ -29,6 +30,24 @@ class PublishMixin(models.Model):
     """Mixin that added published field to model for Multiple inheritance."""
 
     published = models.BooleanField(default=False)
+
+    class Meta:
+        abstract = True
+
+
+class SlugMixin(models.Model):
+    """Mixin that added auto-generated slug field."""
+
+    slug = models.SlugField(
+        max_length=255,
+        unique=True,
+        help_text="URL-friendly version of the title",
+    )
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
     class Meta:
         abstract = True
