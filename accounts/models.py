@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxLengthValidator
 from django.db import models
@@ -11,20 +11,73 @@ from core.models import AbstractBaseModel
 from accounts.validators import validate_birth_date
 
 
+class CustomUserManager(BaseUserManager):
+    """Custom Manager for User model"""
+
+    def create_user(self, username, email, password=None, **extra_fields):
+        """
+        Create and save a user with the given email and password.
+        """
+        if not email:
+            raise ValueError("The Email must be set")
+        email = self.normalize_email(email)
+        user = self.model(username=username, email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, username, email, password, **extra_fields):
+        """
+        Create and save a SuperUser with the given email and password.
+        """
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)
+
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must have is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must have is_superuser=True.")
+        return self.create_user(username, email, password, **extra_fields)
+
+
 class User(AbstractUser, AbstractBaseModel):
     """Represent user"""
 
-    birth_date = models.DateField(validators=[validate_birth_date])
-    country = (
-        CountryField()
-    )  # stores the 2-letter ISO 3166-1 country code. have autocomplete in admin
-    bio = models.TextField(
-        null=True, blank=True, validators=[MaxLengthValidator(500)]
+    birth_date = models.DateField(
+        validators=[validate_birth_date],
+        help_text="Your date of birth. Must be 13+ years for registartion",
     )
-    city = models.CharField(max_length=100, null=True, blank=True)
-    email = models.EmailField(unique=True)
-    avatar = models.ImageField(upload_to="avatars/", null=True, blank=True)
-    tags = models.ManyToManyField("tags.Tag", blank=True, related_name="users")
+    country = CountryField(help_text="Your country code")
+    # stores the 2-letter ISO 3166-1 country code. have autocomplete in admin
+    bio = models.TextField(
+        help_text="Tell us something about yourself (max 500 characters)",
+        null=True,
+        blank=True,
+        validators=[MaxLengthValidator(500)],
+    )
+    city = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+        help_text="Your city (optional)",
+    )
+    email = models.EmailField(
+        unique=True, help_text="Your valid email address"
+    )
+    avatar = models.ImageField(
+        upload_to="avatars/",
+        null=True,
+        blank=True,
+        help_text="Upload profile photo (optional) (Support only .png, .jpeg, .jpg, .webp extensions)",
+    )
+    tags = models.ManyToManyField(
+        "tags.Tag",
+        blank=True,
+        related_name="users",
+        help_text="Add tag (optional)",
+    )
+    objects = CustomUserManager()
 
     @property
     def published_posts(self):
@@ -49,10 +102,16 @@ class Follow(AbstractBaseModel):
     """Represent user's followers and user's followings."""
 
     follower = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="following"
+        User,
+        on_delete=models.CASCADE,
+        related_name="following",
+        help_text="User, who follows",
     )
     following = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="followers"
+        User,
+        on_delete=models.CASCADE,
+        related_name="followers",
+        help_text="User, who are followed",
     )
 
     def clean(self):
@@ -67,10 +126,10 @@ class Follow(AbstractBaseModel):
             models.UniqueConstraint(
                 fields=["follower", "following"], name="unique_follow"
             ),
-            models.Constraint(
-                check=~Q(follower=F("following")), name="prevent_self_follow"
+            models.CheckConstraint(
+                condition=~models.Q(follower=models.F("following")),
+                name="prevent_self_follow",
             ),
         ]
-        unique_together = [("follower", "following")]
         verbose_name = "Follow"
         verbose_name_plural = "Follows"
