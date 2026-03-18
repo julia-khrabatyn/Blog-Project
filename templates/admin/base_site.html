@@ -1,0 +1,14 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+        <img src="{% static 'images/byline_logo.png' %}" alt="Byline Logo" style="height: 70px; width: auto;">
+
+        <span style="color: #3dd3ee; font-weight: bold; font-size: 35px;">
+            Your Byline Blog Admin Portal
+        </span>
+    </a>
+</h1>
+{% endblock %}
