@@ -1,10 +1,12 @@
 from django.contrib import admin
 
+from adminsortable2.admin import SortableAdminMixin
+
 from blog.models import Category, Image, Like, Post
 
 
 @admin.register(Post)
-class Post(admin.ModelAdmin):
+class Post(SortableAdminMixin, admin.ModelAdmin):
     """Register Post in django admin."""
 
     @admin.display(description="Tags")

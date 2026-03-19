@@ -1,5 +1,7 @@
 from django.contrib import admin
 
+from adminsortable2.admin import SortableAdminMixin
+
 from accounts.models import User, Follow
 
 admin.site.site_header = "Byline Administration"
@@ -14,7 +16,7 @@ class FollowInline(admin.TabularInline):
 
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(SortableAdminMixin, admin.ModelAdmin):
     """Register User in django admin."""
 
     list_display = (

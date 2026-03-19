@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "constance",
     "constance.backends.database",
     "django_extensions",
+    "adminsortable2",
 ]
 
 AUTH_USER_MODEL = "accounts.User"
