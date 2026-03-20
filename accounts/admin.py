@@ -1,6 +1,7 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
-from adminsortable2.admin import SortableAdminMixin
+from core.admin import ExportCsvMixin
 
 from accounts.models import User, Follow
 
@@ -16,22 +17,36 @@ class FollowInline(admin.TabularInline):
 
 
 @admin.register(User)
-class UserAdmin(SortableAdminMixin, admin.ModelAdmin):
+class UserAdmin(admin.ModelAdmin, ExportCsvMixin):
     """Register User in django admin."""
+
+    def show_avatar(self, obj):
+        """Represent user's avatar in admin."""
+        if obj.avatar:
+            return mark_safe(
+                '<img src="{url}" width="{width}" height={height} />'.format(
+                    url=obj.avatar.url,
+                    width=obj.avatar.width,
+                    height=obj.avatar.height,
+                )
+            )
+        else:
+            return "No avatar"
 
     list_display = (
         "username",
         "email",
         "avatar",
+        "show_avatar",
         "birth_date",
         "country",
         "city",
         "bio",
     )
     ordering = ["username"]
-    list_filter = ("username", "country", "birth_date", "email")
+    list_filter = ("username", "country", "birth_date", "email", "updated_at")
     search_fields = ("username", "email")
-    readonly_fields = ("created_at", "updated_at")
+    readonly_fields = ("created_at", "updated_at", "show_avatar")
     list_display_links = ("username", "email")
     fieldsets = (
         (
@@ -70,6 +85,7 @@ class UserAdmin(SortableAdminMixin, admin.ModelAdmin):
                     "last_name",
                     "birth_date",
                     "avatar",
+                    "show_avatar",
                     "bio",
                 ),
                 "classes": ("collapse",),
@@ -93,3 +109,4 @@ class UserAdmin(SortableAdminMixin, admin.ModelAdmin):
     actions_on_bottom = True
     list_per_page = 50
     inlines = [FollowInline]
+    actions = ["export_as_csv"]
