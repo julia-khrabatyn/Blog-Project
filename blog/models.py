@@ -36,6 +36,7 @@ class Post(AbstractBaseModel, PublishMixin, SlugMixin):
         blank=True,
         help_text="your post tag (optional)",
     )
+    order = models.PositiveIntegerField(default=0, db_index=True)
 
     def __str__(self):
         return self.title.title()

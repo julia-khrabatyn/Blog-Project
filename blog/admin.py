@@ -1,12 +1,35 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
 from adminsortable2.admin import SortableAdminMixin
+
+from core.admin import ExportCsvMixin
 
 from blog.models import Category, Image, Like, Post
 
 
+class ImageInLine(admin.TabularInline):
+    """class for representing all images added to post."""
+
+    model = Image
+    extra = 0
+    readonly_fields = ("show_image",)
+
+    def show_image(self, obj):
+        if obj.image_file:
+            return mark_safe(
+                '<img src="{url}" width="{width}" height={height} />'.format(
+                    url=obj.image_file.url,
+                    width=obj.image_file.width,
+                    height=obj.image_file.height,
+                )
+            )
+        else:
+            return "No image."
+
+
 @admin.register(Post)
-class Post(SortableAdminMixin, admin.ModelAdmin):
+class PostAdmin(SortableAdminMixin, admin.ModelAdmin, ExportCsvMixin):
     """Register Post in django admin."""
 
     @admin.display(description="Tags")
@@ -30,7 +53,7 @@ class Post(SortableAdminMixin, admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     readonly_fields = ("created_at", "updated_at")
     list_filter = ("title", "user", "categories", "tags")
-    ordering = ["-updated_at"]
+    ordering = ["order"]
     fieldsets = (
         (
             "Post info",
@@ -51,5 +74,74 @@ class Post(SortableAdminMixin, admin.ModelAdmin):
                 "fields": ("title", "slug", "text", "description"),
                 "classes": ("collapse",),
             },
+        ),
+    )
+    actions_on_bottom = True
+    list_per_page = 50
+    actions = ["export_as_csv"]
+    date_hierarchy = "updated_at"
+    inlines = [ImageInLine]
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    """Register Category in django-admin."""
+
+    ordering = ["title"]
+    prepopulated_fields = {"slug": ("title",)}
+    readonly_fields = ("created_at", "updated_at")
+    fieldsets = (
+        (
+            "Category info",
+            {"fields": ("title", "slug", "created_at", "updated_at")},
+        ),
+    )
+    list_filter = ("title", "created_at", "updated_at")
+
+
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+    """Register Image in django-admin"""
+
+    def show_image(self, obj):
+        """Represent image in post."""
+        if obj.image_file:
+            return mark_safe(
+                '<img src="{url}" width="{width}" height={height} />'.format(
+                    url=obj.image_file.url,
+                    width=obj.image_file.width,
+                    height=obj.image_file.height,
+                )
+            )
+        else:
+            return "Image not added yet."
+
+    list_display = (
+        "image_file",
+        "alt_text",
+        "post",
+        "show_image",
+        "created_at",
+        "updated_at",
+    )
+    ordering = ["updated_at"]
+    readonly_fields = ("created_at", "updated_at", "show_image")
+    list_filter = ("created_at", "updated_at", "alt_text", "post")
+    fieldsets = (
+        (
+            "Post's image general info",
+            {
+                "fields": (
+                    "image_file",
+                    "show_image",
+                    "alt_text",
+                    "post",
+                ),
+                "classes": ("collapse",),
+            },
+        ),
+        (
+            "Image creation/updation time",
+            {"fields": ("created_at", "updated_at"), "classes": ("collapse",)},
         ),
     )
