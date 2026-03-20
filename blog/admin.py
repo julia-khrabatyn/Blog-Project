@@ -145,3 +145,12 @@ class ImageAdmin(admin.ModelAdmin):
             {"fields": ("created_at", "updated_at"), "classes": ("collapse",)},
         ),
     )
+
+
+@admin.register(Like)
+class LikeAdmin(admin.ModelAdmin):
+    """Register Like model in django-admin."""
+
+    list_display = ("user", "post", "updated_at")
+    ordering = ["-updated_at"]
+    list_filter = ("user", "post", "updated_at")
