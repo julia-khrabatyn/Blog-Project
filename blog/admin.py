@@ -29,8 +29,17 @@ class ImageInLine(admin.TabularInline):
 
 
 @admin.register(Post)
-class PostAdmin(SortableAdminMixin, admin.ModelAdmin, ExportCsvMixin):
+class PostAdmin(admin.ModelAdmin, ExportCsvMixin):
     """Register Post in django admin."""
+
+    def get_queryset(self, request):
+        """Handle lazy query -> boost productivity."""
+        return (
+            super()
+            .get_queryset(request)
+            .prefetch_related("tags", "categories")
+            .select_related("user")
+        )
 
     @admin.display(description="Tags")
     def get_tags(self, obj):
@@ -53,7 +62,7 @@ class PostAdmin(SortableAdminMixin, admin.ModelAdmin, ExportCsvMixin):
     prepopulated_fields = {"slug": ("title",)}
     readonly_fields = ("created_at", "updated_at")
     list_filter = ("title", "user", "categories", "tags")
-    ordering = ["order"]
+    ordering = ["-updated_at"]
     fieldsets = (
         (
             "Post info",
@@ -84,10 +93,12 @@ class PostAdmin(SortableAdminMixin, admin.ModelAdmin, ExportCsvMixin):
 
 
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(SortableAdminMixin, admin.ModelAdmin):
     """Register Category in django-admin."""
 
-    ordering = ["title"]
+    def get_queryset(self, request):
+        return super().get_queryset(request).prefetch_related("posts")
+
     prepopulated_fields = {"slug": ("title",)}
     readonly_fields = ("created_at", "updated_at")
     fieldsets = (
@@ -102,6 +113,9 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Image)
 class ImageAdmin(admin.ModelAdmin):
     """Register Image in django-admin"""
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related("post")
 
     def show_image(self, obj):
         """Represent image in post."""
@@ -154,3 +168,6 @@ class LikeAdmin(admin.ModelAdmin):
     list_display = ("user", "post", "updated_at")
     ordering = ["-updated_at"]
     list_filter = ("user", "post", "updated_at")
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related("user", "post")

@@ -1,11 +1,14 @@
 import magic
+
 from constance import config
+
 from django.core.exceptions import ValidationError
 from django.core.files import File
 
 
 def validate_image_file(value: File):
     """Validate image type and size using magic."""
+    value.seek(0)
     max_size = config.MAX_IMAGE_SIZE_MB * 1024 * 1024
     allowed_img_types = config.ALLOWED_IMAGE_TYPES.split(",")
     if value.size > max_size:

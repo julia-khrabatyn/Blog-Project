@@ -4,4 +4,4 @@ python-magic==0.4.27
 uuid6==2025.0.1
 django-countries==8.2.0
 django-constance==4.3.5
- django-admin-sortable2==2.3.1
+django-admin-sortable2==2.3.1

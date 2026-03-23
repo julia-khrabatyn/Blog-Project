@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 from django.db import models
 
@@ -10,7 +11,9 @@ from blog.validators import validate_image_file
 class Post(AbstractBaseModel, PublishMixin, SlugMixin):
     """Represent blog Post."""
 
-    title = models.CharField(max_length=255, help_text="Your post title")
+    title = models.CharField(
+        max_length=255, help_text="Your post title", unique=True
+    )
     text = models.TextField(help_text="Your post text")
     description = models.CharField(
         max_length=255,
@@ -36,7 +39,12 @@ class Post(AbstractBaseModel, PublishMixin, SlugMixin):
         blank=True,
         help_text="your post tag (optional)",
     )
-    order = models.PositiveIntegerField(default=0, db_index=True)
+
+    def clean(self):
+        if Post.objects.filter(title=self.title).exclude(pk=self.pk).exists():
+            raise ValidationError(
+                {"title": "Post with this title already exists!"}
+            )
 
     def __str__(self):
         return self.title.title()
@@ -47,11 +55,6 @@ class Post(AbstractBaseModel, PublishMixin, SlugMixin):
         Get slice from post text for representing.
         """
         return self.text[:100]
-
-    @property
-    def like_count(self):
-        """Get all post's likes"""
-        return self.likes.count()
 
     class Meta:
         ordering = ["-created_at"]
@@ -131,6 +134,7 @@ class Category(AbstractBaseModel, SlugMixin):
     """Represent a post category/categories."""
 
     title = models.CharField(max_length=255, help_text="Your category title")
+    order = models.PositiveIntegerField(default=0, db_index=True)
 
     @property
     def posts_count(self):
@@ -141,7 +145,7 @@ class Category(AbstractBaseModel, SlugMixin):
         return self.title.title()
 
     class Meta:
-        ordering = ["title"]
+        ordering = ["order"]
         verbose_name = "Category"
         verbose_name_plural = "Categories"
         indexes = [
