@@ -65,7 +65,7 @@ CONSTANCE_CONFIG = {
         "Allowed mime-type for image files",
         str,
     ),
-    "AVATAR_WIDTH": (300, "Avatar width in px", int),
+    "AVATAR_HEIGHT": (50, "Avatar height in px", int),
 }
 
 MIDDLEWARE = [

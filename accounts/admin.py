@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
+from constance import config
+
 from core.admin import ExportCsvMixin
 
 from accounts.models import User, Follow
@@ -24,11 +26,7 @@ class UserAdmin(admin.ModelAdmin, ExportCsvMixin):
         """Represent user's avatar in admin."""
         if obj.avatar:
             return mark_safe(
-                '<img src="{url}" width="{width}" height={height} />'.format(
-                    url=obj.avatar.url,
-                    width=obj.avatar.width,
-                    height=obj.avatar.height,
-                )
+                f'<img src="{obj.avatar.url}" style="width:{config.AVATAR_HEIGHT}px; height:{config.AVATAR_HEIGHT}px; object-fit:cover;" />'
             )
         else:
             return "No avatar"

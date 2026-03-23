@@ -20,8 +20,8 @@ class ImageInLine(admin.TabularInline):
             return mark_safe(
                 '<img src="{url}" width="{width}" height={height} />'.format(
                     url=obj.image_file.url,
-                    width=obj.image_file.width,
                     height=obj.image_file.height,
+                    width=obj.image_file.width,
                 )
             )
         else:
