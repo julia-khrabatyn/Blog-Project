@@ -2,6 +2,8 @@ from django.db import models
 
 from core.models import AbstractBaseModel, SlugMixin
 
+__all__ = ("Tag",)
+
 
 class Tag(AbstractBaseModel, SlugMixin):
     """Represent Tag object"""

@@ -2,6 +2,8 @@ from django.db import models
 
 from core.models import AbstractBaseModel
 
+__all__ = ("Comment",)
+
 
 class Comment(AbstractBaseModel):
     """Represent comments."""
