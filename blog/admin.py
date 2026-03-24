@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db.models import Count
 from django.utils.safestring import mark_safe
 
 from adminsortable2.admin import SortableAdminMixin
@@ -39,6 +40,7 @@ class PostAdmin(admin.ModelAdmin, ExportCsvMixin):
             .get_queryset(request)
             .prefetch_related("tags", "categories")
             .select_related("user")
+            .annotate(likes_count=Count("likes"))
         )
 
     @admin.display(description="Tags")
@@ -54,6 +56,7 @@ class PostAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_display = (
         "user",
         "title",
+        "get_likes_count",
         "description",
         "get_category",
         "get_tags",
@@ -61,7 +64,12 @@ class PostAdmin(admin.ModelAdmin, ExportCsvMixin):
     )
     prepopulated_fields = {"slug": ("title",)}
     readonly_fields = ("created_at", "updated_at")
-    list_filter = ("title", "user", "categories", "tags")
+    list_filter = (
+        "title",
+        "user",
+        "categories",
+        "tags",
+    )  # TODO: how to filter post by get_likes_count
     ordering = ["-updated_at"]
     fieldsets = (
         (
@@ -90,6 +98,11 @@ class PostAdmin(admin.ModelAdmin, ExportCsvMixin):
     actions = ["export_as_csv"]
     date_hierarchy = "updated_at"
     inlines = [ImageInLine]
+
+    @admin.display(description="Likes", ordering="likes_count")
+    def get_likes_count(self, obj):
+        """Get total likes for post."""
+        return obj.likes_count
 
 
 @admin.register(Category)
@@ -171,3 +184,10 @@ class LikeAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         return super().get_queryset(request).select_related("user", "post")
+
+    @admin.display(
+        description="Total users likes", ordering="user_total_likes"
+    )
+    def user_total_likes(self, obj):
+        """Count total user's likes."""
+        return object.user_total_likes
