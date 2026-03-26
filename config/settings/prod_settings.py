@@ -1,8 +1,9 @@
 import os
 
 from .base_settings import *
+from .base_settings import env
 from .logging_config import get_logging_config
 
 DEBUG = False
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = env("SECRET_KEY")
 # DATABASE will be added later

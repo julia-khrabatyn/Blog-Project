@@ -1,11 +1,11 @@
 import os
 
-from .base_settings import *  # REFAC: i read that it is appropriate to use import * in situations like this
+from .base_settings import *
+from .base_settings import env
 from .logging_config import get_logging_config
 
 DEBUG = True
-SECRET_KEY = os.environ.get("SECRET_KEY")
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["127.0.0.1", "localhost"])
 
 DATABASES = {
     "default": {
