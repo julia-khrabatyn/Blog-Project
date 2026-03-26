@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.db.models import Count
 from django.utils.safestring import mark_safe
+from django.utils.text import Truncator
 
 from adminsortable2.admin import SortableAdminMixin
 
@@ -53,6 +54,16 @@ class PostAdmin(admin.ModelAdmin, ExportCsvMixin):
         """Get category for displaing it in admin."""
         return ", ".join([category.title for category in obj.categories.all()])
 
+    @admin.display(description="Likes", ordering="likes_count")
+    def get_likes_count(self, obj):
+        """Get total likes for post."""
+        return obj.likes_count
+
+    @admin.display(description="First 10 words from post text")
+    def partial_post_text(self, obj):
+        """Show first 10 words of post text."""
+        return Truncator(obj.text).words(10, truncate="...")
+
     list_display = (
         "user",
         "title",
@@ -60,7 +71,7 @@ class PostAdmin(admin.ModelAdmin, ExportCsvMixin):
         "description",
         "get_category",
         "get_tags",
-        "text",
+        "partial_post_text",
     )
     prepopulated_fields = {"slug": ("title",)}
     readonly_fields = ("created_at", "updated_at")
@@ -98,11 +109,6 @@ class PostAdmin(admin.ModelAdmin, ExportCsvMixin):
     actions = ["export_as_csv"]
     date_hierarchy = "updated_at"
     inlines = [ImageInLine]
-
-    @admin.display(description="Likes", ordering="likes_count")
-    def get_likes_count(self, obj):
-        """Get total likes for post."""
-        return obj.likes_count
 
 
 @admin.register(Category)
