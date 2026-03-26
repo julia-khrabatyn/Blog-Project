@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.safestring import mark_safe
 
 from constance import config
@@ -19,9 +20,10 @@ class FollowInline(admin.TabularInline):
 
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin, ExportCsvMixin):
-    """Register User in django admin."""
+class UserAdmin(BaseUserAdmin, ExportCsvMixin):
+    """Register User in django admin with custom fields."""
 
+    @admin.display(description="Preview")
     def show_avatar(self, obj):
         """Represent user's avatar in admin."""
         if obj.avatar:
@@ -31,52 +33,47 @@ class UserAdmin(admin.ModelAdmin, ExportCsvMixin):
         else:
             return "No avatar"
 
+    @admin.display(description="Has avatar", boolean=True)
+    def has_avatar(self, obj):
+        """Display mark whether person has or hasn't avatar"""
+        return bool(obj.avatar)
+
     list_display = (
         "username",
         "email",
-        "avatar",
         "show_avatar",
+        "has_avatar",
         "birth_date",
         "country",
+        "is_staff",
+        "is_active",
         "city",
         "bio",
     )
     ordering = ["username"]
     list_filter = ("username", "country", "birth_date", "email", "updated_at")
     search_fields = ("username", "email")
-    readonly_fields = ("created_at", "updated_at", "show_avatar")
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+        "show_avatar",
+        "date_joined",
+    )
     list_display_links = ("username", "email")
     fieldsets = (
         (
-            "General User's info",
+            "Credentials",
             {
                 "fields": (
                     "username",
                     "email",
                     "password",
-                    "date_joined",
-                    "created_at",
-                    "updated_at",
                 ),
                 "classes": ("collapse",),
             },
         ),
         (
-            "User's status info",
-            {
-                "fields": (
-                    "is_staff",
-                    "is_active",
-                    "is_superuser",
-                    "user_permissions",
-                    "groups",
-                ),
-                "classes": ("collapse",),
-                "description": ("Sensitive User's info"),
-            },
-        ),
-        (
-            "Personal info",
+            "User's personal info",
             {
                 "fields": (
                     "first_name",
@@ -85,9 +82,23 @@ class UserAdmin(admin.ModelAdmin, ExportCsvMixin):
                     "avatar",
                     "show_avatar",
                     "bio",
+                    "tags",
                 ),
                 "classes": ("collapse",),
-                "description": ("Information about user"),
+                "description": ("User's profile info"),
+            },
+        ),
+        (
+            "Permissions and status info",
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "groups",
+                    "user_permissions",
+                ),
+                "classes": ("collapse",),
             },
         ),
         (
@@ -99,8 +110,19 @@ class UserAdmin(admin.ModelAdmin, ExportCsvMixin):
             },
         ),
         (
-            "User's Tags",
-            {"fields": ("tags",), "classes": ("collapse",)},
+            "Important dates",
+            {
+                "fields": ("date_joined", "created_at", "updated_at"),
+                "classes": ("collapsed",),
+            },
+        ),
+    )
+    add_fieldsets = BaseUserAdmin.add_fieldsets + (
+        (
+            "Extra Info",
+            {
+                "fields": ("email", "birth_date", "country", "city"),
+            },
         ),
     )
     date_hierarchy = "birth_date"
