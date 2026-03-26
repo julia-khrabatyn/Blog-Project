@@ -1,0 +1,2 @@
+DJANGO_ENV=your usage: prod or dev (str)
+SECRET_KEY=your-secret-key-here
