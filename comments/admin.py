@@ -1,10 +1,12 @@
 from django.contrib import admin
 
+from core.admin import ExportCsvMixin
+
 from comments.models import Comment
 
 
 @admin.register(Comment)
-class CommentAdmin(admin.ModelAdmin):
+class CommentAdmin(admin.ModelAdmin, ExportCsvMixin):
     """Register Comment model in django-admin."""
 
     list_display = ("user", "post", "text")
@@ -25,3 +27,4 @@ class CommentAdmin(admin.ModelAdmin):
         ),
         ("Comment text", {"fields": ("text",)}),
     )
+    actions = ["export_as_csv"]

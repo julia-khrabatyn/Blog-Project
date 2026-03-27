@@ -2,9 +2,11 @@ import csv
 
 from django.http import HttpResponse
 
+__all__ = ["ExportCsvMixin"]
+
 
 class ExportCsvMixin:
-    def export_as_csv(self, request, queryset):
+    def export_as_csv(self, _request, queryset):
 
         meta = self.model._meta
         forbidden_fields = getattr(
