@@ -115,7 +115,7 @@ class PostAdmin(admin.ModelAdmin, ExportCsvMixin):
     filter_horizontal = ("tags",)  # add opportunity to choose many tags
     actions_on_bottom = True
     list_per_page = 50
-    actions = ["export_as_csv"]
+    actions = ["export_as_csv"]  # TODO: should I exclude id for csv export?
     date_hierarchy = "updated_at"
     inlines = [ImageInLine]
 
@@ -190,19 +190,26 @@ class ImageAdmin(admin.ModelAdmin):
 
 
 @admin.register(Like)
-class LikeAdmin(admin.ModelAdmin):
+class LikeAdmin(admin.ModelAdmin, ExportCsvMixin):
     """Register Like model in django-admin."""
 
-    list_display = ("user", "post", "updated_at")
+    list_display = ("user", "post", "user_total_likes", "updated_at")
     ordering = ["-updated_at"]
     list_filter = ("user", "post", "updated_at")
+    list_display_links = ("user", "post")
+    actions = ["export_as_csv"]  # TODO: should I exclude id for csv export?
 
     def get_queryset(self, request):
-        return super().get_queryset(request).select_related("user", "post")
+        return (
+            super()
+            .get_queryset(request)
+            .select_related("user", "post")
+            .annotate(user_total_likes_count=Count("user__likes"))
+        )
 
     @admin.display(
         description="Total users likes", ordering="user_total_likes"
     )
     def user_total_likes(self, obj):
         """Count total user's likes."""
-        return object.user_total_likes
+        return obj.user_total_likes_count

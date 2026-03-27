@@ -2,10 +2,12 @@ import csv
 
 from django.http import HttpResponse
 
-__all__ = ["ExportCsvMixin"]
+__all__ = [
+    "ExportCsvMixin"
+]  # TODO: is it possible to that not only with classes, but with functions too??
 
 
-class ExportCsvMixin:
+class ExportCsvMixin:  # FIXME: is it fixed? should I make this be possible to use it only by superuser or staff too?
     def export_as_csv(self, _request, queryset):
 
         meta = self.model._meta
