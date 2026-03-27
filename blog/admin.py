@@ -54,7 +54,7 @@ class PostAdmin(admin.ModelAdmin, ExportCsvMixin):
         """Get category for displaing it in admin."""
         return ", ".join([category.title for category in obj.categories.all()])
 
-    @admin.display(description="Likes", ordering="likes_count")
+    @admin.display(description="Likes", ordering="likes_count") 
     def get_likes_count(self, obj):
         """Get total likes for post."""
         return obj.likes_count
@@ -208,7 +208,7 @@ class LikeAdmin(admin.ModelAdmin, ExportCsvMixin):
         )
 
     @admin.display(
-        description="Total users likes", ordering="user_total_likes"
+        description="Total users likes", ordering="user_total_likes" # FIXME level 2  Як називається поле ??? user_total_likes_count
     )
     def user_total_likes(self, obj):
         """Count total user's likes."""

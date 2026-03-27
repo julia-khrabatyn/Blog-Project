@@ -2,9 +2,7 @@ import csv
 
 from django.http import HttpResponse
 
-__all__ = [
-    "ExportCsvMixin"
-]  # TODO: is it possible to that not only with classes, but with functions too??
+__all__ = ["ExportCsvMixin"]  # TODO: is it possible to that not only with classes, but with functions too??
 
 
 class ExportCsvMixin:  # FIXME: is it fixed? should I make this be possible to use it only by superuser or staff too?
@@ -16,23 +14,19 @@ class ExportCsvMixin:  # FIXME: is it fixed? should I make this be possible to u
             "csv_exclude_fields",
             ["password", "last_login", "is_superuser"],
         )
-        field_names = [
-            field.name
-            for field in meta.fields
-            if field.name not in forbidden_fields
-        ]
+        field_names = [field.name for field in meta.fields if field.name not in forbidden_fields]
 
+        # FIXME level 1 можливий витік чутливих полів, немає перевірки доступів (хочаб ізстав, адмін, тощо)
+        # треба додати заборонені поля для експорту  "password", "last_login", "is_superuser"
+
+        # поля для експорту теж варто отримати з мети а не брати напряму - небезпечно.
         response = HttpResponse(content_type="text/csv")
-        response["Content-Disposition"] = "attachment; filename={}.csv".format(
-            meta
-        )
+        response["Content-Disposition"] = "attachment; filename={}.csv".format(meta)
         writer = csv.writer(response)
 
         writer.writerow(field_names)
         for obj in queryset:
-            writer.writerow(
-                [str(getattr(obj, field)) for field in field_names]
-            )
+            writer.writerow([str(getattr(obj, field)) for field in field_names])
 
         return response
 

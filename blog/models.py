@@ -13,9 +13,7 @@ __all__ = ("Category", "Image", "Like", "Post")
 class Post(AbstractBaseModel, PublishMixin, SlugMixin):
     """Represent blog Post."""
 
-    title = models.CharField(
-        max_length=255, help_text="Your post title", unique=True
-    )
+    title = models.CharField(max_length=255, help_text="Your post title", unique=True)
     text = models.TextField(help_text="Your post text")
     description = models.CharField(
         max_length=255,
@@ -42,11 +40,10 @@ class Post(AbstractBaseModel, PublishMixin, SlugMixin):
         help_text="your post tag (optional)",
     )
 
+    # FIXME level 1  title = models.CharField( ... unique=True ) ???? Для чого??
     def clean(self):
         if Post.objects.filter(title=self.title).exclude(pk=self.pk).exists():
-            raise ValidationError(
-                {"title": "Post with this title already exists!"}
-            )
+            raise ValidationError({"title": "Post with this title already exists!"})
 
     def __str__(self):
         return self.title.title()
@@ -77,7 +74,7 @@ class Image(AbstractBaseModel):
         validators=[
             FileExtensionValidator(
                 allowed_extensions=["jpg", "png", "jpeg", "webp"]
-            ),
+            ),  # FIXME level 4 ВИнести хочаб в константу вгорі, а креще десь окремо
             validate_image_file,
         ],
         help_text="Upload your image (allowed formats: .png, .jpeg, .jpg, .webp files; max file size: 5 MB)",
@@ -123,13 +120,14 @@ class Like(AbstractBaseModel):
         return f"{self.user} likes {self.post}"
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=["user", "post"], name="unique_like"
-            )
-        ]
+        constraints = [models.UniqueConstraint(fields=["user", "post"], name="unique_like")]
         verbose_name = "Like"
         verbose_name_plural = "Likes"
+        # FIXME level 2 варто додати щоб швидко робити аннтації
+        indexes = [
+            models.Index(fields=["post"]),
+            models.Index(fields=["user"]),
+        ]
 
 
 class Category(AbstractBaseModel, SlugMixin):
@@ -138,6 +136,8 @@ class Category(AbstractBaseModel, SlugMixin):
     title = models.CharField(max_length=255, help_text="Your category title")
     order = models.PositiveIntegerField(default=0, db_index=True)
 
+    # FIXME level 2 Про це казав. Якщо для кожного посту викликати цей метод отримаємо N+1
+    # Там де треба Category.objects.annotate(posts_count=Count("posts"))
     @property
     def posts_count(self):
         """Count all posts in category."""

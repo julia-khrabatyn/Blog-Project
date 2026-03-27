@@ -39,11 +39,15 @@ class PublishMixin(models.Model):
 class SlugMixin(models.Model):
     """Mixin that added auto-generated slug field."""
 
+    # FIXME level 1  не гарантує унікальність
+
     slug = models.SlugField(
         max_length=255,
         unique=True,
         help_text="URL-friendly version of the title",
     )
+
+    def generate_unique_slug(self): ...
 
     def save(self, *args, **kwargs):
         if not self.slug:
