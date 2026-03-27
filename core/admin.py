@@ -1,6 +1,5 @@
 import csv
 
-from django.contrib import admin
 from django.http import HttpResponse
 
 
@@ -8,7 +7,16 @@ class ExportCsvMixin:
     def export_as_csv(self, request, queryset):
 
         meta = self.model._meta
-        field_names = [field.name for field in meta.fields]
+        forbidden_fields = getattr(
+            self,
+            "csv_exclude_fields",
+            ["password", "last_login", "is_superuser"],
+        )
+        field_names = [
+            field.name
+            for field in meta.fields
+            if field.name not in forbidden_fields
+        ]
 
         response = HttpResponse(content_type="text/csv")
         response["Content-Disposition"] = "attachment; filename={}.csv".format(
@@ -18,7 +26,9 @@ class ExportCsvMixin:
 
         writer.writerow(field_names)
         for obj in queryset:
-            writer.writerow([getattr(obj, field) for field in field_names])
+            writer.writerow(
+                [str(getattr(obj, field)) for field in field_names]
+            )
 
         return response
 

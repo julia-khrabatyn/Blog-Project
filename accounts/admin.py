@@ -129,4 +129,13 @@ class UserAdmin(BaseUserAdmin, ExportCsvMixin):
     actions_on_bottom = True
     list_per_page = 50
     inlines = [FollowInline]
+    csv_exclude_fields = [
+        "password",
+        "last_login",
+        "is_staff",
+        "is_superuser",
+        "groups",
+        "user_permissions",
+        "is_active",
+    ]
     actions = ["export_as_csv"]
