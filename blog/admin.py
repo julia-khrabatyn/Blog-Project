@@ -64,13 +64,21 @@ class PostAdmin(admin.ModelAdmin, ExportCsvMixin):
         """Show first 10 words of post text."""
         return Truncator(obj.text).words(10, truncate="...")
 
+    @admin.display(description="First 5 tags for post")
+    def partial_post_tags(self, obj):
+        """Display first 5 tags of all possible post tags."""
+        tags_list = [tag.title for tag in obj.tags.all()]
+        if not tags_list:
+            return "❌"
+        return ", ".join(tags_list[:5]) + ("..." if len(tags_list) > 5 else "")
+
     list_display = (
         "user",
         "title",
         "get_likes_count",
         "description",
         "get_category",
-        "get_tags",
+        "partial_post_tags",
         "partial_post_text",
     )
     prepopulated_fields = {"slug": ("title",)}
@@ -80,7 +88,7 @@ class PostAdmin(admin.ModelAdmin, ExportCsvMixin):
         "user",
         "categories",
         "tags",
-    )  # TODO: how to filter post by get_likes_count
+    )
     ordering = ["-updated_at"]
     fieldsets = (
         (
@@ -104,6 +112,7 @@ class PostAdmin(admin.ModelAdmin, ExportCsvMixin):
             },
         ),
     )
+    filter_horizontal = ("tags",)  # add opportunity to choose many tags
     actions_on_bottom = True
     list_per_page = 50
     actions = ["export_as_csv"]
