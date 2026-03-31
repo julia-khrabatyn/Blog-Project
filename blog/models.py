@@ -13,7 +13,9 @@ __all__ = ("Category", "Image", "Like", "Post")
 class Post(AbstractBaseModel, PublishMixin, SlugMixin):
     """Represent blog Post."""
 
-    title = models.CharField(max_length=255, help_text="Your post title", unique=True)
+    title = models.CharField(
+        max_length=255, help_text="Your post title", unique=True
+    )
     text = models.TextField(help_text="Your post text")
     description = models.CharField(
         max_length=255,
@@ -39,11 +41,6 @@ class Post(AbstractBaseModel, PublishMixin, SlugMixin):
         blank=True,
         help_text="your post tag (optional)",
     )
-
-    # FIXME level 1  title = models.CharField( ... unique=True ) ???? Для чого??
-    def clean(self):
-        if Post.objects.filter(title=self.title).exclude(pk=self.pk).exists():
-            raise ValidationError({"title": "Post with this title already exists!"})
 
     def __str__(self):
         return self.title.title()
@@ -120,7 +117,11 @@ class Like(AbstractBaseModel):
         return f"{self.user} likes {self.post}"
 
     class Meta:
-        constraints = [models.UniqueConstraint(fields=["user", "post"], name="unique_like")]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "post"], name="unique_like"
+            )
+        ]
         verbose_name = "Like"
         verbose_name_plural = "Likes"
         # FIXME level 2 варто додати щоб швидко робити аннтації
