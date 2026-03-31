@@ -1,12 +1,12 @@
 from django.contrib import admin
 
-from core.admin import ExportCsvMixin
+from core.admin import BaseExportCsvMixin
 
 from comments.models import Comment
 
 
 @admin.register(Comment)
-class CommentAdmin(admin.ModelAdmin, ExportCsvMixin):
+class CommentAdmin(admin.ModelAdmin, BaseExportCsvMixin):
     """Register Comment model in django-admin."""
 
     list_display = ("user", "post", "text")

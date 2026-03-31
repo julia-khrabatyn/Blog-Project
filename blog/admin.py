@@ -5,7 +5,7 @@ from django.utils.text import Truncator
 
 from adminsortable2.admin import SortableAdminMixin
 
-from core.admin import ExportCsvMixin
+from core.admin import BaseExportCsvMixin
 
 from blog.models import Category, Image, Like, Post
 
@@ -31,7 +31,7 @@ class ImageInLine(admin.TabularInline):
 
 
 @admin.register(Post)
-class PostAdmin(admin.ModelAdmin, ExportCsvMixin):
+class PostAdmin(admin.ModelAdmin, BaseExportCsvMixin):
     """Register Post in django admin."""
 
     def get_queryset(self, request):
@@ -54,7 +54,7 @@ class PostAdmin(admin.ModelAdmin, ExportCsvMixin):
         """Get category for displaing it in admin."""
         return ", ".join([category.title for category in obj.categories.all()])
 
-    @admin.display(description="Likes", ordering="likes_count") 
+    @admin.display(description="Likes", ordering="likes_count")
     def get_likes_count(self, obj):
         """Get total likes for post."""
         return obj.likes_count
@@ -115,7 +115,7 @@ class PostAdmin(admin.ModelAdmin, ExportCsvMixin):
     filter_horizontal = ("tags",)  # add opportunity to choose many tags
     actions_on_bottom = True
     list_per_page = 50
-    actions = ["export_as_csv"]  # TODO: should I exclude id for csv export?
+    actions = ["export_as_csv"]
     date_hierarchy = "updated_at"
     inlines = [ImageInLine]
 
@@ -190,14 +190,14 @@ class ImageAdmin(admin.ModelAdmin):
 
 
 @admin.register(Like)
-class LikeAdmin(admin.ModelAdmin, ExportCsvMixin):
+class LikeAdmin(admin.ModelAdmin, BaseExportCsvMixin):
     """Register Like model in django-admin."""
 
     list_display = ("user", "post", "user_total_likes", "updated_at")
     ordering = ["-updated_at"]
     list_filter = ("user", "post", "updated_at")
     list_display_links = ("user", "post")
-    actions = ["export_as_csv"]  # TODO: should I exclude id for csv export?
+    actions = ["export_as_csv"]
 
     def get_queryset(self, request):
         return (
@@ -208,7 +208,8 @@ class LikeAdmin(admin.ModelAdmin, ExportCsvMixin):
         )
 
     @admin.display(
-        description="Total users likes", ordering="user_total_likes" # FIXME level 2  Як називається поле ??? user_total_likes_count
+        description="Total users likes",
+        ordering="user_total_likes",  # FIXME level 2  Як називається поле ??? user_total_likes_count
     )
     def user_total_likes(self, obj):
         """Count total user's likes."""

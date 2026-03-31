@@ -1,33 +1,67 @@
 import csv
 
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 
-__all__ = ["ExportCsvMixin"]  # TODO: is it possible to that not only with classes, but with functions too??
+__all__ = ["ExportCsvMixin"]
 
 
-class ExportCsvMixin:  # FIXME: is it fixed? should I make this be possible to use it only by superuser or staff too?
-    def export_as_csv(self, _request, queryset):
+class BaseExportCsvMixin:
+    """Base class for safely exporting csv file from admin site."""
+
+    def export_as_csv(self, request, queryset):
+        if not request.user.is_staff:
+            raise PermissionDenied("You haven't permission for that action!")
 
         meta = self.model._meta
-        forbidden_fields = getattr(
+        hard_forbidden_fields = [
+            "password",
+            "last_login",
+            "is_superuser",
+            "is_staff",
+        ]
+        extra_forbidden_fields = getattr(
             self,
             "csv_exclude_fields",
-            ["password", "last_login", "is_superuser"],
+            [],
         )
-        field_names = [field.name for field in meta.fields if field.name not in forbidden_fields]
+        all_forbidden_fields = set(
+            hard_forbidden_fields + extra_forbidden_fields
+        )
+        field_names = [
+            field.name
+            for field in meta.fields
+            if field.name not in all_forbidden_fields
+        ]
 
-        # FIXME level 1 можливий витік чутливих полів, немає перевірки доступів (хочаб ізстав, адмін, тощо)
-        # треба додати заборонені поля для експорту  "password", "last_login", "is_superuser"
-
-        # поля для експорту теж варто отримати з мети а не брати напряму - небезпечно.
         response = HttpResponse(content_type="text/csv")
-        response["Content-Disposition"] = "attachment; filename={}.csv".format(meta)
-        writer = csv.writer(response)
+        response["Content-Disposition"] = (
+            f"attachment; filename={meta.model_name}.csv"
+        )
 
+        writer = csv.writer(response)
         writer.writerow(field_names)
+
         for obj in queryset:
-            writer.writerow([str(getattr(obj, field)) for field in field_names])
+            writer.writerow(
+                [str(getattr(obj, field)) for field in field_names]
+            )
 
         return response
 
     export_as_csv.short_description = "Export Selected"
+
+
+class UserExportCsvMixin(BaseExportCsvMixin):
+    """Class for safely exporting info about users from admin site."""
+
+    def export_as_csv(self, request, queryset):
+        if not request.user.is_superuser:
+            raise PermissionDenied("You haven't permission for that action!")
+        self.csv_exclude_fields = [
+            "groups",
+            "user_permissions",
+            "is_active",
+            "date_joined",
+        ]
+        return super().export_as_csv(request, queryset)
