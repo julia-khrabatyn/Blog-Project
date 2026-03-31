@@ -4,6 +4,7 @@ from django.utils.safestring import mark_safe
 from django.utils.text import Truncator
 
 from adminsortable2.admin import SortableAdminMixin
+from constance import config
 
 from core.admin import BaseExportCsvMixin
 
@@ -189,13 +190,53 @@ class ImageAdmin(admin.ModelAdmin):
     )
 
 
+class UserActivityFilter(admin.SimpleListFilter):
+    """Help to display filter for likes."""
+
+    title = "User activity"
+    parameter_name = "activity_level"
+
+    @property
+    def low_limit(self):
+        """Get value from django-constance for low activity."""
+        return config.USER_ACTIVITY_LOW_LIMIT
+
+    @property
+    def medium_limit(self):
+        """Get value from django-constance for medium activity."""
+        return config.USER_ACTIVITY_MEDIUM_LIMIT
+
+    def lookups(self, request, model_admin):
+        return (
+            ("low", f"Low (1-{self.low_limit} likes)"),
+            ("medium", f"Medium ({self.low_limit+1}-{self.medium_limit})"),
+            ("high", f"High ({self.medium_limit + 1}+ likes)"),
+        )
+
+    def queryset(self, request, queryset):
+        value = self.value
+        if value == "low":
+            return queryset.filter(user_total_likes_count__lte=self.low_limit)
+        if value == "medium":
+            return queryset.filter(
+                user_total_likes_count__gt=self.low_limit,
+                user_total_likes_count__lte=self.medium_limit,
+            )
+        if self.value == "high":
+            return queryset.filter(
+                user_total_likes_count__gt=self.medium_limit
+            )
+
+        return queryset
+
+
 @admin.register(Like)
 class LikeAdmin(admin.ModelAdmin, BaseExportCsvMixin):
     """Register Like model in django-admin."""
 
     list_display = ("user", "post", "user_total_likes", "updated_at")
     ordering = ["-updated_at"]
-    list_filter = ("user", "post", "updated_at")
+    list_filter = ("user", "post", "updated_at", UserActivityFilter)
     list_display_links = ("user", "post")
     actions = ["export_as_csv"]
 
@@ -209,7 +250,7 @@ class LikeAdmin(admin.ModelAdmin, BaseExportCsvMixin):
 
     @admin.display(
         description="Total users likes",
-        ordering="user_total_likes",  # FIXME level 2  Як називається поле ??? user_total_likes_count
+        ordering="user_total_likes_count",
     )
     def user_total_likes(self, obj):
         """Count total user's likes."""

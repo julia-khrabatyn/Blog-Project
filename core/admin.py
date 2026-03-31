@@ -19,7 +19,7 @@ class BaseExportCsvMixin:
             "last_login",
             "is_superuser",
             "is_staff",
-        ]
+        ]  # TODO: should I transfer it to constance in config/settings/base_settings.py?
         extra_forbidden_fields = getattr(
             self,
             "csv_exclude_fields",

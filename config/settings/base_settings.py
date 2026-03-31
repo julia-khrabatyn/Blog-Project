@@ -59,6 +59,16 @@ CONSTANCE_CONFIG = {
         str,
     ),
     "AVATAR_HEIGHT": (50, "Avatar height in px", int),
+    "USER_ACTIVITY_LOW_LIMIT": (
+        5,
+        "Threshold for low user's activity (number of likes)",
+        int,
+    ),
+    "USER_ACTIVITY_MEDIUM_LIMIT": (
+        15,
+        "Threshold for medium user's activity (number of likes)",
+        int,
+    ),
 }
 
 MIDDLEWARE = [
