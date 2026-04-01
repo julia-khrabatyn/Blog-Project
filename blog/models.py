@@ -1,11 +1,12 @@
-from django.core.exceptions import ValidationError
-from django.core.validators import FileExtensionValidator
 from django.db import models
+
+from constance import config
 
 from accounts.models import User
 from core.models import AbstractBaseModel, PublishMixin, SlugMixin
 
-from blog.validators import validate_image_file
+
+from blog.validators import validate_image_file, validate_image_extension
 
 __all__ = ("Category", "Image", "Like", "Post")
 
@@ -69,9 +70,7 @@ class Image(AbstractBaseModel):
     image_file = models.ImageField(
         upload_to="images/",
         validators=[
-            FileExtensionValidator(
-                allowed_extensions=["jpg", "png", "jpeg", "webp"]
-            ),  # FIXME level 4 ВИнести хочаб в константу вгорі, а креще десь окремо
+            validate_image_extension,
             validate_image_file,
         ],
         help_text="Upload your image (allowed formats: .png, .jpeg, .jpg, .webp files; max file size: 5 MB)",
@@ -124,10 +123,8 @@ class Like(AbstractBaseModel):
         ]
         verbose_name = "Like"
         verbose_name_plural = "Likes"
-        # FIXME level 2 варто додати щоб швидко робити аннтації
         indexes = [
-            models.Index(fields=["post"]),
-            models.Index(fields=["user"]),
+            models.Index(fields=["user", "post"]),
         ]
 
 
@@ -136,13 +133,6 @@ class Category(AbstractBaseModel, SlugMixin):
 
     title = models.CharField(max_length=255, help_text="Your category title")
     order = models.PositiveIntegerField(default=0, db_index=True)
-
-    # FIXME level 2 Про це казав. Якщо для кожного посту викликати цей метод отримаємо N+1
-    # Там де треба Category.objects.annotate(posts_count=Count("posts"))
-    @property
-    def posts_count(self):
-        """Count all posts in category."""
-        return self.posts.count()
 
     def __str__(self):
         return self.title.title()

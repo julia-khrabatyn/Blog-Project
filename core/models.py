@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from uuid6 import uuid7
 
-__all__ = ("AbstractBaseModel", "PublishMixin", "SlugMixin", "UIdMixin")
+__all__ = ("AbstractBaseModel", "PublishMixin", "SlugMixin", "UUIdMixin")
 
 
 class UUIdMixin(models.Model):
@@ -39,19 +39,31 @@ class PublishMixin(models.Model):
 class SlugMixin(models.Model):
     """Mixin that added auto-generated slug field."""
 
-    # FIXME level 1  не гарантує унікальність
-
     slug = models.SlugField(
         max_length=255,
         unique=True,
         help_text="URL-friendly version of the title",
     )
 
-    def generate_unique_slug(self): ...
+    def generate_unique_slug(self):
+        source = self.slug or self.title
+        base_slug = slugify(source)
+
+        if not base_slug:
+            base_slug = "item"
+
+        slug = base_slug
+        num = 1
+        model = self.__class__
+
+        while model.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+            slug = f"{base_slug}-{num}"
+            num += 1
+        return slug
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
+        # Additional uniqueness check before saving
+        self.slug = self.generate_unique_slug()
         super().save(*args, **kwargs)
 
     class Meta:

@@ -58,6 +58,11 @@ CONSTANCE_CONFIG = {
         "Allowed mime-type for image files",
         str,
     ),
+    "ALLOWED_IMAGE_EXTENSIONS": (
+        "webp,png,jpeg,jpg",
+        "Allowed images extensions (comma-separated)",
+        str,
+    ),
     "AVATAR_HEIGHT": (50, "Avatar height in px", int),
     "USER_ACTIVITY_LOW_LIMIT": (
         5,

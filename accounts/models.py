@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxLengthValidator
 from django.db import models
-from django.db.models import F, Q
+
 
 from django_countries.fields import CountryField
 
@@ -22,8 +22,14 @@ class CustomUserManager(BaseUserManager):
         """
         if not email:
             raise ValueError("The Email must be set")
+
+        if not username:
+            raise ValueError("The Username must be set")
+
+        if not password:
+            raise ValueError("The password must be set")
+
         email = self.normalize_email(email)
-        # FIXME level 1 Варто перевірити на те що ім'я і пароль порожнє, і що тоді?
         user = self.model(username=username, email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -66,7 +72,9 @@ class User(AbstractUser, AbstractBaseModel):
         blank=True,
         help_text="Your city (optional)",
     )
-    email = models.EmailField(unique=True, help_text="Your valid email address")
+    email = models.EmailField(
+        unique=True, help_text="Your valid email address"
+    )
     avatar = models.ImageField(
         upload_to="avatars/",
         null=True,
@@ -92,8 +100,10 @@ class User(AbstractUser, AbstractBaseModel):
         return self.likes.all()
 
     def __str__(self):
-        # FIXME level 1. Ці поля не обов'язкові,що буде якщо їх не заповнити - повернути юзернейм тоді або емейл
-        return f"{self.first_name.title()} {self.last_name.title()}"
+        full_name = f"{self.first_name or ""} {self.last_name or ""}".strip()
+        if full_name:
+            return full_name
+        return self.username
 
     class Meta:
         verbose_name = "User"
@@ -126,7 +136,9 @@ class Follow(AbstractBaseModel):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["follower", "following"], name="unique_follow"),
+            models.UniqueConstraint(
+                fields=["follower", "following"], name="unique_follow"
+            ),
             models.CheckConstraint(
                 condition=~models.Q(follower=models.F("following")),
                 name="prevent_self_follow",

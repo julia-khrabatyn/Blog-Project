@@ -4,6 +4,14 @@ from constance import config
 
 from django.core.exceptions import ValidationError
 from django.core.files import File
+from django.core.validators import FileExtensionValidator
+
+
+def validate_image_extension(value):
+    """Validate file extension."""
+    allowed_extensions = config.ALLOWED_IMAGE_EXTENSIONS.split(",")
+    validator = FileExtensionValidator(allowed_extensions=allowed_extensions)
+    validator(value)
 
 
 def validate_image_file(value: File):

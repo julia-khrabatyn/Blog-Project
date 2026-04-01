@@ -126,17 +126,34 @@ class CategoryAdmin(SortableAdminMixin, admin.ModelAdmin):
     """Register Category in django-admin."""
 
     def get_queryset(self, request):
-        return super().get_queryset(request).prefetch_related("posts")
+        return (
+            super()
+            .get_queryset(request)
+            .annotate(posts_count_db=Count("posts"))
+        )
 
     prepopulated_fields = {"slug": ("title",)}
-    readonly_fields = ("created_at", "updated_at")
+    readonly_fields = ("created_at", "updated_at", "posts_count_display")
     fieldsets = (
         (
             "Category info",
-            {"fields": ("title", "slug", "created_at", "updated_at")},
+            {
+                "fields": (
+                    "title",
+                    "slug",
+                    "created_at",
+                    "updated_at",
+                    "posts_count_display",
+                )
+            },
         ),
     )
+    list_display = ("order", "title", "posts_count_display", "updated_at")
     list_filter = ("title", "created_at", "updated_at")
+
+    @admin.display(description="Number of posts", ordering="posts_count_db")
+    def posts_count_display(self, obj):
+        return obj.posts_count_db
 
 
 @admin.register(Image)
