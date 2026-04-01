@@ -16,22 +16,26 @@ __all__ = ("CustomUserManager", "Follow", "User")
 class CustomUserManager(BaseUserManager):
     """Custom Manager for User model"""
 
-    def create_user(self, username, email, password=None, **extra_fields):
+    def create_user(
+        self, username=None, email=None, password=None, **extra_fields
+    ):
         """
         Create and save a user with the given email and password.
         """
         if not email:
             raise ValueError("The Email must be set")
 
-        if not username:
-            raise ValueError("The Username must be set")
-
-        if not password:
-            raise ValueError("The password must be set")
+        if username is None:
+            username = email.split("@")[0]
 
         email = self.normalize_email(email)
         user = self.model(username=username, email=email, **extra_fields)
-        user.set_password(password)
+
+        if password:
+            user.set_password(password)
+        else:
+            user.set_unusable_password()
+
         user.save(using=self._db)
         return user
 
@@ -53,12 +57,16 @@ class CustomUserManager(BaseUserManager):
 class User(AbstractUser, AbstractBaseModel):
     """Represent user"""
 
-    REQUIRED_FIELDS = ["email", "birth_date", "country"]
+    REQUIRED_FIELDS = ["email"]
     birth_date = models.DateField(
-        validators=[validate_birth_date],
+        # validators=[validate_birth_date],
         help_text="Your date of birth. Must be 13+ years for registartion",
+        blank=True,
+        null=True,
     )
-    country = CountryField(help_text="Your country code")
+    country = CountryField(
+        help_text="Your country code", blank=True, null=True
+    )
     # stores the 2-letter ISO 3166-1 country code. have autocomplete in admin
     bio = models.TextField(
         help_text="Tell us something about yourself (max 500 characters)",
