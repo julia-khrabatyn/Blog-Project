@@ -26,14 +26,25 @@ class UserAdmin(BaseUserAdmin, UserExportCsvMixin):
     @admin.display(description="Preview")
     def show_avatar(self, obj):
         """Represent user's avatar in admin."""
+        # Initially look up if user upload avatar, thus -> display it in admin
         if obj.avatar:
             return mark_safe(
                 f'<img src="{obj.avatar.url}" style="width:{config.AVATAR_HEIGHT}px; height:{config.AVATAR_HEIGHT}px; object-fit:cover;" />'
             )
-        else:
-            return "No avatar"
 
-    @admin.display(description="Has avatar", boolean=True)
+        # If user didn't upload avatar, but logged in using Google -> try to get user's google profile avatar if it was uploaded -> thus display it in admin.
+        social_account = obj.socialaccount_set.filter(
+            provider="google"
+        ).first()
+        if social_account and "picture" in social_account.extra_data:
+            picture_url = social_account.extra_data["picture"]
+            return mark_safe(
+                f'<img src="{picture_url}" style="width:{config.AVATAR_HEIGHT}px; height:{config.AVATAR_HEIGHT}px; object-fit:cover;"/>'
+            )
+
+        return "No avatar"
+
+    @admin.display(description="Self-uploaded avatar", boolean=True)
     def has_avatar(self, obj):
         """Display mark whether person has or hasn't avatar"""
         return bool(obj.avatar)
