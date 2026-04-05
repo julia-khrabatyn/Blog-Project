@@ -45,3 +45,6 @@ SOCIALACCOUNT_PROVIDERS = {
         "FETCH_USERINFO": True,
     }
 }
+
+# all-auth UI settings
+ALLAUTH_UI_THEME = "corporate"
