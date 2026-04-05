@@ -14,7 +14,7 @@ import environ
 import os
 from pathlib import Path
 
-from .auth_settings import *
+
 from .logging_config import get_logging_config
 
 
@@ -154,3 +154,4 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
+from .auth_settings import *
