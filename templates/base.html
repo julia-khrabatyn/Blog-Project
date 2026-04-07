@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Byline-Blog{% endblock %}</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#4f46e5' }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body class="h-full font-sans antialiased text-gray-900 flex flex-col">
+
+    <nav class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            
+            <div class="flex items-right gap-4">
+                <a href="/" class="flex items-center gap-2">
+                    <img class="h-12 w-auto" src="{% static 'images/byline_logo.png' %}" alt="Blog logo">
+                    <span class="text-2xl font-black text-sky-600 tracking-tight">Byline-Blog</span>
+                </a>
+                
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                    <a href="/" class="text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 border-sky-500 text-sm font-medium">
+                        Main
+                    </a>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                {% if user.is_authenticated %}
+                    <span class="text-sm text-gray-500 ">Welcome back, {{ user.username }}!</span>
+                    <form method="post" action="{% url 'account_logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="text-sm font-medium text-gray-700 hover:text-red-600 transition">
+                            Logout
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'account_login' %}" class="text-sm font-medium text-gray-700 hover:text-sky-600">Sign in</a>
+                    <a href="{% url 'account_signup' %}" class="bg-sky-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-sky-700 transition">
+                        Sign up
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow">
+        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+
+    <footer class="bg-white border-t py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-400 text-sm">
+                &copy; 2026 Byline-Blog
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>

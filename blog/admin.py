@@ -81,6 +81,7 @@ class PostAdmin(admin.ModelAdmin, BaseExportCsvMixin):
         "get_category",
         "partial_post_tags",
         "partial_post_text",
+        "published",
     )
     prepopulated_fields = {"slug": ("title",)}
     readonly_fields = ("created_at", "updated_at")
@@ -101,6 +102,7 @@ class PostAdmin(admin.ModelAdmin, BaseExportCsvMixin):
                     "tags",
                     "created_at",
                     "updated_at",
+                    "published",
                 ),
                 "classes": ("collapse",),
             },

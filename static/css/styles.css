@@ -1,0 +1,24 @@
+/* From Uiverse.io by felipesntr */
+.button-create-post {
+    border: 2px solid #24b4fb !important;
+    background-color: #24b4fb !important;
+    border-radius: 0.9em;
+    cursor: pointer;
+    padding: 0.8em 1.2em 0.8em 1em;
+    transition: all ease-in-out 0.2s;
+    font-size: 16px;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.button-create-post span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-weight: 600;
+}
+
+.button-create-post:hover {
+    background-color: #0071e2 !important;
+}
