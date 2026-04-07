@@ -49,4 +49,29 @@
         {% endfor %}
     </div>
 </section>
+<section class="my-20 px-4">
+    <div class="flex flex-col items-center justify-center py-20 text-center">
+        <img class="h-max w-auto transition-transform group-hover:scale-105" src="{% static 'images/new_story.jpeg' %}" alt="Creativity inspire">
+    </div>
+    <div class="max-w-4xl mx-auto bg-sky-600 rounded-[2.5rem] p-10 md:p-16 text-center shadow-2xl shadow-sky-200 relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-sky-500 rounded-full opacity-50"></div>
+        
+        <div class="relative z-10">
+            <h2 class="text-3xl md:text-4xl font-black text-white mb-6">
+                If excited to share with us any ideas — don't be shy!
+            </h2>
+            <p class="text-sky-100 text-lg mb-10 max-w-xl mx-auto font-medium">
+                Click the button below and create your new post. Your thoughts might be the spark someone else needs today.
+            </div>
+            
+            <a href="#" class="inline-flex items-center gap-2 bg-white text-sky-600 px-10 py-4 rounded-2xl font-bold text-lg hover:bg-gray-50 transition-all shadow-lg active:scale-95">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Create New Post
+            </a>
+        </div>
+    </div>
+</section>
 {% endblock %}
+
