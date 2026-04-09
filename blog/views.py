@@ -40,4 +40,11 @@ class HomeView(ListView):
         context["categories"] = Category.objects.annotate(
             posts_count=Count("posts")
         ).order_by("-posts_count")[:5]
+
+        context["popular_posts"] = (
+            Post.objects.filter(published=True)
+            .annotate(likes_count=Count("likes"))
+            .order_by("-likes_count", "-updated_at")[:3]
+        )
+
         return context

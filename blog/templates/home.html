@@ -4,7 +4,7 @@
 {% block content %}
 <section class="text-center py-20 bg-gradient-to-b from-white to-gray-50">
     <h1 class="text-6xl font-black text-gray-900 mb-6 tracking-tight">
-        Welcome back to <span class="text-sky-500">Byline-Blog !</span>
+        Welcome to <span class="text-sky-500">Byline-Blog !</span>
         </h1>
     <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-10">
         A place where subatomic thoughts turn into powerful stories. 
@@ -19,7 +19,58 @@
         </a>
     </div>
 </section>
-
+<section class="py-16 bg-gray-50/50 border-y border-gray-100">
+    <div class="max-w-5xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-gray-900 mb-10">Popular Posts</h2>
+        
+        <div class="grid md:grid-cols-1 gap-6">
+            {% for post in popular_posts %}
+                <div class="flex items-start gap-6 group">
+                    <span class="text-4xl font-black text-gray-200 group-hover:text-sky-200 transition-colors">
+                        0{{ forloop.counter }}
+                    </span>
+                    
+                    <div class="flex-1 border-b border-gray-100 pb-6">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xs text-gray-500 font-medium">
+                                {% if post.likes_count > 0 %}
+                                    {{ post.likes_count }} likes
+                                {% else %}
+                                    No likes yet
+                                {% endif %}
+                            </span>
+                            <span class="text-[10px] font-bold text-sky-500 uppercase tracking-widest">
+                                Most Liked
+                            </span>
+                            <span class="text-xs text-gray-400">•</span>
+                            <span class="text-xs text-gray-500 font-medium">
+                                {{ post.likes_count }} likes
+                            </span>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold text-gray-900 group-hover:text-sky-600 transition-colors">
+                            <a href="#post/detail">{{ post.title }}</a>
+                        </h3>
+                        
+                        <div class="flex items-center mt-3 text-xs text-gray-400">
+                            <span class="font-bold text-gray-700">{{ post.user.username }}</span>
+                            <span class="mx-2">in</span>
+                            <span class="text-gray-500">
+                                {% if post.categories.all %}
+                                    {{ post.categories.first.title }}
+                                {% else %}
+                                    Stories
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-gray-400 italic">The rankings are still being decided...</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 <section id="latest" class="py-16">
     <div class="flex justify-between items-end mb-12">
         <h2 class="text-3xl font-bold text-gray-900">Latest Stories from TOP-3 popular categories!</h2>
