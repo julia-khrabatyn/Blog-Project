@@ -83,6 +83,7 @@ CONSTANCE_CONFIG = {
         "Threshold for medium user's activity (number of likes)",
         int,
     ),
+    "PAGINATE_BY": (3, "number of posts showing in one page", int),
 }
 
 MIDDLEWARE = [
