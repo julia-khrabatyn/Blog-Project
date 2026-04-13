@@ -85,7 +85,8 @@
     <footer class="bg-white border-t py-8">
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p class="text-gray-400 text-sm">
-                &copy; 2026 Byline-Blog
+                {% now "Y" as current_year %}
+                &copy; 2026 {% if current_year != "2026" %} - {{current_year}} {% endif %}Byline-Blog
             </p>
         </div>
     </footer>
