@@ -1,6 +1,8 @@
 import environ
 import os
+
 from pathlib import Path
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -26,8 +28,8 @@ SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
 SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 
-LOGIN_REDIRECT_URL = "/"
-ACCOUNT_LOGOUT_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/blog/home/"
+ACCOUNT_LOGOUT_REDIRECT_URL = "/blog/home/"
 ACCOUNT_LOGOUT_ON_GET = True
 
 SOCIALACCOUNT_PROVIDERS = {
