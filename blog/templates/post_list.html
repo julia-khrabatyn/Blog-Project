@@ -44,36 +44,9 @@
         {% endfor %}
 
         {% if is_paginated %}
-            <nav class="flex items-center justify-center space-x-4 mt-16 pb-10">
-            {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}" 
-                class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium">
-                    &larr; Previous
-                </a>
-            {% else %}
-                <span class="px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-300 cursor-not-allowed">
-                    &larr; Previous
-                </span>
-            {% endif %}
-
-            <div class="flex items-center space-x-2">
-                <span class="text-sm text-gray-500">
-                    Page <span class="font-bold text-gray-900">{{ page_obj.number }}</span> of {{ page_obj.paginator.num_pages }}
-                </span>
-            </div>
-
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}" 
-                class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium">
-                    Next &rarr;
-                </a>
-            {% else %}
-                <span class="px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-300 cursor-not-allowed">
-                    Next &rarr;
-                </span>
-            {% endif %}
-    </nav>
-{% endif %}
+           {% include "includes/_pagination.html"%}
+        {% endif %}
     </div>
+    {% include "includes/_action_section.html" with title="Have something to share?" subtitle="World needs to hear your story today!" button_text="Start writing" url="#" %}
 </div>
 {% endblock %}
