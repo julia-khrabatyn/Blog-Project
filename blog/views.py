@@ -10,7 +10,7 @@ class PostListView(ListView):
     """Display published posts."""
 
     model = Post
-    template_name = "blog/post_list.html"
+    template_name = "post_list.html"
     context_object_name = "posts"
     allow_empty = True
 
