@@ -14,7 +14,7 @@ import environ
 import os
 from pathlib import Path
 
-
+from .ckeditor_settings import *
 from .logging_config import get_logging_config
 
 
@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "widget_tweaks",
     "slippers",
+    "ckeditor",
+    "ckeditor_uploader",
 ]
 
 AUTH_USER_MODEL = "accounts.User"

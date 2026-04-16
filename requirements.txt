@@ -8,3 +8,4 @@ django-admin-sortable2==2.3.1
 django-environ==0.13.0
 django-allauth[socialaccount]==65.15.0
 django-allauth-ui==1.8.1
+django-ckeditor==6.7.3
