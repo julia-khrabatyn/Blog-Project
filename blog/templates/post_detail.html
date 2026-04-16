@@ -2,21 +2,38 @@
 {% load static %}
 
 {% block content %}
-<article>
-    <h1>{{ post.title }}</h1>
-    <div>{{ post.text|linebreaks }}</div>
+{% with h1_style="text-center text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight leading-tight" %}
+{% with card_style="mt-16 p-8 bg-white border border-gray-100 rounded-[2.5rem] shadow-sm hover:shadow-md transition-shadow duration-300" %}
+{% with h2_style="text-xl font-bold text-sky-700 mb-2" %}
+{% with h4_style="text-xl font-bold text-gray-900 mb-2" %}
 
-    <section class="author-info mt-10 p-6 bg-gray-50 rounded-xl">
-        <h3>About Author: {{ post.user.username }}</h3>
-        {% if post_detail.user.bio %}
-            <p>{{ post_detail.user.bio }}</p>
-        {% else %}
-            <p>This author didn't add bio yet.</p>
-        {% endif %}
-        
+<main class="max-w-4xl mx-auto px-4 py-12">
+    <h1 class="{{ h1_style }}">
+        {{ post.title }}
+    </h1>
+
+    <div class="text-lg text-gray-700 leading-relaxed space-y-6">
+        {{ post.text|linebreaks }}
+    </div>
+
+    <section class="{{ card_style }}">
+        <h2 class="{{ h2_style }}">About Author:</h2>
+        <h4 class="{{ h4_style }}">Name: {{ post.user.username }}</h4>
         {% if post.user.avatar %}
-            <img src="{{ post.user.avatar.url }}" alt="Avatar">
+            <img class="author-avatar-img" src="{{ post.user.avatar.url }}" alt="Avatar">
+        {% else %}
+            <img class="author-avatar-img" src={% static "images/default_avatar.jpeg"%} alt="Avatar">
         {% endif %}
+        {% if post.user.bio %}
+            <p>{{ post.user.bio }}</p>
+        {% else %}
+            <p>This author is a mystery! They haven't shared their story yet.</p>
+        {% endif %}  
     </section>
-</article>
+</main>
+
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% endwith %}
 {% endblock content %}
