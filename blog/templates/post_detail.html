@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<article>
+    <h1>{{ post.title }}</h1>
+    <div>{{ post.text|linebreaks }}</div>
+
+    <section class="author-info mt-10 p-6 bg-gray-50 rounded-xl">
+        <h3>About Author: {{ post.user.username }}</h3>
+        {% if post_detail.user.bio %}
+            <p>{{ post_detail.user.bio }}</p>
+        {% else %}
+            <p>This author didn't add bio yet.</p>
+        {% endif %}
+        
+        {% if post.user.avatar %}
+            <img src="{{ post.user.avatar.url }}" alt="Avatar">
+        {% endif %}
+    </section>
+</article>
+{% endblock content %}

@@ -4,7 +4,7 @@
     </span>
     <h3 class="text-xl font-bold mt-2 mb-3">{{ post.title }}</h3>
     <p class="text-gray-500 text-sm mb-4">{{ post.text|truncatewords:words_count }} 
-        <a href="#post/detail" class="text-sky-500 font-bold hover:underline">
+        <a href={% url "post_detail" post.pk %} class="text-sky-500 font-bold hover:underline">
             Read full story...
         </a>
     </p> 
