@@ -1,0 +1,16 @@
+<div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+    <span class="text-xs font-bold text-sky-500 uppercase tracking-widest">
+        {% if post.categories.all %}{{ post.categories.first.title }}{% else %}Article{% endif%}
+    </span>
+    <h3 class="text-xl font-bold mt-2 mb-3">{{ post.title }}</h3>
+    <p class="text-gray-500 text-sm mb-4">{{ post.text|truncatewords:words_count }} 
+        <a href="#post/detail" class="text-sky-500 font-bold hover:underline">
+            Read full story...
+        </a>
+    </p> 
+    <div class="flex items-center text-xs text-gray-400">
+        <span class="font-medium text-gray-900">{{ post.user.username }}</span>
+        <span class="mx-2">•</span>
+        <span>{{ post.created_at|date:"M d" }}</span>
+    </div>
+</div>
