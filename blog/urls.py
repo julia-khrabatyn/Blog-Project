@@ -10,5 +10,9 @@ urlpatterns = [
         name="author_posts",
     ),
     path("home/", HomeView.as_view(), name="home"),
-    path("post/<uuid:pk>/", PostDetailView.as_view(), name="post_detail"),
+    path(
+        "post/<str:slug>/<uuid:pk>/",
+        PostDetailView.as_view(),
+        name="post_detail",
+    ),
 ]
