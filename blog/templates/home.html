@@ -78,7 +78,7 @@
 
     <div class="grid md:grid-cols-3 gap-8">
         {% for post in latest_posts %}
-            {% include "includes/_post_card.html" with post=post words_count=20 %}
+            {% include "includes/_post_card.html" with post=post words_count=20 show_likes=False %}
         {% empty %}
             <p class="text-gray-400">No stories found yet. Be the first to write one!</p>
         {% endfor %}
