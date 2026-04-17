@@ -41,14 +41,14 @@
             {% empty %}
                 <p class="text-gray-700 italic">No other posts from <span class= "text-sky-700 font-semibold">{{ post.user.username }} </span> yet.</p>
             {% endfor %}
+            <div class="mt-8">
+                {% if latest_author_posts%}
+                    <a href="#{# url 'author_posts' post.user.username #}" class="text-sky-600 font-bold hover:underline">
+                        View all posts by {{ post.user.username }} →
+                    </a>
+                {% endif %}
+            </div>
         </section>
-        <div class="mt-8">
-            {% if other_post%}
-                <a href="#{# url 'author_posts' post.user.username #}" class="text-sky-600 font-bold hover:underline">
-                    View all posts by {{ post.user.username }} →
-                </a>
-            {% endif %}
-        </div>
     </section>
 </main>
 {% endwith %}
