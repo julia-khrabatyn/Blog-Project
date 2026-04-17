@@ -46,6 +46,16 @@ class PostDetailView(DetailView):
         qs = Post.objects.select_related("user")
         return qs
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        author = self.object.user
+        context["latest_author_posts"] = (
+            Post.objects.filter(user=author)
+            .exclude(id=self.object.id)
+            .order_by("-created_at")[:3]
+        )
+        return context
+
 
 class PostListView(ListView):
     """Display published posts."""
