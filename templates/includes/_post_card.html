@@ -12,5 +12,14 @@
         <span class="font-medium text-gray-900">{{ post.user.username }}</span>
         <span class="mx-2">•</span>
         <span>{{ post.created_at|date:"M d" }}</span>
+        {% if show_likes %}
+            <span class="mx-2">•</span>
+            <span class="font-medium text-sky-600">
+                {% if post.likes_count > 0 %}{{ post.likes_count }} like{{ post.likes_count|pluralize }}
+                {% else %}
+                    No likes yet
+                {% endif %}
+            </span>
+        {% endif %}
     </div>
 </div>

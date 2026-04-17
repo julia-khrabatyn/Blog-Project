@@ -34,7 +34,7 @@
                         <div class="flex items-center gap-2 mb-2">
                             <span class="text-xs text-gray-500 font-medium">
                                 {% if post.likes_count > 0 %}
-                                    {{ post.likes_count }} likes
+                                    {{ post.likes_count }} like{{ post.likes_count|pluralize }}
                                 {% else %}
                                     No likes yet
                                 {% endif %}

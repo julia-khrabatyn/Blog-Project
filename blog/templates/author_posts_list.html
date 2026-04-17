@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{%load static%}
+
+{% block content %}
+    <h1 class="text-center text-sky-900 text-4xl md:text-4xl font-semibold ">All posts created by Author 
+        <span class="text-sky-500"> 
+            @{{author.username}}
+        </span>    
+
+    </h1>
+    {% if author.avatar %}
+        <div class="flex flex-col items-center mt-2 mb-2">
+            <img class="author-avatar-img" src="{{ author.avatar.url }}" alt="Avatar">
+        </div>
+    {% endif %}
+
+    {% for post in posts%}
+        {% include "includes/_post_card.html" with words_count=50 post=post show_likes=True%}
+        <br></br>
+    {% endfor %}
+{% endblock content %}

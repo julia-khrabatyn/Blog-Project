@@ -43,7 +43,7 @@
             {% endfor %}
             <div class="mt-8">
                 {% if latest_author_posts%}
-                    <a href="#{# url 'author_posts' post.user.username #}" class="text-sky-600 font-bold hover:underline">
+                    <a href="{% url 'author_posts' post.user.username %}" class="text-sky-600 font-bold hover:underline">
                         View all posts by {{ post.user.username }} →
                     </a>
                 {% endif %}

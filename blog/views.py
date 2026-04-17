@@ -1,9 +1,41 @@
 from django.db.models import Count
 from django.views.generic import DetailView, ListView
+from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
 
 from constance import config
 
 from .models import Post, Category
+
+User = get_user_model()
+
+
+class AuthorPostsListView(ListView):
+    """Display all posts created by this author."""
+
+    model = Post
+    template_name = "author_posts_list.html"
+    context_object_name = "posts"
+    allow_empty = True
+
+    def get_paginate_by(self, queryset):
+        return config.PAGINATE_BY
+
+    def get_queryset(self):
+        """Get User -> get all user's posts or return 404."""
+        self.author = get_object_or_404(User, username=self.kwargs["username"])
+
+        qs = (
+            Post.objects.filter(user=self.author)
+            .annotate(likes_count=Count("likes"))
+            .order_by("-likes_count")
+        )
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["author"] = self.author
+        return context
 
 
 class HomeView(ListView):
