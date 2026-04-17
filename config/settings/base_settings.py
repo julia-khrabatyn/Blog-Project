@@ -62,31 +62,6 @@ AUTH_USER_MODEL = "accounts.User"
 
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 
-CONSTANCE_CONFIG = {
-    "MAX_IMAGE_SIZE_MB": (5, "Max image size in MB", int),
-    "ALLOWED_IMAGE_TYPES": (
-        "image/jpeg,image/webp,image/png",
-        "Allowed mime-type for image files",
-        str,
-    ),
-    "ALLOWED_IMAGE_EXTENSIONS": (
-        "webp,png,jpeg,jpg",
-        "Allowed images extensions (comma-separated)",
-        str,
-    ),
-    "AVATAR_HEIGHT": (50, "Avatar height in px", int),
-    "USER_ACTIVITY_LOW_LIMIT": (
-        5,
-        "Threshold for low user's activity (number of likes)",
-        int,
-    ),
-    "USER_ACTIVITY_MEDIUM_LIMIT": (
-        15,
-        "Threshold for medium user's activity (number of likes)",
-        int,
-    ),
-    "PAGINATE_BY": (3, "number of posts showing in one page", int),
-}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -111,6 +86,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.media",
                 "constance.context_processors.config",
             ],
         },
@@ -161,3 +137,5 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 from .auth_settings import *
+
+from .constance_settings import *

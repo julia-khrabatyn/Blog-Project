@@ -19,13 +19,7 @@
     <section class="{{ card_style }}">
         <h2 class="{{ h2_style }}">About Author:</h2>
         <h4 class="{{ h4_style }}">Name: @{{ post.user.username }}</h4>
-        <div class="flex flex-col items-center">
-            {% if post.user.avatar %}
-                <img class="author-avatar-img" src="{{ post.user.avatar.url }}" alt="Avatar">
-            {% else %}
-                <img class="author-avatar-img" src={% static "images/default_avatar.jpeg"%} alt="Avatar">
-            {% endif %}
-        </div>
+        {% include "includes/_user_avatar.html" with user_obj=post.user %}
         {% if post.user.bio %}
             <p class="mt-2">{{ post.user.bio }}</p>
         {% else %}

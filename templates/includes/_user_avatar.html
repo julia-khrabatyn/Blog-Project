@@ -1,0 +1,19 @@
+{% load static socialaccount %}
+
+<div class="flex flex-col items-center">
+    {% if user_obj.avatar %}
+        <img class="author-avatar-img" src="{{ user_obj.avatar.url }}" alt="Avatar">
+    {% else %}
+        {% get_social_accounts user_obj as accounts %}
+        {% if accounts.google %}
+            <img class="author-avatar-img" src="{{ accounts.google.0.get_avatar_url }}" alt="Avatar from Google account">
+        {% else %}
+            {% if config.DEFAULT_AVATAR|slice:":7" == "images/"%}
+                <img class="author-avatar-img" src="{% static config.DEFAULT_AVATAR %}" alt="Default Avatar">
+            {% else %}
+                <img class="author-avatar-img" src="{{ MEDIA_URL }}{{ config.DEFAULT_AVATAR }}" alt="Default Avatar">
+
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</div>

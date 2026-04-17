@@ -8,11 +8,7 @@
         </span>    
 
     </h1>
-    {% if author.avatar %}
-        <div class="flex flex-col items-center mt-2 mb-2">
-            <img class="author-avatar-img" src="{{ author.avatar.url }}" alt="Avatar">
-        </div>
-    {% endif %}
+    {% include "includes/_user_avatar.html" with user_obj=author %}
 
     {% for post in posts%}
         {% include "includes/_post_card.html" with words_count=50 post=post show_likes=True%}
