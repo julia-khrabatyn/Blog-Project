@@ -50,7 +50,49 @@ CUSTOM_TOOLBAR = [
         ],
     },
 ]
-
+SPECIAL_TOOLBAR = [
+    {
+        "name": "document",
+        "items": [
+            "Styles",
+            "Format",
+            "Bold",
+            "Italic",
+            "Underline",
+            "Strike",
+            "-",
+            "TextColor",
+            "BGColor",
+            "-",
+            "JustifyLeft",
+            "JustifyCenter",
+            "JustifyRight",
+            "JustifyBlock",
+        ],
+    },
+    {
+        "name": "widgets",
+        "items": [
+            "Undo",
+            "Redo",
+            "-",
+            "NumberedList",
+            "BulletedList",
+            "-",
+            "Outdent",
+            "Indent",
+            "-",
+            "Link",
+            "Unlink",
+            "-",
+            "Smiley",
+            "SpecialChar",
+            "-",
+            "Blockquote",
+            "-",
+        ],
+    },
+]
 CKEDITOR_CONFIGS = {
     "default": {
         "skin": "moono-lisa",
@@ -59,5 +101,11 @@ CKEDITOR_CONFIGS = {
         "extraPlugins": ",".join(["image2", "codesnippet"]),
         "removePlugins": ",".join(["image"]),
         "codeSnippet_theme": "xcode",
+    },
+    "special": {
+        "skin": "moono-lisa",
+        "toolbar": SPECIAL_TOOLBAR,
+        "toolbarGroups": None,
+        "removePlugins": ",".join(["image", "image2", "uploadimage"]),
     },
 }

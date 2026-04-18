@@ -1,6 +1,6 @@
 from django.db import models
 
-from constance import config
+from ckeditor_uploader.fields import RichTextUploadingField
 
 from accounts.models import User
 from core.models import AbstractBaseModel, PublishMixin, SlugMixin
@@ -17,7 +17,7 @@ class Post(AbstractBaseModel, PublishMixin, SlugMixin):
     title = models.CharField(
         max_length=255, help_text="Your post title", unique=True
     )
-    text = models.TextField(help_text="Your post text")
+    text = RichTextUploadingField(help_text="Post text")
     description = models.CharField(
         max_length=255,
         null=True,
@@ -45,13 +45,6 @@ class Post(AbstractBaseModel, PublishMixin, SlugMixin):
 
     def __str__(self):
         return self.title.title()
-
-    @property
-    def short_text(self):
-        """
-        Get slice from post text for representing.
-        """
-        return self.text[:100]
 
     class Meta:
         ordering = ["-created_at"]

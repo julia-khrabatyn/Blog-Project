@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxLengthValidator
 from django.db import models
 
-
+from ckeditor.fields import RichTextField
 from django_countries.fields import CountryField
 
 from core.models import AbstractBaseModel
@@ -68,11 +68,8 @@ class User(AbstractUser, AbstractBaseModel):
         help_text="Your country code", blank=True, null=True
     )
     # stores the 2-letter ISO 3166-1 country code. have autocomplete in admin
-    bio = models.TextField(
-        help_text="Tell us something about yourself (max 500 characters)",
-        null=True,
-        blank=True,
-        validators=[MaxLengthValidator(500)],
+    bio = RichTextField(
+        max_length=500, blank=True, null=True, config_name="special"
     )
     city = models.CharField(
         max_length=100,

@@ -7,13 +7,30 @@
 {% with h2_style="text-xl font-bold text-sky-700 mb-2" %}
 {% with h4_style="text-xl font-bold text-gray-900 mb-2" %}
 
+<style>
+    #post-body table {
+        border: 2px solid #334155 !important; /* Темно-сіра рамка */
+        border-collapse: collapse !important;
+        width: 100% !important;
+        margin: 20px 0 !important;
+    }
+    #post-body td, #post-body th {
+        border: 1px solid #64748b !important; /* Рамки комірок */
+        padding: 12px !important;
+        min-width: 50px !important;
+    }
+    #post-body tr:nth-child(even) {
+        background-color: #f1f5f9 !important; /* Підсвітка рядків */
+    }
+</style>
+
 <main class="max-w-4xl mx-auto px-4 py-12 text-center">
     <h1 class="{{ h1_style }}">
         {{ post.title }}
     </h1>
 
-    <div class="text-lg text-gray-700 leading-relaxed space-y-6 text-justify">
-        {{ post.text|linebreaks }}
+    <div id="post-body" class="w-full overflow-x-auto">
+    {{ post.text|safe }}
     </div>
 
     <section class="{{ card_style }}">
@@ -21,7 +38,7 @@
         <h4 class="{{ h4_style }}">Name: @{{ post.user.username }}</h4>
         {% include "includes/_user_avatar.html" with user_obj=post.user %}
         {% if post.user.bio %}
-            <p class="mt-2">{{ post.user.bio }}</p>
+            <p class="mt-2">{{ post.user.bio|safe }}</p>
         {% else %}
             <p>This author is a mystery! They haven't shared their story yet.</p>
         {% endif %}
