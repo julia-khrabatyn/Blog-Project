@@ -9,6 +9,13 @@ from .models import Post, Category
 
 User = get_user_model()
 
+__all__ = (
+    "AuthorPostsListView",
+    "HomeView",
+    "PostDetailView",
+    "PostListview",
+)
+
 
 class AuthorPostsListView(ListView):
     """Display all posts created by this author."""
