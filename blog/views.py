@@ -34,6 +34,8 @@ class AuthorPostsListView(ListView):
 
         qs = (
             Post.objects.filter(user=self.author)
+            .select_related("user")
+            .prefetch_related("categories")
             .annotate(likes_count=Count("likes"))
             .order_by("-likes_count")
         )
@@ -54,7 +56,12 @@ class HomeView(ListView):
 
     def get_queryset(self):
         """Show users only 3 latest published posts."""
-        qs = Post.objects.filter(published=True).order_by("-updated_at")
+        qs = (
+            Post.objects.filter(published=True)
+            .select_related("user")
+            .prefetch_related("categories")
+            .order_by("-updated_at")
+        )
         return qs[:3]
 
     def get_context_data(self, **kwargs):
@@ -66,6 +73,8 @@ class HomeView(ListView):
 
         context["popular_posts"] = (
             Post.objects.filter(published=True)
+            .select_related("user")
+            .prefetch_related("categories")
             .annotate(likes_count=Count("likes"))
             .order_by("-likes_count", "-updated_at")[:3]
         )
@@ -112,6 +121,7 @@ class PostListView(ListView):
         qs = (
             Post.objects.filter(published=True)
             .select_related("user")
+            .prefetch_related("categories")
             .order_by("-created_at")
         )
         return qs
