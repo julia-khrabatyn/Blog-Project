@@ -42,5 +42,12 @@ def get_logging_config(debug):
                 "level": "DEBUG" if debug else "ERROR",
                 "propagate": True,
             },
+            "accounts": {
+                "handlers": (
+                    ["console", "file_dev"] if debug else ["file_prod"]
+                ),
+                "level": "DEBUG" if debug else "ERROR",
+                "propagate": True,
+            },
         },
     }

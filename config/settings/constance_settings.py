@@ -31,4 +31,9 @@ CONSTANCE_CONFIG = {
         "Upload default user avatar",
         "image_field",
     ),
+    "MAP_GEO_OFFSET": (
+        0.05,
+        "user's location offset for reprentation on map",
+        float,
+    ),
 }
