@@ -5,7 +5,7 @@ from .views import AuthorPostsListView, HomeView, PostDetailView, PostListView
 urlpatterns = [
     path("posts/", PostListView.as_view(), name="post_list"),
     path(
-        "author/<str:username>",
+        "author/<str:username>/",
         AuthorPostsListView.as_view(),
         name="author_posts",
     ),
