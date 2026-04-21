@@ -1,11 +1,12 @@
 from django.db.models import Count
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, TemplateView
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 
 from constance import config
 
 from .models import Post, Category
+from .services import generate_users_heatmap
 
 User = get_user_model()
 
@@ -47,7 +48,7 @@ class AuthorPostsListView(ListView):
         return context
 
 
-class HomeView(ListView):
+class HomeView(TemplateView):
     """Display main page of Byline-Blog."""
 
     model = Post
@@ -78,6 +79,18 @@ class HomeView(ListView):
             .annotate(likes_count=Count("likes"))
             .order_by("-likes_count", "-updated_at")[:3]
         )
+        context["latest_posts"] = (
+            Post.objects.filter(published=True)
+            .select_related("user")
+            .prefetch_related("categories")
+            .order_by("-created_at")[:3]
+        )
+        # generate usersmap
+        users_with_coordinates = User.objects.filter(
+            latitude__isnull=False
+        ).distinct()
+        if users_with_coordinates.exists():
+            context["heatmap"] = generate_users_heatmap(users_with_coordinates)
 
         return context
 
