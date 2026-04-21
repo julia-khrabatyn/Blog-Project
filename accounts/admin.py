@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.utils.html import strip_tags
 from django.utils.safestring import mark_safe
+from django.utils.text import Truncator
 
 from constance import config
 
@@ -49,6 +51,13 @@ class UserAdmin(BaseUserAdmin, UserExportCsvMixin):
         """Display mark whether person has or hasn't avatar"""
         return bool(obj.avatar)
 
+    @admin.display(description="Bio preview")
+    def bio_preview(self, obj):
+        """Get user's bio preview (if provided) shortened to 10 words and remove tags beforehand for security reasons."""
+        if not obj.bio:
+            return "-"
+        return Truncator(strip_tags(obj.bio)).words(10, truncate="...")
+
     list_display = (
         "username",
         "email",
@@ -59,7 +68,7 @@ class UserAdmin(BaseUserAdmin, UserExportCsvMixin):
         "is_staff",
         "is_active",
         "city",
-        "bio",
+        "bio_preview",
     )
     ordering = ["username"]
     list_filter = ("username", "country", "birth_date", "email", "updated_at")
@@ -69,6 +78,8 @@ class UserAdmin(BaseUserAdmin, UserExportCsvMixin):
         "updated_at",
         "show_avatar",
         "date_joined",
+        "latitude",
+        "longitude",
     )
     list_display_links = ("username", "email")
     fieldsets = (
@@ -115,7 +126,7 @@ class UserAdmin(BaseUserAdmin, UserExportCsvMixin):
         (
             "Location details",
             {
-                "fields": ("country", "city"),
+                "fields": ("country", "city", "latitude", "longitude"),
                 "classes": ("collapse",),
                 "description": ("User's location"),
             },

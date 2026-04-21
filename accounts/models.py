@@ -7,6 +7,7 @@ from ckeditor.fields import RichTextField
 from django_countries.fields import CountryField
 
 from core.models import AbstractBaseModel
+from .services import get_coordinates
 
 from accounts.validators import validate_birth_date
 
@@ -92,6 +93,12 @@ class User(AbstractUser, AbstractBaseModel):
         related_name="users",
         help_text="Add tag (optional)",
     )
+    latitude = models.DecimalField(
+        max_digits=9, decimal_places=6, null=True, blank=True
+    )
+    longitude = models.DecimalField(
+        max_digits=9, decimal_places=6, null=True, blank=True
+    )
     objects = CustomUserManager()
 
     @property
@@ -109,6 +116,34 @@ class User(AbstractUser, AbstractBaseModel):
         if full_name:
             return full_name
         return self.username
+
+    def save(self, *args, **kwargs):
+        changed = False
+        if self.pk:
+            try:
+                old_obj = User.objects.only("city", "country").get(pk=self.pk)
+                if (
+                    old_obj.city != self.city
+                    or old_obj.country != self.country
+                ):
+                    changed = True
+            except User.DoesNotExist:
+                changed = True
+
+        else:
+            changed = True
+
+        if changed and (self.city or self.country):
+            country_code = str(self.country) if self.country else None
+            coords = get_coordinates(self.city, country_code)
+            if coords:
+                self.latitude = coords[0]
+                self.longitude = coords[1]
+            else:
+                self.latitude = None
+                self.longitude = None
+
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "User"

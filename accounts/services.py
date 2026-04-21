@@ -19,7 +19,14 @@ def get_coordinates(city: str = None, country_code: str = None):
     if not city and not country_code:
         return None
 
-    query = city if city else ""
+    if city:
+        query = city
+        feature_type = "city"
+
+    else:
+        query = country_code
+        feature_type = None
+
     geolocator = Nominatim(user_agent="byline_blog_app")
 
     try:
@@ -27,7 +34,7 @@ def get_coordinates(city: str = None, country_code: str = None):
             query,
             exactly_one=True,
             country_codes=country_code,
-            featuretype="city",
+            featuretype=feature_type,
         )
 
         if location:
