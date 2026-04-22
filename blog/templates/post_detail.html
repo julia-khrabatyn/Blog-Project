@@ -42,6 +42,14 @@
         {% else %}
             <p>This author is a mystery! They haven't shared their story yet.</p>
         {% endif %}
+        {% if author_map %}
+            <div class="mt-12 border-t pt-8">
+                <h3 class="{{ h2_style }}">Author's approximate location</h3>
+                    <div class="rounded-xl overflow-hidden shadow-md border border-gray-100 h-[300px]">
+                    {{ author_map|safe }}
+                    </div>
+            </div>
+        {% endif %}
         <br></br>
         <section>
             <h3 class="{{ h2_style }}">Latest other @{{ post.user.username }}'s posts: </h3>
