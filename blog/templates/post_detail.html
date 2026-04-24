@@ -30,7 +30,9 @@
     </h1>
 
     <div id="post-body" class="w-full overflow-x-auto">
-    {{ post.text|safe }}
+        <div class="prose-custom"> <div class="[&_ul]:list-disc [&_ul]:ml-6 [&_ol]:list-decimal [&_ol]:ml-6 [&_li]:mb-1">
+        {{ post.text|safe }}
+        </div>
     </div>
 
     <section class="{{ card_style }}">
