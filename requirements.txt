@@ -11,3 +11,4 @@ django-allauth-ui==1.8.1
 django-ckeditor==6.7.3
 folium==0.20.0
 geopy==2.4.1
+nh3==0.3.4

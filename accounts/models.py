@@ -61,7 +61,7 @@ class User(AbstractUser, AbstractBaseModel):
     REQUIRED_FIELDS = ["email"]
     birth_date = models.DateField(
         # validators=[validate_birth_date],
-        help_text="Your date of birth. Must be 13+ years for registartion",
+        help_text="Your date of birth. Must be 13+ years for registrаtion",
         blank=True,
         null=True,
     )
@@ -101,49 +101,11 @@ class User(AbstractUser, AbstractBaseModel):
     )
     objects = CustomUserManager()
 
-    @property
-    def published_posts(self):
-        """Get all user's published posts."""
-        return self.posts.filter(published=True)
-
-    @property
-    def liked_posts(self):
-        """Get all posts, that user liked."""
-        return self.likes.all()
-
     def __str__(self):
         full_name = f"{self.first_name or ""} {self.last_name or ""}".strip()
         if full_name:
             return full_name
         return self.username
-
-    def save(self, *args, **kwargs):
-        changed = False
-        if self.pk:
-            try:
-                old_obj = User.objects.only("city", "country").get(pk=self.pk)
-                if (
-                    old_obj.city != self.city
-                    or old_obj.country != self.country
-                ):
-                    changed = True
-            except User.DoesNotExist:
-                changed = True
-
-        else:
-            changed = True
-
-        if changed and (self.city or self.country):
-            country_code = str(self.country) if self.country else None
-            coords = get_coordinates(self.city, country_code)
-            if coords:
-                self.latitude = coords[0]
-                self.longitude = coords[1]
-            else:
-                self.latitude = None
-                self.longitude = None
-
-        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "User"
