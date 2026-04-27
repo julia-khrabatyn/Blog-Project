@@ -38,7 +38,7 @@ class AuthorPostsListView(ListView):
             .select_related("user")
             .prefetch_related("categories")
             .annotate(likes_count=Count("likes"))
-            .order_by("-likes_count")
+            .order_by("-likes_count", "updated_at")
         )
         return qs
 
