@@ -51,19 +51,7 @@ class AuthorPostsListView(ListView):
 class HomeView(TemplateView):
     """Display main page of Byline-Blog."""
 
-    model = Post
     template_name = "home.html"
-    context_object_name = "latest_posts"
-
-    def get_queryset(self):
-        """Show users only 3 latest published posts."""
-        qs = (
-            Post.objects.filter(published=True)
-            .select_related("user")
-            .prefetch_related("categories")
-            .order_by("-updated_at")
-        )
-        return qs[:3]
 
     def get_context_data(self, **kwargs):
         """Show sorted categories by popularity (number of posts in category)"""
