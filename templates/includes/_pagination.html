@@ -1,6 +1,6 @@
 <nav class="flex items-center justify-center space-x-4 mt-16 pb-10">
     {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}" 
+        <a href="?page={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" 
             class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium">
             &larr; Previous
         </a>
@@ -17,7 +17,7 @@
     </div>
 
     {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}" 
+        <a href="?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"  
             class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium">
             Next &rarr;
         </a>
