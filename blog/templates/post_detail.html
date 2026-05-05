@@ -35,6 +35,7 @@
         </div>
     </div>
 
+    #TODO: move this logic about author and map details?
     <section class="{{ card_style }}">
         <h2 class="{{ h2_style }}">About Author:</h2>
         <h4 class="{{ h4_style }}">Name: @{{ post.user.username }}</h4>
@@ -52,6 +53,9 @@
                     </div>
             </div>
         {% endif %}
+
+        {% include "includes/comments/_comments_section.html" %}
+        
         <br></br>
         <section>
             <h3 class="{{ h2_style }}">Latest other @{{ post.user.username }}'s posts: </h3>

@@ -2,11 +2,16 @@ from django.db.models import Count
 from django.views.generic import DetailView, ListView, TemplateView
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from django.core.paginator import Paginator
 
 from constance import config
 
 from .models import Post, Category
 from .services import generate_users_heatmap, generate_single_user_map
+
+# TODO: maybe in django-constance?
+
+COMMENT_PAGINATION = 5
 
 User = get_user_model()
 
@@ -92,13 +97,33 @@ class PostDetailView(DetailView):
 
     def get_queryset(self):
         """Extract all info about User (post author)."""
-        qs = Post.objects.select_related("user")
+        qs = Post.objects.select_related("user").prefetch_related(
+            "comments__user"
+        )
         return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         post = self.object
         author = self.object.user
+
+        # TODO: should i move it ?
+        all_comments = post.comments.all()
+        search_query = self.request.GET.get("q")
+        if search_query:
+            all_comments = all_comments.filter(text__icontains=search_query)
+
+        paginator = Paginator(all_comments, COMMENT_PAGINATION)
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
+        context["comments"] = page_obj
+        context["search_query"] = search_query
+
+        sort = self.request.GET.get("sort", "-created_at")
+        if sort in ["created_at", "-created_at"]:
+            all_comments = all_comments.order_by(sort)
+
         context["latest_author_posts"] = (
             Post.objects.filter(user=author)
             .exclude(id=self.object.id)
