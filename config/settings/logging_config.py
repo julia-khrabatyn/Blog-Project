@@ -39,15 +39,20 @@ def get_logging_config(debug):
                 "handlers": (
                     ["console", "file_dev"] if debug else ["file_prod"]
                 ),
-                "level": "DEBUG" if debug else "ERROR",
-                "propagate": True,
-            },
-            "accounts": {
-                "handlers": (
-                    ["console", "file_dev"] if debug else ["file_prod"]
-                ),
-                "level": "DEBUG" if debug else "ERROR",
-                "propagate": True,
+                "level": "INFO" if debug else "ERROR",
+                "propagate": False,
+                "django.utils.autoreload": {
+                    "handlers": ["console"],
+                    "level": "WARNING",
+                    "propagate": False,
+                },
+                "accounts": {
+                    "handlers": (
+                        ["console", "file_dev"] if debug else ["file_prod"]
+                    ),
+                    "level": "DEBUG" if debug else "ERROR",
+                    "propagate": False,
+                },
             },
         },
     }
