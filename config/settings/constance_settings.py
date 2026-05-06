@@ -34,7 +34,7 @@ CONSTANCE_CONFIG = {
     ),
     "MAP_GEO_OFFSET": (
         0.05,
-        "user's location offset for reprentation on map",
+        "user's location offset for representation on map",
         float,
     ),
 }
