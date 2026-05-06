@@ -6,7 +6,7 @@ from django.contrib.staticfiles import finders
 from constance import config
 from folium.plugins import HeatMap
 
-ICON_PATH = finders.find("images/icon.png")
+ICON_PATH = finders.find("images/icon.png") # TODO  Якщо файл видалити що буде? --> None
 
 __all__ = [
     "generate_users_heatmap",
@@ -36,6 +36,7 @@ def generate_users_heatmap(users_queryset):
                 popup=f"{user.username}, ({user.city or user.country})",
                 icon=folium.Icon(icon="user", color="blue"),
             ).add_to(m)
+    # TODO Можливо винести за межі циклу, щоб один хітмап робити а не пачку. Якщо 500 авторів - 500 окремих хітмапів?
         if heat_data:
             HeatMap(heat_data, radius=15).add_to(m)
     return m._repr_html_()

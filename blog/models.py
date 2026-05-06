@@ -2,7 +2,8 @@ from django.db import models
 
 from ckeditor_uploader.fields import RichTextUploadingField
 
-from accounts.models import User
+from accounts.models import User #TODO замінити на from django.contrib.auth import get_user_model і якщо дуже хочеться злбити
+# User = get_user_model()
 from core.models import AbstractBaseModel, PublishMixin, SlugMixin
 
 

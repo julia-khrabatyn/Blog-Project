@@ -9,8 +9,8 @@ from constance import config
 from .models import Post, Category
 from .services import generate_users_heatmap, generate_single_user_map
 
-# TODO: maybe in django-constance?
-
+# TODO: maybe in django-constance? 
+# TODO або в сетінгси
 COMMENT_PAGINATION = 5
 
 User = get_user_model()
@@ -39,7 +39,7 @@ class AuthorPostsListView(ListView):
         self.author = get_object_or_404(User, username=self.kwargs["username"])
 
         qs = (
-            Post.objects.filter(user=self.author)
+            Post.objects.filter(user=self.author) # TODO Що робити з постами у якиз паблішт - фолс???
             .select_related("user")
             .prefetch_related("categories")
             .annotate(likes_count=Count("likes"))
@@ -120,6 +120,8 @@ class PostDetailView(DetailView):
         context["comments"] = page_obj
         context["search_query"] = search_query
 
+        # TODO перенести до перед створення пагінатора, бо до об'єкту пейджа не 
+        # застосується це сортування і об'єднати разом з фільтром потім соворити об'єкт пагінатора
         sort = self.request.GET.get("sort", "-created_at")
         if sort in ["created_at", "-created_at"]:
             all_comments = all_comments.order_by(sort)
