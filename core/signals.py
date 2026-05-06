@@ -7,7 +7,7 @@ from pathlib import Path
 
 from constance.signals import config_updated
 
-logger = logging.getLogger("__name__")
+logger = logging.getLogger("__name__") # TODO мабуть треба не рядок
 
 __all__ = [
     "cleanup_old_default_avatar",

@@ -49,6 +49,7 @@ class PostForm(ModelForm):
             "categories",
             "tags",
         ]
+        # TODO Це треба перевірити
 
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)

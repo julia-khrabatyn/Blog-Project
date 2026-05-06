@@ -233,7 +233,7 @@ class UserActivityFilter(admin.SimpleListFilter):
         )
 
     def queryset(self, request, queryset):
-        value = self.value
+        value = self.value # TODO мабуть self.value()
         if value == "low":
             return queryset.filter(user_total_likes_count__lte=self.low_limit)
         if value == "medium":
