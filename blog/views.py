@@ -80,7 +80,8 @@ class HomeView(TemplateView):
         )
         # generate users_map
         users_with_coordinates = User.objects.filter(
-            latitude__isnull=False
+            latitude__isnull=False,
+            longitude__isnull=False,
         ).distinct()
         if users_with_coordinates.exists():
             context["heatmap"] = generate_users_heatmap(users_with_coordinates)

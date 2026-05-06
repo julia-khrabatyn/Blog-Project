@@ -23,14 +23,15 @@ def generate_users_heatmap(users_queryset):
         location=[48.3794, 31.1656], zoom_start=5, tiles="CartoDB positron"
     )
     heat_data = []
+    map_offset = config.MAP_GEO_OFFSET
     for user in users_queryset:
         if user.latitude is not None and user.longitude is not None:
             # add little noise to user's coords
             latitude = float(user.latitude) + random.uniform(
-                -config.MAP_GEO_OFFSET, config.MAP_GEO_OFFSET
+                -map_offset, map_offset
             )
             longitude = float(user.longitude) + random.uniform(
-                -config.MAP_GEO_OFFSET, config.MAP_GEO_OFFSET
+                -map_offset, map_offset
             )
             coords = [latitude, longitude]
             heat_data.append(coords)
