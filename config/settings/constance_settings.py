@@ -26,6 +26,7 @@ CONSTANCE_CONFIG = {
         int,
     ),
     "PAGINATE_BY": (3, "number of posts showing in one page", int),
+    "COMMENTS_PAGINATION": (5, "number of showing below post", int),
     "DEFAULT_AVATAR": (
         "images/default_avatar.jpeg",
         "Upload default user avatar",

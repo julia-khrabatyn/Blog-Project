@@ -17,7 +17,6 @@ from pathlib import Path
 from .ckeditor_settings import *
 from .logging_config import get_logging_config
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 env = environ.Env(DEBUG=(bool, False))
@@ -56,6 +55,7 @@ INSTALLED_APPS = [
     "slippers",
     "ckeditor",
     "ckeditor_uploader",
+    "django_filters",
 ]
 
 AUTH_USER_MODEL = "accounts.User"

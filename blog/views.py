@@ -9,10 +9,6 @@ from constance import config
 from .models import Post, Category
 from .services import generate_users_heatmap, generate_single_user_map
 
-# TODO: maybe in django-constance?
-
-COMMENT_PAGINATION = 5
-
 User = get_user_model()
 
 __all__ = (
@@ -113,7 +109,7 @@ class PostDetailView(DetailView):
         if search_query:
             all_comments = all_comments.filter(text__icontains=search_query)
 
-        paginator = Paginator(all_comments, COMMENT_PAGINATION)
+        paginator = Paginator(all_comments, config.COMMENTS_PAGINATION)
         page_number = self.request.GET.get("page")
         page_obj = paginator.get_page(page_number)
 

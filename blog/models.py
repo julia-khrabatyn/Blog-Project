@@ -1,14 +1,16 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
 from ckeditor_uploader.fields import RichTextUploadingField
 
-from accounts.models import User
 from core.models import AbstractBaseModel, PublishMixin, SlugMixin
 
 
 from blog.validators import validate_image_file, validate_image_extension
 
 __all__ = ("Category", "Image", "Like", "Post")
+
+User = get_user_model()
 
 
 class Post(AbstractBaseModel, PublishMixin, SlugMixin):
