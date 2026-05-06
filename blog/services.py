@@ -5,8 +5,9 @@ from django.contrib.staticfiles import finders
 
 from constance import config
 from folium.plugins import HeatMap
+from pathlib import Path
 
-ICON_PATH = finders.find("images/icon.png") # TODO  Якщо файл видалити що буде? --> None
+ICON_PATH = finders.find("images/icon.png")
 
 __all__ = [
     "generate_users_heatmap",
@@ -36,10 +37,21 @@ def generate_users_heatmap(users_queryset):
                 popup=f"{user.username}, ({user.city or user.country})",
                 icon=folium.Icon(icon="user", color="blue"),
             ).add_to(m)
-    # TODO Можливо винести за межі циклу, щоб один хітмап робити а не пачку. Якщо 500 авторів - 500 окремих хітмапів?
-        if heat_data:
-            HeatMap(heat_data, radius=15).add_to(m)
+    if heat_data:
+        HeatMap(heat_data, radius=15).add_to(m)
     return m._repr_html_()
+
+
+def _get_marker_icon() -> folium.Icon | folium.CustomIcon:
+    """Function for getting folium.CustomIcon if provided valid custom image or getting  default folium.Icon."""
+    if ICON_PATH and Path(ICON_PATH).is_file():
+        return folium.CustomIcon(
+            ICON_PATH,
+            icon_size=(60, 70),
+            icon_anchor=(20, 40),
+            popup_anchor=(0, -40),
+        )
+    return folium.Icon(color="blue")
 
 
 def generate_single_user_map(user):
@@ -49,14 +61,10 @@ def generate_single_user_map(user):
 
     coords = [user.latitude, user.longitude]
     m = folium.Map(location=coords, zoom_start=7, tiles="CartoDB positron")
-    custom_icon = folium.CustomIcon(
-        ICON_PATH,
-        icon_size=(60, 70),
-        icon_anchor=(20, 40),
-        popup_anchor=(0, -40),
-    )
 
     folium.Marker(
-        location=coords, popup=f"Author: {user.username}", icon=custom_icon
+        location=coords,
+        popup=f"Author: {user.username}",
+        icon=_get_marker_icon(),
     ).add_to(m)
     return m._repr_html_()
