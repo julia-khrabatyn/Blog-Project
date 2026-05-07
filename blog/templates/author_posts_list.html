@@ -9,7 +9,7 @@
 
     </h1>
     {% include "includes/_user_avatar.html" with user_obj=author %}
-
+    {% include "includes/_filter_form.html" %}
     {% for post in posts%}
         {% include "includes/_post_card.html" with words_count=50 post=post show_likes=True%}
         <br></br>

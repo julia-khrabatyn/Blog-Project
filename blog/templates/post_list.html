@@ -8,7 +8,7 @@
             Latest published posts
         </h1>
     </header>
-
+{% include "includes/_filter_form.html" %}
     <div class="grid gap-12">
         {% for post in posts %}
             {% include "includes/_post_card.html" with words_count=50%}

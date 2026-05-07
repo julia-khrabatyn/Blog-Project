@@ -1,12 +1,18 @@
 import folium
 import random
 
+from django.apps import apps
 from django.contrib.staticfiles import finders
 from django.core.paginator import Paginator
+from django.db.models import Count
 
 from constance import config
 from folium.plugins import HeatMap
 from pathlib import Path
+
+from .filters import CommentFilter
+
+Post = apps.get_model("blog", "Post")
 
 ICON_PATH = finders.find("images/icon.png")
 
@@ -14,6 +20,7 @@ __all__ = [
     "generate_users_heatmap",
     "generate_single_user_map",
     "get_comments_for_post_view",
+    "get_filtered_posts",
 ]
 
 
@@ -48,6 +55,7 @@ def generate_users_heatmap(users_queryset):
 def _get_marker_icon() -> folium.Icon | folium.CustomIcon:
     """Function for getting folium.CustomIcon if provided valid custom image or getting  default folium.Icon."""
     if ICON_PATH and Path(ICON_PATH).is_file():
+        # TODO: should I cover it in try: ... except... statement? or just leave it that way?
         return folium.CustomIcon(
             ICON_PATH,
             icon_size=(60, 70),
@@ -73,14 +81,6 @@ def generate_single_user_map(user):
     return m._repr_html_()
 
 
-def _filter_comments(queryset, search_query):
-    """Private function for filtering comments."""
-
-    if search_query:
-        return queryset.filter(text__icontains=search_query)
-    return queryset
-
-
 def _sort_comments(queryset, sort_method):
     """Private function for valid sorting comments."""
 
@@ -97,7 +97,7 @@ def _paginate_queryset(queryset, page_number, items_per_page):
     """Private function for comments pagination."""
 
     paginator = Paginator(queryset, items_per_page)
-    return paginator.get_page(items_per_page)
+    return paginator.get_page(page_number)
 
 
 def get_comments_for_post_view(post, query_params, items_per_page):
@@ -105,13 +105,28 @@ def get_comments_for_post_view(post, query_params, items_per_page):
 
     comments = post.comments.select_related("user").all()
 
-    search_query = query_params.get("q")
-    comments = _filter_comments(comments, search_query)
+    comment_filter = CommentFilter(query_params, queryset=comments)
 
     sort_method = query_params.get("sort", "-created_at")
-    comments = _sort_comments(comments, sort_method)
+    sorted_comments = _sort_comments(comment_filter.qs, sort_method)
 
     page_num = query_params.get("page")
-    page_obj = _paginate_queryset(comments, page_num, items_per_page)
+    page_obj = _paginate_queryset(sorted_comments, page_num, items_per_page)
 
-    return page_obj, search_query
+    return page_obj, comment_filter
+
+
+def get_filtered_posts(query_params, filter_class, queryset=None):
+    """Function for posts filtering."""
+
+    if queryset is None:
+        queryset = (
+            Post.objects.filter(published=True)
+            .select_related("user")
+            .prefetch_related("categories")
+        )
+
+    queryset = queryset.annotate(likes_count=Count("likes"))
+    post_filter = filter_class(query_params, queryset=queryset)
+
+    return post_filter

@@ -6,9 +6,11 @@ from django.core.paginator import Paginator
 
 from constance import config
 
+from .filters import AuthorPostFilter, GlobalPostFilter
 from .models import Post, Category
 from .services import (
     get_comments_for_post_view,
+    get_filtered_posts,
     generate_users_heatmap,
     generate_single_user_map,
 )
@@ -43,13 +45,16 @@ class AuthorPostsListView(ListView):
             .select_related("user")
             .prefetch_related("categories")
             .annotate(likes_count=Count("likes"))
-            .order_by("-likes_count", "updated_at")
         )
-        return qs
+        self.filterset = get_filtered_posts(
+            self.request.GET, queryset=qs, filter_class=AuthorPostFilter
+        )
+        return self.filterset.qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["author"] = self.author
+        context["filter"] = self.filterset
         return context
 
 
@@ -106,13 +111,13 @@ class PostDetailView(DetailView):
         post = self.object
         author = self.object.user
 
-        comments_page, search_query = get_comments_for_post_view(
+        comments_page, comment_filter = get_comments_for_post_view(
             post=post,
             query_params=self.request.GET,
             items_per_page=config.COMMENTS_PAGINATION,
         )
         context["comments"] = comments_page
-        context["search_query"] = search_query
+        context["comment_filter"] = comment_filter
 
         context["latest_author_posts"] = (
             Post.objects.filter(user=author)
@@ -141,6 +146,15 @@ class PostListView(ListView):
             Post.objects.filter(published=True)
             .select_related("user")
             .prefetch_related("categories")
-            .order_by("-created_at")
+            .annotate(likes_count=Count("likes"))
         )
-        return qs
+        self.filterset = get_filtered_posts(
+            self.request.GET, filter_class=GlobalPostFilter
+        )
+
+        return self.filterset.qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["filter"] = self.filterset
+        return context
