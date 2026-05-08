@@ -14,7 +14,10 @@ import environ
 import os
 from pathlib import Path
 
+from django.utils.translation import gettext_lazy as _
+
 from .ckeditor_settings import *
+from .nh3_tag_cleaner_settings import *
 from .logging_config import get_logging_config
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -66,6 +69,7 @@ CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -120,12 +124,21 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
+LANGUAGES = [
+    ("uk", _("Українська")),
+    ("en", _("English")),
+]
+
+
 TIME_ZONE = "UTC"
 
 USE_I18N = True
 
 USE_TZ = True
 
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
@@ -139,106 +152,3 @@ MEDIA_ROOT = BASE_DIR / "media"
 from .auth_settings import *
 
 from .constance_settings import *
-
-# Security settings with nh3
-
-# settings for bio field in accounts/models.py
-NH3_BIO_SETTINGS = {
-    "tags": {
-        "b",
-        "i",
-        "em",
-        "strong",
-        "p",
-        "br",
-        "a",
-        "ul",
-        "li",
-        "ol",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "h6",
-        "blockquote",
-        "u",
-        "s",
-        "span",
-        "div",
-    },
-    "attributes": {
-        "a": {
-            "href",
-            "title",
-            "target",
-        },
-        "span": {"style", "class"},
-        "p": {"style", "class"},
-        "div": {"style", "class"},
-        "h2": {"style", "class"},
-        "h3": {"style", "class"},
-        "h4": {"style", "class"},
-        "h5": {"style", "class"},
-        "h6": {"style", "class"},
-        "ul": {"style", "class"},
-        "ol": {"style", "class"},
-        "li": {"style", "class"},
-    },
-}
-# settings for post's text field in blog/models.py
-NH3_POST_SETTINGS = {
-    "tags": {
-        "b",
-        "i",
-        "em",
-        "strong",
-        "p",
-        "br",
-        "a",
-        "ul",
-        "li",
-        "ol",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "h6",
-        "blockquote",
-        "img",
-        "u",
-        "s",
-        "pre",
-        "code",
-        "span",
-        "div",
-        "hr",
-    },
-    "attributes": {
-        "a": {
-            "href",
-            "title",
-            "target",
-        },
-        "img": {"src", "alt", "width", "height", "style", "class", "style"},
-        "*": {
-            "class",
-        },
-        "code": {
-            "class",
-        },
-        "pre": {
-            "class",
-        },
-        "span": {"style", "class"},
-        "p": {"style", "class"},
-        "div": {"style", "class"},
-        "h2": {"style", "class"},
-        "h3": {"style", "class"},
-        "h4": {"style", "class"},
-        "h5": {"style", "class"},
-        "h6": {"style", "class"},
-        "ul": {"style", "class"},
-        "ol": {"style", "class"},
-        "li": {"style", "class"},
-    },
-}
