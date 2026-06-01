@@ -15,7 +15,7 @@
     <div class="flex items-center space-x-2">
         <span class="text-sm text-gray-500">
             {% blocktrans with current=page_obj.number total=page_obj.paginator.num_pages %}
-                Page <span class="font-bold text-gray-900">%(current)s</span> of %(total)s
+                Page <span class="font-bold text-gray-900">{{ current }}</span> of {{ total }}
             {% endblocktrans %}
         </span>
     </div>

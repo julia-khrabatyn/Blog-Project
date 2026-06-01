@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.html import strip_tags
 from django.utils.safestring import mark_safe
 from django.utils.text import Truncator
+from django.utils.translation import gettext_lazy as _
 
 from constance import config
 
@@ -25,7 +26,7 @@ class FollowInline(admin.TabularInline):
 class UserAdmin(BaseUserAdmin, UserExportCsvMixin):
     """Register User in django admin with custom fields."""
 
-    @admin.display(description="Preview")
+    @admin.display(description=_("Preview"))
     def show_avatar(self, obj):
         """Represent user's avatar in admin."""
         # Initially look up if user upload avatar, thus -> display it in admin
@@ -46,12 +47,12 @@ class UserAdmin(BaseUserAdmin, UserExportCsvMixin):
 
         return "No avatar"
 
-    @admin.display(description="Self-uploaded avatar", boolean=True)
+    @admin.display(description=_("Self-uploaded avatar"), boolean=True)
     def has_avatar(self, obj):
         """Display mark whether person has or hasn't avatar"""
         return bool(obj.avatar)
 
-    @admin.display(description="Bio preview")
+    @admin.display(description=_("Bio preview"))
     def bio_preview(self, obj):
         """Get user's bio preview (if provided) shortened to 10 words and remove tags beforehand for security reasons."""
         if not obj.bio:

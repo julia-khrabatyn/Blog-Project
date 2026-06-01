@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.db.models import Count
 from django.utils.safestring import mark_safe
 from django.utils.text import Truncator
+from django.utils.translation import gettext_lazy as _
 
 from adminsortable2.admin import SortableAdminMixin
 from constance import config
@@ -45,27 +46,27 @@ class PostAdmin(admin.ModelAdmin, BaseExportCsvMixin):
             .annotate(likes_count=Count("likes"))
         )
 
-    @admin.display(description="Tags")
+    @admin.display(description=_("Tags"))
     def get_tags(self, obj):
-        """Get tags for displaing it in admin."""
+        """Get tags for displaying it in admin."""
         return ", ".join([tag.title for tag in obj.tags.all()])
 
-    @admin.display(description="Category")
+    @admin.display(description=_("Category"))
     def get_category(self, obj):
-        """Get category for displaing it in admin."""
+        """Get category for displaying it in admin."""
         return ", ".join([category.title for category in obj.categories.all()])
 
-    @admin.display(description="Likes", ordering="likes_count")
+    @admin.display(description=_("Likes"), ordering="likes_count")
     def get_likes_count(self, obj):
         """Get total likes for post."""
         return obj.likes_count
 
-    @admin.display(description="First 10 words from post text")
+    @admin.display(description=_("First 10 words from post text"))
     def partial_post_text(self, obj):
         """Show first 10 words of post text."""
         return Truncator(obj.text).words(10, truncate="...")
 
-    @admin.display(description="First 5 tags for post")
+    @admin.display(description=_("First 5 tags for post"))
     def partial_post_tags(self, obj):
         """Display first 5 tags of all possible post tags."""
         tags_list = [tag.title for tag in obj.tags.all()]
@@ -153,7 +154,7 @@ class CategoryAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = ("order", "title", "posts_count_display", "updated_at")
     list_filter = ("title", "created_at", "updated_at")
 
-    @admin.display(description="Number of posts", ordering="posts_count_db")
+    @admin.display(description=_("Number of posts"), ordering="posts_count_db")
     def posts_count_display(self, obj):
         return obj.posts_count_db
 
@@ -203,7 +204,7 @@ class ImageAdmin(admin.ModelAdmin):
             },
         ),
         (
-            "Image creation/updation time",
+            "Image creation/update time",
             {"fields": ("created_at", "updated_at"), "classes": ("collapse",)},
         ),
     )
@@ -233,7 +234,7 @@ class UserActivityFilter(admin.SimpleListFilter):
         )
 
     def queryset(self, request, queryset):
-        value = self.value # TODO мабуть self.value()
+        value = self.value
         if value == "low":
             return queryset.filter(user_total_likes_count__lte=self.low_limit)
         if value == "medium":
@@ -268,7 +269,7 @@ class LikeAdmin(admin.ModelAdmin, BaseExportCsvMixin):
         )
 
     @admin.display(
-        description="Total users likes",
+        description=_("Total users likes"),
         ordering="user_total_likes_count",
     )
     def user_total_likes(self, obj):

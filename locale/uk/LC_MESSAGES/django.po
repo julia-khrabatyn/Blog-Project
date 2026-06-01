@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-31 20:43+0000\n"
+"POT-Creation-Date: 2026-06-01 21:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,6 +20,18 @@ msgstr ""
 "11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
 "100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
 "(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+
+#: accounts/admin.py:29
+msgid "Preview"
+msgstr "Попередній перегляд"
+
+#: accounts/admin.py:50
+msgid "Self-uploaded avatar"
+msgstr "Фото профілю, завантажене користувачем"
+
+#: accounts/admin.py:55
+msgid "Bio preview"
+msgstr "Попередній перегляд біо"
 
 #: accounts/models.py:65
 msgid "Date of birth"
@@ -74,7 +86,7 @@ msgstr ""
 "Завантажте фото профілю (необов'язково). (Підтримуються лише такі формати: ."
 "png, .jpeg, .jpg, .webp )"
 
-#: accounts/models.py:110 blog/models.py:54 tags/models.py:22
+#: accounts/models.py:110 blog/admin.py:49 blog/models.py:54 tags/models.py:22
 msgid "Tags"
 msgstr "Теги"
 
@@ -125,6 +137,30 @@ msgstr "Підписка"
 #: accounts/models.py:179
 msgid "Follows"
 msgstr "Підписки"
+
+#: blog/admin.py:54 blog/models.py:163
+msgid "Category"
+msgstr "Категорія"
+
+#: blog/admin.py:59 blog/models.py:137
+msgid "Likes"
+msgstr "Вподобайки"
+
+#: blog/admin.py:64
+msgid "First 10 words from post text"
+msgstr "Перші 10 слів з тексту публікації"
+
+#: blog/admin.py:69
+msgid "First 5 tags for post"
+msgstr "Перші 5 тегів публікації"
+
+#: blog/admin.py:157
+msgid "Number of posts"
+msgstr "Кількість публікацій"
+
+#: blog/admin.py:272
+msgid "Total users likes"
+msgstr "Загальна кількість вподобайок"
 
 #: blog/filters.py:31
 msgid "By title"
@@ -262,8 +298,9 @@ msgstr "Фото"
 msgid ""
 "Upload your image (allowed formats: .png, .jpeg, .jpg, .webp files; max file "
 "size: 5 MB)"
-msgstr "Завантажте фото (Підтримуються лише такі формати: ."
-"png, .jpeg, .jpg, .webp; максимальний розмір файлу: 5 MB)"
+msgstr ""
+"Завантажте фото (Підтримуються лише такі формати: .png, .jpeg, .jpg, .webp; "
+"максимальний розмір файлу: 5 MB)"
 
 #: blog/models.py:91
 msgid "This image belongs to (post)"
@@ -297,10 +334,6 @@ msgstr "Вподобана публікація"
 msgid "Like"
 msgstr "Вподобайка"
 
-#: blog/models.py:137
-msgid "Likes"
-msgstr "Вподобайки"
-
 #: blog/models.py:149
 msgid "Your category title"
 msgstr "Заголовок категорії"
@@ -312,10 +345,6 @@ msgstr "Порядок"
 #: blog/models.py:155
 msgid "Display order priority (ascending)"
 msgstr "Порядок відображення (за зростанням)"
-
-#: blog/models.py:163
-msgid "Category"
-msgstr "Категорія"
 
 #: blog/templates/author_posts_list.html:6
 msgid "All posts created by "
@@ -339,8 +368,7 @@ msgid ""
 msgstr ""
 "\n"
 "            \"Місце, де субатомні думки перетворюються на потужні історії. \n"
-"            Читай, пиши, досліджуй, надихай та створюй всесвіт ідей!"
-"\"\n"
+"            Читай, пиши, досліджуй, надихай та створюй всесвіт ідей!\"\n"
 "        "
 
 #: blog/templates/home.html:18
@@ -426,8 +454,9 @@ msgstr "Бажаєте поділитися своїми думками? Ми ч
 msgid ""
 "Click the button below and create your new post. Your thoughts might be the "
 "spark someone else needs today."
-msgstr "Натискайте на кнопочку нижче та створіть нову публікацію. Ваші думки "
-"здатні запалити іскру, якої хтось потребує саме сьогодні."
+msgstr ""
+"Натискайте на кнопочку нижче та створіть нову публікацію. Ваші думки здатні "
+"запалити іскру, якої хтось потребує саме сьогодні."
 
 #: blog/templates/home.html:110
 msgid "Create New Post"
@@ -443,7 +472,8 @@ msgstr "Ім'я"
 
 #: blog/templates/post_detail.html:46
 msgid "This author is a mystery! They haven't shared their story yet."
-msgstr "Цей автор — справжня таємниця! Він ще не встиг розповісти свою історію."
+msgstr ""
+"Цей автор — справжня таємниця! Він ще не встиг розповісти свою історію."
 
 #: blog/templates/post_detail.html:50
 msgid "Author's approximate location"
@@ -453,11 +483,11 @@ msgstr "Приблизне місцезнаходження автора"
 #, python-format
 msgid ""
 "\n"
-"                    Latest other posts by @%%(username)s:\n"
+"                    Latest other posts by @%(username)s:\n"
 "                "
 msgstr ""
 "\n"
-"                    Нещодавні інші публікації автора @%%(username)s:\n"
+"                    Нещодавні інші публікації автора @%(username)s:\n"
 "                "
 
 #: blog/templates/post_detail.html:71
@@ -465,23 +495,24 @@ msgstr ""
 msgid ""
 "\n"
 "                            No other posts from <span class=\"text-sky-700 "
-"font-semibold\">@%%(username)s</span> yet.\n"
+"font-semibold\">@%(username)s</span> yet.\n"
 "                        "
 msgstr ""
 "\n"
 "                            Інших публікацій від <span class=\"text-sky-700 "
-"font-semibold\">@%%(username)s</span> поки що немає.\n"
+"font-semibold\">@%(username)s</span> поки що немає.\n"
 "                        "
 
 #: blog/templates/post_detail.html:79
 #, python-format
 msgid ""
 "\n"
-"                            See all posts by @%%(username)s here →\n"
+"                            See all posts by @%(username)s here →\n"
 "                        "
 msgstr ""
 "\n"
-"                            Перегляньте всі публікації від @%%(username)s тут →\n"
+"                            Перегляньте всі публікації від @%(username)s тут "
+"→\n"
 "                        "
 
 #: blog/templates/post_detail.html:92
@@ -548,11 +579,11 @@ msgstr "Коментар"
 msgid "Comments"
 msgstr "Коментарі"
 
-#: config/settings/base_settings.py:128
+#: config/settings/base_settings.py:131
 msgid "Українська"
 msgstr "Українська"
 
-#: config/settings/base_settings.py:129
+#: config/settings/base_settings.py:132
 msgid "English"
 msgstr "English"
 
@@ -564,19 +595,19 @@ msgstr "Назва Тегу"
 msgid "Tag"
 msgstr "Тег"
 
-#: templates/admin/base_site.html:8
+#: templates/admin/base_site.html:9
 msgid "Byline Logo"
 msgstr "Логотип Byline"
 
-#: templates/admin/base_site.html:11
+#: templates/admin/base_site.html:12
 #, python-format
 msgid ""
 "\n"
-"                Your %%(site_name)s Admin Portal\n"
+"                Your %(site_name)s Admin Portal\n"
 "            "
 msgstr ""
 "\n"
-"                Твій %%(site_name)s Портал керування\n"
+"                Твій %(site_name)s Портал керування\n"
 "            "
 
 #: templates/admin/login.html:8
@@ -635,13 +666,13 @@ msgstr "Назад"
 #, python-format
 msgid ""
 "\n"
-"                Page <span class=\"font-bold text-gray-900\">%%(current)s</"
-"span> of %%(total)s\n"
+"                Page <span class=\"font-bold text-gray-900\">%(current)s</"
+"span> of %(total)s\n"
 "            "
 msgstr ""
 "\n"
-"                Сторінка <span class=\"font-bold text-gray-900\">%%(current)s</"
-"span> з %%(total)s\n"
+"                Сторінка <span class=\"font-bold text-"
+"gray-900\">%(current)s</span> з %(total)s\n"
 "            "
 
 #: templates/includes/_pagination.html:26

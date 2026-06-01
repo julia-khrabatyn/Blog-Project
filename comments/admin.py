@@ -22,7 +22,7 @@ class CommentAdmin(admin.ModelAdmin, BaseExportCsvMixin):
         ),
         ("To which post", {"fields": ("post",)}),
         (
-            "Date of creation/updation",
+            "Date of creation/update",
             {"fields": ("created_at", "updated_at")},
         ),
         ("Comment text", {"fields": ("text",)}),
