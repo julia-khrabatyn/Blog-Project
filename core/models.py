@@ -1,5 +1,8 @@
 from django.db import models
 from django.utils.text import slugify
+from django.utils.translation import gettext_lazy as _
+
+
 from uuid6 import uuid7
 
 __all__ = ("AbstractBaseModel", "PublishMixin", "SlugMixin", "UUIdMixin")
@@ -20,8 +23,14 @@ class AbstractBaseModel(UUIdMixin):
     updated_at fields for other models.
     """
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_("Date of creation"),
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name=_("Date of update"),
+    )
 
     class Meta:
         abstract = True
@@ -30,7 +39,10 @@ class AbstractBaseModel(UUIdMixin):
 class PublishMixin(models.Model):
     """Mixin that added published field to model for Multiple inheritance."""
 
-    published = models.BooleanField(default=False)
+    published = models.BooleanField(
+        default=False,
+        verbose_name=_("Published"),
+    )
 
     class Meta:
         abstract = True
@@ -42,6 +54,7 @@ class SlugMixin(models.Model):
     slug = models.SlugField(
         max_length=255,
         unique=True,
+        verbose_name=_("Slug"),
         help_text="URL-friendly version of the title",
     )
 

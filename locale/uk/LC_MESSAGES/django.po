@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 21:35+0000\n"
+"POT-Creation-Date: 2026-06-01 22:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -586,6 +586,22 @@ msgstr "Українська"
 #: config/settings/base_settings.py:132
 msgid "English"
 msgstr "English"
+
+#: core/models.py:28
+msgid "Date of creation"
+msgstr "Дата створення"
+
+#: core/models.py:32
+msgid "Date of update"
+msgstr "Дата оновлення"
+
+#: core/models.py:44
+msgid "Published"
+msgstr "Опубліковано"
+
+#: core/models.py:57
+msgid "Slug"
+msgstr "Слаг"
 
 #: tags/models.py:13
 msgid "Tag title"
