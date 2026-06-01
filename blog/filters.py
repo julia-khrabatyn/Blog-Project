@@ -5,6 +5,8 @@ from django.apps import (
     apps,
 )  # TODO: better use it for avoiding cycle import? do not use: from .models import Post and so on???
 from django.contrib.auth import get_user_model
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import pgettext_lazy as _p
 
 User = get_user_model()
 Post = apps.get_model("blog", "Post")
@@ -26,11 +28,11 @@ class BasePostFilter(django_filters.FilterSet):
     # Filter post by title in alphabetic order
     title = django_filters.CharFilter(
         lookup_expr="icontains",
-        label="By title ",
+        label=_("By title"),
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
-                "placeholder": "Enter title to filter...",
+                "placeholder": _("Enter title to filter..."),
             }
         ),
     )
@@ -40,7 +42,7 @@ class BasePostFilter(django_filters.FilterSet):
     tags = django_filters.ModelMultipleChoiceFilter(
         queryset=Tag.objects.all(),
         conjoined=True,
-        label="By tags ",
+        label=_("By tags"),
         widget=forms.CheckboxSelectMultiple(),
     )
 
@@ -48,7 +50,7 @@ class BasePostFilter(django_filters.FilterSet):
     start_date = django_filters.DateFilter(
         field_name="created_at",
         lookup_expr="gte",
-        label="From Date",
+        label=_("From Date"),
         widget=forms.DateInput(
             attrs={"class": "form-control", "type": "date"}
         ),
@@ -56,15 +58,16 @@ class BasePostFilter(django_filters.FilterSet):
     end_date = django_filters.DateFilter(
         field_name="created_at",
         lookup_expr="lte",
-        label="To Date",
+        label=_("To Date"),
         widget=forms.DateInput(
             attrs={"class": "form-control", "type": "date"}
         ),
     )
     category = django_filters.ModelMultipleChoiceFilter(
+        field_name="categories",
         queryset=Category.objects.all(),
         conjoined=True,
-        label="By category",
+        label=_("By category"),
         widget=forms.CheckboxSelectMultiple(),
     )
 
@@ -86,7 +89,7 @@ class GlobalPostFilter(BasePostFilter):
     author = django_filters.ModelChoiceFilter(
         field_name="user",
         queryset=User.objects.all(),
-        label="Author",
+        label=_p("filter", "Author"),
     )
 
     order_by = django_filters.OrderingFilter(
@@ -95,8 +98,12 @@ class GlobalPostFilter(BasePostFilter):
             ("likes_count", "likes"),
             ("user__username", "author"),
         ),
-        field_name="By Author",
-        field_labels={"user__username": "By Author"},
+        label=_("Order by"),
+        field_labels={
+            "created_at": _("By date"),
+            "likes_count": _p("filter", "Likes"),
+            "user__username": _("By Author"),
+        },
     )
 
 
@@ -108,7 +115,11 @@ class AuthorPostFilter(BasePostFilter):
             ("created_at", "date"),
             ("likes_count", "likes"),
         ),
-        field_labels={"created_at": "By date", "likes_count": "Likes"},
+        label=_("Order by"),
+        field_labels={
+            "created_at": _("By date"),
+            "likes_count": _p("filter", "Likes"),
+        },
     )
 
 
@@ -116,24 +127,40 @@ class CommentFilter(django_filters.FilterSet):
     """Filter for comments."""
 
     q = django_filters.CharFilter(
-        field_name="text", lookup_expr="icontains", label="Search"
+        field_name="text",
+        lookup_expr="icontains",
+        label=_("Search"),
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": _("Search comments..."),
+            },
+        ),
     )
 
     start_date = django_filters.DateFilter(
         field_name="created_at",
         lookup_expr="gte",
-        label="From Date",
+        label=_("From Date"),
     )
     end_date = django_filters.DateFilter(
         field_name="created_at",
         lookup_expr="lte",
-        label="To Date",
+        label=_("To Date"),
     )
 
     author = django_filters.CharFilter(
-        field_name="user__username", lookup_expr="icontains", label="Author"
+        field_name="user__username",
+        lookup_expr="icontains",
+        label=_p("filter", "Author"),
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": _("Enter author's username..."),
+            },
+        ),
     )
 
     class Meta:
         model = Comment
-        fields = ["q", "author"]
+        fields = ["q", "author", "start_date", "end_date"]

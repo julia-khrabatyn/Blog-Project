@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxLengthValidator
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from ckeditor.fields import RichTextField
 from django_countries.fields import CountryField
@@ -61,43 +62,69 @@ class User(AbstractUser, AbstractBaseModel):
     REQUIRED_FIELDS = ["email"]
     birth_date = models.DateField(
         # validators=[validate_birth_date],
-        help_text="Your date of birth. Must be 13+ years for registrаtion",
+        verbose_name=_("Date of birth"),
+        help_text=_("Your date of birth. Must be 13+ years for registration"),
         blank=True,
         null=True,
     )
     country = CountryField(
-        help_text="Your country code", blank=True, null=True
+        verbose_name=_("Country"),
+        help_text=_("Your country code"),
+        blank=True,
+        null=True,
     )
     # stores the 2-letter ISO 3166-1 country code. have autocomplete in admin
     bio = RichTextField(
-        max_length=500, blank=True, null=True, config_name="special"
+        max_length=500,
+        blank=True,
+        null=True,
+        config_name="special",
+        verbose_name=_("Bio"),
+        help_text=_("Your bio (optional)"),
     )
     city = models.CharField(
         max_length=100,
         null=True,
         blank=True,
-        help_text="Your city (optional)",
+        verbose_name=_("City"),
+        help_text=_("Your city (optional)"),
     )
     email = models.EmailField(
-        unique=True, help_text="Your valid email address"
+        unique=True,
+        verbose_name=_("Email"),
+        help_text=_("Your valid email address"),
     )
     avatar = models.ImageField(
         upload_to="avatars/",
         null=True,
         blank=True,
-        help_text="Upload profile photo (optional) (Support only .png, .jpeg, .jpg, .webp extensions)",
+        verbose_name=_("Avatar"),
+        help_text=_(
+            "Upload profile photo (optional) (Support only .png, .jpeg, .jpg, .webp extensions)"
+        ),
     )
     tags = models.ManyToManyField(
         "tags.Tag",
         blank=True,
         related_name="users",
-        help_text="Add tag (optional)",
+        verbose_name=_("Tags"),
+        help_text=_("Add tag (optional)"),
     )
     latitude = models.DecimalField(
-        max_digits=9, decimal_places=6, null=True, blank=True
+        max_digits=9,
+        decimal_places=6,
+        verbose_name=_("Latitude coordinate in decimal format"),
+        help_text=_("Geo data"),
+        null=True,
+        blank=True,
     )
     longitude = models.DecimalField(
-        max_digits=9, decimal_places=6, null=True, blank=True
+        max_digits=9,
+        decimal_places=6,
+        verbose_name=_("Longitude coordinate in decimal format"),
+        help_text=_("Geo data"),
+        null=True,
+        blank=True,
     )
     objects = CustomUserManager()
 
@@ -108,8 +135,8 @@ class User(AbstractUser, AbstractBaseModel):
         return self.username
 
     class Meta:
-        verbose_name = "User"
-        verbose_name_plural = "Users"
+        verbose_name = _("User")
+        verbose_name_plural = _("Users")
         ordering = ["username"]
 
 
@@ -120,13 +147,15 @@ class Follow(AbstractBaseModel):
         User,
         on_delete=models.CASCADE,
         related_name="following",
-        help_text="User, who follows",
+        verbose_name=_("Follower"),
+        help_text=_("User, who follows"),
     )
     following = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        verbose_name=_("Following"),
         related_name="followers",
-        help_text="User, who are followed",
+        help_text=_("User, who is followed"),
     )
 
     def clean(self):
@@ -146,5 +175,5 @@ class Follow(AbstractBaseModel):
                 name="prevent_self_follow",
             ),
         ]
-        verbose_name = "Follow"
-        verbose_name_plural = "Follows"
+        verbose_name = _("Follow")
+        verbose_name_plural = _("Follows")

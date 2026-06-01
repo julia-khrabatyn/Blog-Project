@@ -16,18 +16,23 @@ Including another URLconf
 """
 
 from django.conf import settings
+from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
 from django.urls import path, include
 
-
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/", include("allauth.urls")),
-    path("blog/", include("blog.urls")),
     path("ckeditor/", include("ckeditor_uploader.urls")),
+    path("i18n/", include("django.conf.urls.i18n")),
 ]
+
+urlpatterns += i18n_patterns(
+    path("", include("blog.urls")),
+    prefix_default_language=False,
+)
 
 if settings.DEBUG:
     import debug_toolbar

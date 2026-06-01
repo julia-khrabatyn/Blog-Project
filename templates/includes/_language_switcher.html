@@ -1,0 +1,20 @@
+{% load i18n %}
+
+{% get_current_language as CURRENT_LANG %}
+{% get_available_languages as AVAILABLE_LANGS %}
+
+<form action="{% url 'set_language' %}" method="post" class="inline-flex items-center">
+    {% csrf_token %}
+    
+    <input type="hidden" name="next" value="/">
+    
+    <select name="language" onchange="this.form.submit()" 
+        class="bg-gray-50 border border-gray-200 text-gray-700 text-xs font-semibold rounded-lg focus:ring-sky-500 focus:border-sky-500 block p-1.5 px-3 shadow-sm cursor-pointer">
+        
+        {% for lang_code, lang_name in AVAILABLE_LANGS %}
+            <option value="{{ lang_code }}" {% if CURRENT_LANG == lang_code %} selected {% endif %}>
+                {{ lang_name }}
+            </option>
+        {% endfor %}
+    </select>
+</form>

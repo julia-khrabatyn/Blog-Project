@@ -13,7 +13,7 @@ __all__ = [
 
 @register.simple_tag
 def get_user_avatar(user_obj):
-    """Finction for getting user's avatar and return it for displaying it in templates."""
+    """Function for getting user's avatar and return it for displaying it in templates."""
 
     # extract user's avatar if user upload it by himself.
     if hasattr(user_obj, "avatar") and user_obj.avatar:

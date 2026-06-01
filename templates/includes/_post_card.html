@@ -1,12 +1,14 @@
+{% load i18n %}
+
 {% with is_even=forloop.counter|divisibleby:2 %}
 <div class="{% if is_even %}bg-sky-50{% else %}bg-white{% endif %} p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
     <span class="text-xs font-bold text-sky-500 uppercase tracking-widest">
-        {% if post.categories.all %}{{ post.categories.first.title }}{% else %}Article{% endif%}
+        {% if post.categories.all %}{{ post.categories.first.title }}{% else %}{% trans "Article" %}{% endif%}
     </span>
     <h3 class="text-xl font-bold mt-2 mb-3">{{ post.title }}</h3>
     <p class="text-gray-500 text-sm mb-4">{{ post.text|safe|truncatewords_html:words_count }} 
         <a href="{% url 'post_detail' pk=post.pk %}" class="text-sky-500 font-bold hover:underline">
-            Read full story...
+            {% trans "Read full story..." %}
         </a>
     </p> 
     <div class="flex items-center text-xs text-gray-400">
@@ -16,9 +18,14 @@
         {% if show_likes %}
             <span class="mx-2">•</span>
             <span class="font-medium {% if row_color == 'bg-sky-50' %} text-sky-800 {% else %} text-sky-600 {% endif %}">
-                {% if post.likes_count > 0 %}{{ post.likes_count }} like{{ post.likes_count|pluralize }}
+                {% if post.likes_count > 0 %}
+                    {% blocktrans count counter=post.likes_count %}
+                        1 like
+                    {% plural %}
+                        {{ counter }} likes
+                    {% endblocktrans %}
                 {% else %}
-                    No likes yet
+                    {% trans "No likes yet" %}
                 {% endif %}
             </span>
         {% endif %}

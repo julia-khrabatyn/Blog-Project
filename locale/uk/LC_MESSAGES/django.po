@@ -1,0 +1,701 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-31 20:43+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
+"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
+"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
+"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+
+#: accounts/models.py:65
+msgid "Date of birth"
+msgstr "Дата народження"
+
+#: accounts/models.py:66
+msgid "Your date of birth. Must be 13+ years for registration"
+msgstr "Ваша дата народження. Ваш вік повинен бути 13+ для реєстрації"
+
+#: accounts/models.py:71
+msgid "Country"
+msgstr "Країна"
+
+#: accounts/models.py:72
+msgid "Your country code"
+msgstr "Код країни"
+
+#: accounts/models.py:82
+msgid "Bio"
+msgstr "Біо"
+
+#: accounts/models.py:83
+msgid "Your bio (optional)"
+msgstr "Про себе (необов'язково)"
+
+#: accounts/models.py:89
+msgid "City"
+msgstr "Місто"
+
+#: accounts/models.py:90
+msgid "Your city (optional)"
+msgstr "Ваше місто (необов'язково)"
+
+#: accounts/models.py:94
+msgid "Email"
+msgstr "Електронна пошта"
+
+#: accounts/models.py:95
+msgid "Your valid email address"
+msgstr "Дійсна адреса електронної пошти"
+
+#: accounts/models.py:101 templates/includes/_user_avatar.html:5
+#: templates/includes/comments/_comments_section.html:10
+msgid "Avatar"
+msgstr "Фото профілю"
+
+#: accounts/models.py:103
+msgid ""
+"Upload profile photo (optional) (Support only .png, .jpeg, .jpg, .webp "
+"extensions)"
+msgstr ""
+"Завантажте фото профілю (необов'язково). (Підтримуються лише такі формати: ."
+"png, .jpeg, .jpg, .webp )"
+
+#: accounts/models.py:110 blog/models.py:54 tags/models.py:22
+msgid "Tags"
+msgstr "Теги"
+
+#: accounts/models.py:111
+msgid "Add tag (optional)"
+msgstr "Додайте тег (необов'язково)"
+
+#: accounts/models.py:116
+msgid "Latitude coordinate in decimal format"
+msgstr "Координата широти в десятковому форматі"
+
+#: accounts/models.py:117 accounts/models.py:125
+msgid "Geo data"
+msgstr "Гео дані"
+
+#: accounts/models.py:124
+msgid "Longitude coordinate in decimal format"
+msgstr "Координата довготи в десятковому форматі"
+
+#: accounts/models.py:138 blog/models.py:116 comments/models.py:26
+msgid "User"
+msgstr "Користувач"
+
+#: accounts/models.py:139
+msgid "Users"
+msgstr "Користувачі"
+
+#: accounts/models.py:150
+msgid "Follower"
+msgstr "Підписник"
+
+#: accounts/models.py:151
+msgid "User, who follows"
+msgstr "Користувач, який підписався"
+
+#: accounts/models.py:156
+msgid "Following"
+msgstr "Підписка"
+
+#: accounts/models.py:158
+msgid "User, who is followed"
+msgstr "Користувач, на якого підписалися"
+
+#: accounts/models.py:178
+msgid "Follow"
+msgstr "Підписка"
+
+#: accounts/models.py:179
+msgid "Follows"
+msgstr "Підписки"
+
+#: blog/filters.py:31
+msgid "By title"
+msgstr "Пошук за заголовком"
+
+#: blog/filters.py:35
+msgid "Enter title to filter..."
+msgstr "Введи заголовок для пошуку"
+
+#: blog/filters.py:45
+msgid "By tags"
+msgstr "Пошук за тегами"
+
+#: blog/filters.py:53 blog/filters.py:144
+msgid "From Date"
+msgstr "З дати"
+
+#: blog/filters.py:61 blog/filters.py:149
+msgid "To Date"
+msgstr "По дату"
+
+#: blog/filters.py:70
+msgid "By category"
+msgstr "Пошук за категорією"
+
+#: blog/filters.py:101 blog/filters.py:118
+msgid "Order by"
+msgstr "Сортувати"
+
+#: blog/filters.py:103 blog/filters.py:120
+msgid "By date"
+msgstr "За датою"
+
+#: blog/filters.py:105
+msgid "By Author"
+msgstr "За Автором"
+
+#: blog/filters.py:132
+msgid "Search"
+msgstr "Пошук"
+
+#: blog/filters.py:136
+msgid "Search comments..."
+msgstr "Шукати коментарі..."
+
+#: blog/filters.py:159
+msgid "Enter author's username..."
+msgstr "Введіть ім'я автора "
+
+#: blog/forms.py:21
+msgid "Post Title"
+msgstr "заголовок публікації"
+
+#: blog/forms.py:26
+msgid "Enter a catchy title..."
+msgstr "Введіть ефектний заголовок"
+
+#: blog/forms.py:32
+msgid "Post content"
+msgstr "Вміст публікації"
+
+#: blog/forms.py:35 blog/models.py:34
+msgid "Post description (optional)"
+msgstr "Опис публікації (необов'язково)"
+
+#: blog/forms.py:42
+msgid "Short summary for the card..."
+msgstr "Стислий зміст статті"
+
+#: blog/forms.py:62 blog/forms.py:70
+msgid "Don't have the one you need?"
+msgstr "Не знайшли того, що відгукується?"
+
+#: blog/forms.py:63
+msgid "+ Create Category"
+msgstr "+ Створити категорію"
+
+#: blog/forms.py:71
+msgid "+ Add New Tag"
+msgstr "+ Додати Тег"
+
+#: blog/models.py:22 blog/models.py:148 tags/models.py:13
+msgid "Title"
+msgstr "Заголовок"
+
+#: blog/models.py:23
+msgid "Your post title"
+msgstr "Заголовок Вашої публікації"
+
+#: blog/models.py:27
+msgid "Post text"
+msgstr "Текст публікації"
+
+#: blog/models.py:27 comments/models.py:13
+msgid "Text"
+msgstr "Текст"
+
+#: blog/models.py:33
+msgid "Description"
+msgstr "Опис"
+
+#: blog/models.py:40
+msgid "Author"
+msgstr "Автор"
+
+#: blog/models.py:41
+msgid "User, created post"
+msgstr "Користувач, що додав публікацію"
+
+#: blog/models.py:47 blog/models.py:164
+msgid "Categories"
+msgstr "Категорії"
+
+#: blog/models.py:48
+msgid "Post category (optional)"
+msgstr "Категорія публікації (необов'язково)"
+
+#: blog/models.py:55
+msgid "your post tag (optional)"
+msgstr "Тег публікації (необов'язково)"
+
+#: blog/models.py:63 blog/models.py:90 blog/models.py:123 comments/models.py:19
+msgid "Post"
+msgstr "Пост"
+
+#: blog/models.py:64
+msgid "Posts"
+msgstr "Публікації"
+
+#: blog/models.py:81
+msgid "Image file"
+msgstr "Фото"
+
+#: blog/models.py:83
+msgid ""
+"Upload your image (allowed formats: .png, .jpeg, .jpg, .webp files; max file "
+"size: 5 MB)"
+msgstr "Завантажте фото (Підтримуються лише такі формати: ."
+"png, .jpeg, .jpg, .webp; максимальний розмір файлу: 5 MB)"
+
+#: blog/models.py:91
+msgid "This image belongs to (post)"
+msgstr "Публікація для цього зображення"
+
+#: blog/models.py:97
+msgid "Alternative text"
+msgstr "Опис зображення"
+
+#: blog/models.py:98
+msgid "Alternative image text"
+msgstr "Опис до зображення"
+
+#: blog/models.py:105
+msgid "Image"
+msgstr "Картинка"
+
+#: blog/models.py:106
+msgid "Images"
+msgstr "Картинки"
+
+#: blog/models.py:117
+msgid "User, who liked the post"
+msgstr "Користувач, що вподобав публікацію"
+
+#: blog/models.py:124
+msgid "Post that was liked"
+msgstr "Вподобана публікація"
+
+#: blog/models.py:136
+msgid "Like"
+msgstr "Вподобайка"
+
+#: blog/models.py:137
+msgid "Likes"
+msgstr "Вподобайки"
+
+#: blog/models.py:149
+msgid "Your category title"
+msgstr "Заголовок категорії"
+
+#: blog/models.py:154
+msgid "Order"
+msgstr "Порядок"
+
+#: blog/models.py:155
+msgid "Display order priority (ascending)"
+msgstr "Порядок відображення (за зростанням)"
+
+#: blog/models.py:163
+msgid "Category"
+msgstr "Категорія"
+
+#: blog/templates/author_posts_list.html:6
+msgid "All posts created by "
+msgstr "Всі публікації автора "
+
+#: blog/templates/author_posts_list.html:19
+msgid "This author hasn't published any posts yet."
+msgstr "Цей автор поки нічого не опублікував."
+
+#: blog/templates/home.html:8
+msgid "Welcome to"
+msgstr "Вас вітає"
+
+#: blog/templates/home.html:11
+msgid ""
+"\n"
+"            \"A place where subatomic thoughts turn into powerful stories. \n"
+"            Read, write, explore, inspire and create the universe of ideas!"
+"\"\n"
+"        "
+msgstr ""
+"\n"
+"            \"Місце, де субатомні думки перетворюються на потужні історії. \n"
+"            Читай, пиши, досліджуй, надихай та створюй всесвіт ідей!"
+"\"\n"
+"        "
+
+#: blog/templates/home.html:18
+msgid "Start Reading"
+msgstr "Читати"
+
+#: blog/templates/home.html:21
+msgid "Learn More"
+msgstr "Дізнатися більше"
+
+#: blog/templates/home.html:27
+msgid "Popular Posts"
+msgstr "Популярні публікації"
+
+#: blog/templates/home.html:39
+#, python-format
+msgid ""
+"\n"
+"                                    1 like\n"
+"                                "
+msgid_plural ""
+"\n"
+"                                    %(counter)s likes\n"
+"                                "
+msgstr[0] ""
+"\n"
+"                                    %(counter)s вподобайка\n"
+"                                "
+msgstr[1] ""
+"\n"
+"                                    %(counter)s вподобайки\n"
+"                                "
+msgstr[2] ""
+"\n"
+"                                    %(counter)s вподобайок\n"
+"                                "
+
+#: blog/templates/home.html:47
+msgid "Most Liked"
+msgstr "Найпопулярніші"
+
+#: blog/templates/home.html:57
+msgid "in"
+msgstr "у"
+
+#: blog/templates/home.html:65
+msgid "Uncategorized"
+msgstr "Без категорії"
+
+#: blog/templates/home.html:73
+msgid "The rankings are still being decided..."
+msgstr "Рейтинг ще формується, завітайте згодом..."
+
+#: blog/templates/home.html:81
+msgid "around the world!"
+msgstr "навколо світу!"
+
+#: blog/templates/home.html:84
+msgid "Find like-minded people nearby!"
+msgstr "Шукай однодумців поруч!"
+
+#: blog/templates/home.html:89
+msgid "No active researchers on map yet."
+msgstr "Активні автори на мапі ще не зареєстровані."
+
+#: blog/templates/home.html:95
+msgid "Latest Stories from TOP-3 popular categories!"
+msgstr "Останні публікації з ТОП-3 найпопулярніших категорій!"
+
+#: blog/templates/home.html:97
+msgid "View all posts"
+msgstr "Переглянути всі публікації"
+
+#: blog/templates/home.html:105
+msgid "No stories found yet. Be the first to write one!"
+msgstr "Поки тут порожньо. Станьте першим, хто поділиться своєю історією!"
+
+#: blog/templates/home.html:108
+msgid "If excited to share with us any ideas — don't be shy!"
+msgstr "Бажаєте поділитися своїми думками? Ми чекаємо на Вас, не соромтеся!"
+
+#: blog/templates/home.html:109
+msgid ""
+"Click the button below and create your new post. Your thoughts might be the "
+"spark someone else needs today."
+msgstr "Натискайте на кнопочку нижче та створіть нову публікацію. Ваші думки "
+"здатні запалити іскру, якої хтось потребує саме сьогодні."
+
+#: blog/templates/home.html:110
+msgid "Create New Post"
+msgstr "Створити нову публікацію"
+
+#: blog/templates/post_detail.html:40
+msgid "About Author:"
+msgstr "Про Автора"
+
+#: blog/templates/post_detail.html:41
+msgid "Name:"
+msgstr "Ім'я"
+
+#: blog/templates/post_detail.html:46
+msgid "This author is a mystery! They haven't shared their story yet."
+msgstr "Цей автор — справжня таємниця! Він ще не встиг розповісти свою історію."
+
+#: blog/templates/post_detail.html:50
+msgid "Author's approximate location"
+msgstr "Приблизне місцезнаходження автора"
+
+#: blog/templates/post_detail.html:61
+#, python-format
+msgid ""
+"\n"
+"                    Latest other posts by @%%(username)s:\n"
+"                "
+msgstr ""
+"\n"
+"                    Нещодавні інші публікації автора @%%(username)s:\n"
+"                "
+
+#: blog/templates/post_detail.html:71
+#, python-format
+msgid ""
+"\n"
+"                            No other posts from <span class=\"text-sky-700 "
+"font-semibold\">@%%(username)s</span> yet.\n"
+"                        "
+msgstr ""
+"\n"
+"                            Інших публікацій від <span class=\"text-sky-700 "
+"font-semibold\">@%%(username)s</span> поки що немає.\n"
+"                        "
+
+#: blog/templates/post_detail.html:79
+#, python-format
+msgid ""
+"\n"
+"                            See all posts by @%%(username)s here →\n"
+"                        "
+msgstr ""
+"\n"
+"                            Перегляньте всі публікації від @%%(username)s тут →\n"
+"                        "
+
+#: blog/templates/post_detail.html:92
+msgid "Have any ideas to share with us?"
+msgstr "Маєте ідеї, якими хочете поділитися з нами?"
+
+#: blog/templates/post_detail.html:93
+msgid "Click the button below and write your story!"
+msgstr "Сміливо натискайте на кнопочку нижче та пишіть свою історію!"
+
+#: blog/templates/post_detail.html:94
+msgid "Start posting"
+msgstr "Створити публікацію"
+
+#: blog/templates/post_list.html:9
+msgid "Latest published posts"
+msgstr "Нещодавні публікації"
+
+#: blog/templates/post_list.html:19
+msgid "No posts published"
+msgstr "Тут поки що немає публікацій"
+
+#: blog/templates/post_list.html:21
+msgid "Be the first to share your story with us!"
+msgstr "Будь першим, хто поділиться своєю історією з нами!"
+
+#: blog/templates/post_list.html:22
+msgid "Click the button below and start your writing journey!"
+msgstr "Натискайте на кнопочку нижче та розпочніть свою творчу подорож!"
+
+#: blog/templates/post_list.html:23
+msgid "Create First Post"
+msgstr ""
+
+#: blog/templates/post_list.html:33
+msgid "Have something to share?"
+msgstr "Бажаєте чимось поділитися?"
+
+#: blog/templates/post_list.html:34
+msgid "World needs to hear your story today!"
+msgstr "Світ повинен почути Вашу історію вже сьогодні!"
+
+#: blog/templates/post_list.html:35
+msgid "Start writing"
+msgstr "Гайда писати!"
+
+#: comments/models.py:13
+msgid "Your comment"
+msgstr "Ваш коментар"
+
+#: comments/models.py:20
+msgid "The post this comment belongs to."
+msgstr "Публікація, до якої належить цей коментар."
+
+#: comments/models.py:27
+msgid "The author of this comment."
+msgstr "Автор цього коментаря"
+
+#: comments/models.py:35
+msgid "Comment"
+msgstr "Коментар"
+
+#: comments/models.py:36
+msgid "Comments"
+msgstr "Коментарі"
+
+#: config/settings/base_settings.py:128
+msgid "Українська"
+msgstr "Українська"
+
+#: config/settings/base_settings.py:129
+msgid "English"
+msgstr "English"
+
+#: tags/models.py:13
+msgid "Tag title"
+msgstr "Назва Тегу"
+
+#: tags/models.py:21
+msgid "Tag"
+msgstr "Тег"
+
+#: templates/admin/base_site.html:8
+msgid "Byline Logo"
+msgstr "Логотип Byline"
+
+#: templates/admin/base_site.html:11
+#, python-format
+msgid ""
+"\n"
+"                Your %%(site_name)s Admin Portal\n"
+"            "
+msgstr ""
+"\n"
+"                Твій %%(site_name)s Портал керування\n"
+"            "
+
+#: templates/admin/login.html:8
+msgid "Or"
+msgstr "Або"
+
+#: templates/admin/login.html:11
+msgid "Login with Google"
+msgstr "Увійти за допомогою Google"
+
+#: templates/base.html:32
+msgid "Blog logo"
+msgstr "Логотип Блогу"
+
+#: templates/base.html:37
+msgid "Main"
+msgstr "Головна"
+
+#: templates/base.html:38
+msgid "All Posts"
+msgstr "Всі Пости"
+
+#: templates/base.html:49
+msgid "Welcome, "
+msgstr "Вітаємо, "
+
+#: templates/base.html:54
+msgid "Logout"
+msgstr "Вийти"
+
+#: templates/base.html:60
+msgid "Sign in"
+msgstr "Увійти"
+
+#: templates/base.html:62
+msgid "Sign up"
+msgstr "Зареєструватися"
+
+#: templates/includes/_filter_form.html:5
+msgid "Available filters"
+msgstr "Фільтрувати"
+
+#: templates/includes/_filter_form.html:16
+msgid "Apply"
+msgstr "Застосувати"
+
+#: templates/includes/_filter_form.html:19
+msgid "Clear"
+msgstr "Очистити"
+
+#: templates/includes/_pagination.html:7 templates/includes/_pagination.html:11
+msgid "Previous"
+msgstr "Назад"
+
+#: templates/includes/_pagination.html:17
+#, python-format
+msgid ""
+"\n"
+"                Page <span class=\"font-bold text-gray-900\">%%(current)s</"
+"span> of %%(total)s\n"
+"            "
+msgstr ""
+"\n"
+"                Сторінка <span class=\"font-bold text-gray-900\">%%(current)s</"
+"span> з %%(total)s\n"
+"            "
+
+#: templates/includes/_pagination.html:26
+#: templates/includes/_pagination.html:30
+msgid "Next"
+msgstr "Далі"
+
+#: templates/includes/_post_card.html:6
+msgid "Article"
+msgstr "Публікація"
+
+#: templates/includes/_post_card.html:11
+msgid "Read full story..."
+msgstr "Читати далі..."
+
+#: templates/includes/_post_card.html:22
+#, python-format
+msgid ""
+"\n"
+"                        1 like\n"
+"                    "
+msgid_plural ""
+"\n"
+"                        %(counter)s likes\n"
+"                    "
+msgstr[0] ""
+"\n"
+"                        %(counter)s вподобайка\n"
+"                    "
+msgstr[1] ""
+"\n"
+"                        %(counter)s вподобайки\n"
+"                    "
+msgstr[2] ""
+"\n"
+"                        %(counter)s вподобайок\n"
+"                    "
+
+#: templates/includes/_post_card.html:28
+msgid "No likes yet"
+msgstr "Поки немає жодної вподобайки"
+
+#: templates/includes/comments/_comments_section.html:5
+msgid "Comments:"
+msgstr "Коментарі:"
+
+#: templates/includes/comments/_comments_section.html:22
+msgid ""
+"\n"
+"                        There are not any comments yet. Be the first to "
+"write one!\n"
+"                    "
+msgstr ""
+"\n"
+"                        Поки немає жодного коментаря. Будь першим, хто "
+"прокоментує!\n"
+"                    "

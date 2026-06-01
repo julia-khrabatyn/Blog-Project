@@ -1,5 +1,6 @@
 {% load user_tags %}
+{% load i18n %}
 
 <div class="flex flex-col items-center">
-     <img class="author-avatar-img" src="{% get_user_avatar user_obj %}" alt="Avatar">
+     <img class="author-avatar-img" src="{% get_user_avatar user_obj %}" alt="{% trans 'Avatar' %}">
 </div>

@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {%load static%}
+{% load i18n %}
 
 {% block content %}
-    <h1 class="text-center text-sky-900 text-4xl md:text-4xl font-semibold ">All posts created by Author 
+    <h1 class="text-center text-sky-900 text-4xl md:text-4xl font-semibold ">{% trans "All posts created by " %} 
         <span class="text-sky-500"> 
             @{{author.username}}
         </span>    
@@ -10,8 +11,12 @@
     </h1>
     {% include "includes/_user_avatar.html" with user_obj=author %}
     {% include "includes/_filter_form.html" %}
-    {% for post in posts%}
-        {% include "includes/_post_card.html" with words_count=50 post=post show_likes=True%}
-        <br></br>
-    {% endfor %}
+
+    <div class="mt-8 space-y-6">
+        {% for post in posts%}
+            {% include "includes/_post_card.html" with words_count=50 post=post show_likes=True%}
+        {% empty %}
+            <p class="text-center text-gray-500">{% trans "This author hasn't published any posts yet." %}</p>
+        {% endfor %}
+    </div>
 {% endblock content %}

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 {% with h1_style="text-center text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight leading-tight" %}
@@ -36,17 +37,17 @@
     </div>
 
     <section class="{{ card_style }}">
-        <h2 class="{{ h2_style }}">About Author:</h2>
-        <h4 class="{{ h4_style }}">Name: @{{ post.user.username }}</h4>
+        <h2 class="{{ h2_style }}">{% trans "About Author:" %}</h2>
+        <h4 class="{{ h4_style }}">{% trans "Name:" %} @{{ post.user.username }}</h4>
         {% include "includes/_user_avatar.html" with user_obj=post.user %}
         {% if post.user.bio %}
             <p class="mt-2">{{ post.user.bio|safe }}</p>
         {% else %}
-            <p>This author is a mystery! They haven't shared their story yet.</p>
+            <p>{% trans "This author is a mystery! They haven't shared their story yet." %}</p>
         {% endif %}
         {% if author_map %}
             <div class="mt-12 border-t pt-8">
-                <h3 class="{{ h2_style }}">Author's approximate location</h3>
+                <h3 class="{{ h2_style }}">{% trans "Author's approximate location" %}</h3>
                     <div class="rounded-xl overflow-hidden shadow-md border border-gray-100 h-[300px]">
                     {{ author_map|safe }}
                     </div>
@@ -57,22 +58,27 @@
         
         <br></br>
         <section>
-            <h3 class="{{ h2_style }}">Latest other @{{ post.user.username }}'s posts: </h3>
-            {% comment %} post.pk  --> other_post {% endcomment %}
+            {% blocktrans with username=post.user.username %}
+                    Latest other posts by @%(username)s:
+                {% endblocktrans %}
 
             {% for other_post in latest_author_posts%}
                 <h5 class="text-xl font-semibold text-gray-700 group-hover:text-sky-600 transition-colors">
-                    <a href="{% url 'post_detail' post.pk %}"><span class="mx-2">•</span>{{ other_post.title }}</a>
+                    <a href="{% url 'post_detail' other_post.pk %}"><span class="mx-2">•</span>{{ other_post.title }}</a>
                 </h5>
             {% empty %}
-
-            {% comment %}  {% endcomment %}
-                <p class="text-gray-700 italic">No other posts from <span class= "text-sky-700 font-semibold">{{ post.user.username }} </span> yet.</p>
+                <p class="text-gray-400 italic">
+                        {% blocktrans with username=post.user.username %}
+                            No other posts from <span class="text-sky-700 font-semibold">@%(username)s</span> yet.
+                        {% endblocktrans %}
+                    </p>
             {% endfor %}
             <div class="mt-8">
                 {% if latest_author_posts%}
                     <a href="{% url 'author_posts' post.user.username %}" class="text-sky-600 font-bold hover:underline">
-                        See all posts by @{{ post.user.username }} here →
+                        {% blocktrans with username=post.user.username%}
+                            See all posts by @%(username)s here →
+                        {% endblocktrans %}
                     </a>
                 {% endif %}
             </div>
@@ -83,5 +89,10 @@
 {% endwith %}
 {% endwith %}
 {% endwith %}
-{% include "includes/_action_section.html" with title="Have any ideas to share with us?" subtitle="Click the button below and write your story!" button_text="Start posting" url="#" %}
+{% trans "Have any ideas to share with us?" as action_title %}
+{% trans "Click the button below and write your story!" as action_subtitle %}
+{% trans "Start posting" as action_button_text %}
+
+{% include "includes/_action_section.html" with title=action_title subtitle=action_subtitle button_text=action_button_text url="#" %}
+
 {% endblock content %}

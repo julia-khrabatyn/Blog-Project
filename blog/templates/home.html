@@ -1,27 +1,30 @@
 {% extends "base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 <section class="text-center py-20 bg-gradient-to-b from-white to-gray-50">
     <h1 class="text-6xl font-black text-gray-900 mb-6 tracking-tight">
-        Welcome to <span class="text-sky-500">Byline-Blog !</span>
+        {% trans "Welcome to" %} <span class="text-sky-500">Byline-Blog !</span>
         </h1>
     <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-10">
-        A place where subatomic thoughts turn into powerful stories. 
-        Read, write, explore, inspire and create the universe of ideas!
+        {% blocktrans %}
+            "A place where subatomic thoughts turn into powerful stories. 
+            Read, write, explore, inspire and create the universe of ideas!"
+        {% endblocktrans %}
     </p>
     <div class="flex justify-center gap-4">
         <a href="{% url 'post_list' %}" class="button-create-post">
-            <span>Start Reading</span>
+            <span> {% trans "Start Reading" %} </span>
         </a>
         <a href="#latest" class="px-8 py-3 rounded-xl border border-gray-200 font-semibold text-gray-700 hover:bg-white transition-all">
-            Learn More
+            {% trans "Learn More" %}
         </a>
     </div>
 </section>
 <section class="py-16 bg-gray-50/50 border-y border-gray-100">
     <div class="max-w-5xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-gray-900 mb-10">Popular Posts</h2>
+        <h2 class="text-3xl font-bold text-gray-900 mb-10"> {% trans "Popular Posts" %}</h2>
         
         <div class="grid md:grid-cols-1 gap-6">
             {% for post in popular_posts %}
@@ -33,37 +36,41 @@
                     <div class="flex-1 border-b border-gray-100 pb-6">
                         <div class="flex items-center gap-2 mb-2">
                             <span class="text-xs text-gray-500 font-medium">
-                                {% if post.likes_count > 0 %}
-                                    {{ post.likes_count }} like{{ post.likes_count|pluralize }}
-                                {% else %}
-                                    No likes yet
-                                {% endif %}
+                                {% blocktrans count counter=post.likes_count %}
+                                    1 like
+                                {% plural %}
+                                    {{ counter }} likes
+                                {% endblocktrans %}
                             </span>
                             <span class="text-xs text-gray-400">•</span>
                             <span class="text-[10px] font-bold text-sky-500 uppercase tracking-widest">
-                                Most Liked
+                                {% trans "Most Liked" %}
                             </span>
                         </div>
                         
                         <h3 class="text-xl font-bold text-gray-900 group-hover:text-sky-600 transition-colors">
-                            <a href="{% url 'post_detail' post.pk|safe %}">{{ post.title }}</a>
+                            <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
                         </h3>
                         
                         <div class="flex items-center mt-3 text-xs text-gray-400">
                             <span class="font-bold text-gray-700">{{ post.user.username }}</span>
-                            <span class="mx-2">in</span>
+                            <span class="mx-2">{% trans "in" %}</span>
                             <span class="text-gray-500">
-                                {% if post.categories.all %}
-                                    {{ post.categories.first.title }}
-                                {% else %}
-                                    Stories
-                                {% endif %}
+                                {% with first_category=post.categories.all.0 %}
+                                    {% if first_category %}
+                                        <span class="text-sm font-medium text-sky-600">
+                                        {{ first_category.title }}
+                                        </span>
+                                    {% else %}
+                                        <span class="text-sm text-gray-400">{% trans "Uncategorized" %}</span>
+                                    {% endif %}
+                                {% endwith %}
                             </span>
                         </div>
                     </div>
                 </div>
             {% empty %}
-                <p class="text-gray-400 italic">The rankings are still being decided...</p>
+                <p class="text-gray-400 italic">{% trans "The rankings are still being decided..." %}</p>
             {% endfor %}
         </div>
     </div>
@@ -71,23 +78,23 @@
 <section>
     <div class="heatmap-container">
         <h2 class="text-center text-4xl font-black text-sky-700 mb-6 tracking-tight" >
-            Byline-Blog around the world!
+            Byline-Blog {% trans "around the world!" %}
         </h2>
         <h3 class="text-center text-2xl font-black text-gray-700 mb-6 tracking-tight">
-            Find like-minded people nearby!
+            {% trans "Find like-minded people nearby!" %}
         </h3>
         {% if heatmap %}
             {{ heatmap|safe}}
         {% else %}
-            <p> No active researchers on map yet. </p>
+            <p> {% trans "No active researchers on map yet." %}</p>
         {% endif %}
     </div>
 </section>
 <section id="latest" class="py-16">
     <div class="flex justify-between items-end mb-12">
-        <h2 class="text-3xl font-bold text-sky-800">Latest Stories from TOP-3 popular categories!</h2>
+        <h2 class="text-3xl font-bold text-sky-800">{% trans "Latest Stories from TOP-3 popular categories!" %}</h2>
         <a href="{% url 'post_list' %}" class="text-sky-600 font-semibold hover:underline">
-            View all posts &rarr;
+            {% trans "View all posts" %} &rarr;
         </a>
     </div>
 
@@ -95,13 +102,12 @@
         {% for post in latest_posts %}
             {% include "includes/_post_card.html" with post=post words_count=20 show_likes=False %}
         {% empty %}
-            <p class="text-gray-400">No stories found yet. Be the first to write one!</p>
+            <p class="text-gray-400">{% trans "No stories found yet. Be the first to write one!" %}</p>
         {% endfor %}
     </div>
-</section>
-<div class="flex flex-col items-center justify-center py-20 text-center">
-    <img class="h-max w-auto transition-transform group-hover:scale-105" src="{% static 'images/new_story.jpeg' %}" alt="Creativity inspire">
-</div>
-{% include "includes/_action_section.html" with title="If excited to share with us any ideas — don't be shy!" subtitle="Click the button below and create your new post. Your thoughts might be the spark someone else needs today." button_text="Create New Post" url="#" %}
-{% endblock %}
+{% trans "If excited to share with us any ideas — don't be shy!" as action_title %}
+{% trans "Click the button below and create your new post. Your thoughts might be the spark someone else needs today." as action_subtitle %}
+{% trans "Create New Post" as action_button_text %}
 
+{% include "includes/_action_section.html" with title=action_title subtitle=action_subtitle button_text=action_button_text url="#" %}
+{% endblock content%}

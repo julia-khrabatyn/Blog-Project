@@ -1,30 +1,39 @@
 {% extends "base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 <div class="max-w-4xl mx-auto">
     <header class="mb-12 text-center">
         <h1 class="text-5xl font-extrabold text-gray-900 mb-4 tracking-tighter">
-            Latest published posts
+            {% trans "Latest published posts" %}
         </h1>
     </header>
+
 {% include "includes/_filter_form.html" %}
     <div class="grid gap-12">
         {% for post in posts %}
-            {% include "includes/_post_card.html" with words_count=50%}
+            {% include "includes/_post_card.html" with words_count=50 post=post %}
         {% empty %}
             <div class="flex flex-col items-center justify-center py-20 text-center">
-                <img class="h-max w-auto transition-transform group-hover:scale-105" src="{% static 'images/empty_list.png' %}" alt="No posts published">
+                <img class="h-max w-auto transition-transform group-hover:scale-105" src="{% static 'images/empty_list.png' %}" alt="{% trans 'No posts published' %}">
             </div>
-            {% include "includes/_action_section.html" with title="Be the first to share your story with us!" subtitle="Click the button below and start your writing journey!" button_text="Create First Post" url="#" %}
+            {% trans "Be the first to share your story with us!" as action_title %}
+            {% trans "Click the button below and start your writing journey!" as action_subtitle %}
+            {% trans "Create First Post" as action_button_text %}
+            {% include "includes/_action_section.html" with title=action_title subtitle=action_subtitle button_text=action_button_text url="#" %}
         {% endfor %}
-
-        {% if is_paginated %}
-           {% include "includes/_pagination.html"%}
-        {% endif %}
     </div>
+
+    {% if is_paginated %}
+       {% include "includes/_pagination.html"%}
+    {% endif %}
+
     {% if posts %}
-        {% include "includes/_action_section.html" with title="Have something to share?" subtitle="World needs to hear your story today!" button_text="Start writing" url="#" %}
+        {% trans "Have something to share?" as action_title %}
+        {% trans "World needs to hear your story today!" as action_subtitle %}
+        {% trans "Start writing" as action_button_text %}
+        {% include "includes/_action_section.html" with title=action_title subtitle=action_subtitle button_text=action_button_text url="#" %}
     {% endif %}
 </div>
 {% endblock %}

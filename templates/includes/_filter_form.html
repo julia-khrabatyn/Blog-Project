@@ -1,6 +1,8 @@
+{% load i18n %}
+
 <div class="filter-section mb-4">
     <form method="get" class="card card-body shadow-sm">
-        <h5 class="card-title">Available filters</h5>
+        <h5 class="card-title">{% trans "Available filters" %}</h5>
         <div class="row">
             {% for field in filter.form %}
                 <div class="col-md-4 mb-2">
@@ -11,10 +13,10 @@
         </div>
         <div class="mt-3">
             <button type="submit" class="btn btn-primary">
-                <i class="fas fa-filter"></i> Apply
+                <i class="fas fa-filter"></i> {% trans "Apply" %}
             </button>
             <a href="{{ request.path }}" class="btn btn-outline-secondary">
-                Clean
+                {% trans "Clear" %}
             </a>
         </div>
     </form>
