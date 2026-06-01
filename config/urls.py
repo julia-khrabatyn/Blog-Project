@@ -30,8 +30,9 @@ urlpatterns = [
 ]
 
 urlpatterns += i18n_patterns(
+    path("admin/", admin.site.urls),
     path("", include("blog.urls")),
-    prefix_default_language=False,
+    prefix_default_language=True,
 )
 
 if settings.DEBUG:

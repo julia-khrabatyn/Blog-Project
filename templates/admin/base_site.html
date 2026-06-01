@@ -1,5 +1,6 @@
 {% extends "admin/base.html" %}
 {% load static %}
+{% load language_tags %}
 {% load i18n %}
 
 {% block branding %}
@@ -9,9 +10,25 @@
 
         <span style="color: #3dd3ee; font-weight: bold; font-size: 35px;">
             {% blocktrans with site_name="Byline-Blog"%}
-                Your %(site_name)s Admin Portal
-            {% endblocktrans %}
+                Your {{ site_name }} Admin Portal
+            {% endblocktrans%}
         </span>
     </a>
+    <div style="margin-right: 20px;">
+    {% language_switcher %}
+</div>
 </h1>
+
 {% endblock %}
+<style>
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover, 
+    input:-webkit-autofill:focus {
+        -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+        transition: background-color 5000s ease-in-out 0s;
+    }
+
+    input {
+        border-top: 1px solid #ccc !important;
+    }
+</style>
