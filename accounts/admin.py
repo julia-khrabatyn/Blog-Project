@@ -11,9 +11,9 @@ from core.admin import UserExportCsvMixin
 
 from accounts.models import User, Follow
 
-admin.site.site_header = "Byline Administration"
-admin.site.site_title = "Your Byline Blog Admin Portal"
-admin.site.index_title = "Welcome Back!"
+admin.site.site_header = _("Byline Administration")
+admin.site.site_title = _("Your Byline Blog Admin Portal")
+admin.site.index_title = _("Welcome Back!")
 
 
 class FollowInline(admin.TabularInline):
@@ -45,7 +45,7 @@ class UserAdmin(BaseUserAdmin, UserExportCsvMixin):
                 f'<img src="{picture_url}" style="width:{config.AVATAR_HEIGHT}px; height:{config.AVATAR_HEIGHT}px; object-fit:cover;"/>'
             )
 
-        return "No avatar"
+        return _("No avatar")
 
     @admin.display(description=_("Self-uploaded avatar"), boolean=True)
     def has_avatar(self, obj):
@@ -85,7 +85,7 @@ class UserAdmin(BaseUserAdmin, UserExportCsvMixin):
     list_display_links = ("username", "email")
     fieldsets = (
         (
-            "Credentials",
+            _("Credentials"),
             {
                 "fields": (
                     "username",
@@ -96,7 +96,7 @@ class UserAdmin(BaseUserAdmin, UserExportCsvMixin):
             },
         ),
         (
-            "User's personal info",
+            _("User's personal info"),
             {
                 "fields": (
                     "first_name",
@@ -108,11 +108,11 @@ class UserAdmin(BaseUserAdmin, UserExportCsvMixin):
                     "tags",
                 ),
                 "classes": ("collapse",),
-                "description": ("User's profile info"),
+                "description": _("User's profile info"),
             },
         ),
         (
-            "Permissions and status info",
+            _("Permissions and status info"),
             {
                 "fields": (
                     "is_active",
@@ -125,15 +125,15 @@ class UserAdmin(BaseUserAdmin, UserExportCsvMixin):
             },
         ),
         (
-            "Location details",
+            _("Location details"),
             {
                 "fields": ("country", "city", "latitude", "longitude"),
                 "classes": ("collapse",),
-                "description": ("User's location"),
+                "description": _("User's location"),
             },
         ),
         (
-            "Important dates",
+            _("Important dates"),
             {
                 "fields": ("date_joined", "created_at", "updated_at"),
                 "classes": ("collapsed",),
@@ -142,11 +142,16 @@ class UserAdmin(BaseUserAdmin, UserExportCsvMixin):
     )
     add_fieldsets = BaseUserAdmin.add_fieldsets + (
         (
-            "Extra Info",
+            _("Extra Info"),
             {
                 "fields": ("email", "birth_date", "country", "city"),
             },
         ),
+    )
+    filter_horizontal = (
+        "groups",
+        "user_permissions",
+        "tags",
     )
     date_hierarchy = "birth_date"
     actions_on_bottom = True

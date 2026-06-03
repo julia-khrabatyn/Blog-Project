@@ -55,7 +55,7 @@ class SlugMixin(models.Model):
         max_length=255,
         unique=True,
         verbose_name=_("Slug"),
-        help_text="URL-friendly version of the title",
+        help_text=_("URL-friendly version of the title"),
     )
 
     def generate_unique_slug(self):

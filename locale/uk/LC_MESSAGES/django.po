@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 22:25+0000\n"
+"POT-Creation-Date: 2026-06-03 23:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,9 +21,25 @@ msgstr ""
 "100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
 "(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
+#: accounts/admin.py:14
+msgid "Byline Administration"
+msgstr "Byline Управління"
+
+#: accounts/admin.py:15
+msgid "Your Byline Blog Admin Portal"
+msgstr "Ваш Byline Blog Портал Керування"
+
+#: accounts/admin.py:16
+msgid "Welcome Back!"
+msgstr "З поверненням!"
+
 #: accounts/admin.py:29
 msgid "Preview"
 msgstr "Попередній перегляд"
+
+#: accounts/admin.py:48
+msgid "No avatar"
+msgstr " Немає фото профілю"
 
 #: accounts/admin.py:50
 msgid "Self-uploaded avatar"
@@ -32,6 +48,38 @@ msgstr "Фото профілю, завантажене користувачем
 #: accounts/admin.py:55
 msgid "Bio preview"
 msgstr "Попередній перегляд біо"
+
+#: accounts/admin.py:88
+msgid "Credentials"
+msgstr "Облікові дані"
+
+#: accounts/admin.py:99
+msgid "User's personal info"
+msgstr "Особиста інформація про користувача"
+
+#: accounts/admin.py:111
+msgid "User's profile info"
+msgstr "Особиста інформація профілю користувача"
+
+#: accounts/admin.py:115
+msgid "Permissions and status info"
+msgstr "Дозволи та статус-інформація"
+
+#: accounts/admin.py:128
+msgid "Location details"
+msgstr "Деталі місцезнаходження"
+
+#: accounts/admin.py:132
+msgid "User's location"
+msgstr "Місцезнаходження користувача"
+
+#: accounts/admin.py:136
+msgid "Important dates"
+msgstr "Важливі дати"
+
+#: accounts/admin.py:145
+msgid "Extra Info"
+msgstr "Додаткова інформація"
 
 #: accounts/models.py:65
 msgid "Date of birth"
@@ -86,7 +134,7 @@ msgstr ""
 "Завантажте фото профілю (необов'язково). (Підтримуються лише такі формати: ."
 "png, .jpeg, .jpg, .webp )"
 
-#: accounts/models.py:110 blog/admin.py:49 blog/models.py:54 tags/models.py:22
+#: accounts/models.py:110 blog/admin.py:52 blog/models.py:54 tags/models.py:22
 msgid "Tags"
 msgstr "Теги"
 
@@ -138,27 +186,63 @@ msgstr "Підписка"
 msgid "Follows"
 msgstr "Підписки"
 
-#: blog/admin.py:54 blog/models.py:163
+#: blog/admin.py:33
+msgid "No image."
+msgstr "Немає картинки"
+
+#: blog/admin.py:35 blog/admin.py:190
+msgid "Show image"
+msgstr "Попередній вигляд картинки"
+
+#: blog/admin.py:57 blog/models.py:163
 msgid "Category"
 msgstr "Категорія"
 
-#: blog/admin.py:59 blog/models.py:137
+#: blog/admin.py:62 blog/models.py:137
 msgid "Likes"
 msgstr "Вподобайки"
 
-#: blog/admin.py:64
+#: blog/admin.py:67
 msgid "First 10 words from post text"
 msgstr "Перші 10 слів з тексту публікації"
 
-#: blog/admin.py:69
+#: blog/admin.py:72
 msgid "First 5 tags for post"
 msgstr "Перші 5 тегів публікації"
 
-#: blog/admin.py:157
+#: blog/admin.py:101
+msgid "Post info"
+msgstr "інформація про публікацію"
+
+#: blog/admin.py:115
+msgid "Post details"
+msgstr "Деталі публікації"
+
+#: blog/admin.py:150
+msgid "Category info"
+msgstr "інформація про категорію"
+
+#: blog/admin.py:165
 msgid "Number of posts"
 msgstr "Кількість публікацій"
 
-#: blog/admin.py:272
+#: blog/admin.py:188
+msgid "Image not added yet."
+msgstr "Фото поки не додано"
+
+#: blog/admin.py:205
+msgid "Post's image general info"
+msgstr "Загальна інформація про картинку"
+
+#: blog/admin.py:217
+msgid "Image creation/update time"
+msgstr "Час створення/оновлення картинки"
+
+#: blog/admin.py:226
+msgid "User activity"
+msgstr "Активність користувача"
+
+#: blog/admin.py:282
 msgid "Total users likes"
 msgstr "Загальна кількість вподобайок"
 
@@ -545,7 +629,7 @@ msgstr "Натискайте на кнопочку нижче та розпоч�
 
 #: blog/templates/post_list.html:23
 msgid "Create First Post"
-msgstr ""
+msgstr "Створити перший пост"
 
 #: blog/templates/post_list.html:33
 msgid "Have something to share?"
@@ -558,6 +642,22 @@ msgstr "Світ повинен почути Вашу історію вже сь
 #: blog/templates/post_list.html:35
 msgid "Start writing"
 msgstr "Гайда писати!"
+
+#: comments/admin.py:19
+msgid "Who created"
+msgstr "Хто створив (автор)"
+
+#: comments/admin.py:25
+msgid "To which post"
+msgstr "(До якої публікації)"
+
+#: comments/admin.py:31
+msgid "Date of creation/update"
+msgstr "Дата створення/оновлення"
+
+#: comments/admin.py:37
+msgid "Comment text"
+msgstr "Текст коментаря"
 
 #: comments/models.py:13
 msgid "Your comment"
@@ -579,13 +679,53 @@ msgstr "Коментар"
 msgid "Comments"
 msgstr "Коментарі"
 
-#: config/settings/base_settings.py:131
+#: config/settings/base_settings.py:132
 msgid "Українська"
 msgstr "Українська"
 
-#: config/settings/base_settings.py:132
+#: config/settings/base_settings.py:133
 msgid "English"
 msgstr "English"
+
+#: config/settings/constance_settings.py:8
+msgid "Max image size in MB"
+msgstr "Максимальний обсяг файлу в МБ"
+
+#: config/settings/constance_settings.py:11
+msgid "Allowed mime-type for image files"
+msgstr "Дозволені  MIME-типи для файлів зображень"
+
+#: config/settings/constance_settings.py:16
+msgid "Allowed images extensions (comma-separated)"
+msgstr "Дозволені розширення зображень (через кому)"
+
+#: config/settings/constance_settings.py:19
+msgid "Avatar height in px"
+msgstr "Висота фото профілю в пікселях"
+
+#: config/settings/constance_settings.py:22
+msgid "Threshold for low user's activity (number of likes)"
+msgstr "Поріг низької активності користувача (кількість лайків)"
+
+#: config/settings/constance_settings.py:27
+msgid "Threshold for medium user's activity (number of likes)"
+msgstr "Поріг середньої активності користувача (кількість лайків)"
+
+#: config/settings/constance_settings.py:30
+msgid "number of posts showing in one page"
+msgstr "Кількість публікацій на одній сторінці"
+
+#: config/settings/constance_settings.py:31
+msgid "number of showing below post"
+msgstr "Кількість коментарів під постом"
+
+#: config/settings/constance_settings.py:34
+msgid "Upload default user avatar"
+msgstr "Шлях за замовчуванням для завантаження фото профілю користувача"
+
+#: config/settings/constance_settings.py:39
+msgid "user's location offset for representation on map"
+msgstr "Зміщення локації користувача для відображення на карті"
 
 #: core/models.py:28
 msgid "Date of creation"
@@ -602,6 +742,10 @@ msgstr "Опубліковано"
 #: core/models.py:57
 msgid "Slug"
 msgstr "Слаг"
+
+#: core/models.py:58
+msgid "URL-friendly version of the title"
+msgstr "Версія заголовка для URL"
 
 #: tags/models.py:13
 msgid "Tag title"
@@ -746,3 +890,36 @@ msgstr ""
 "                        Поки немає жодного коментаря. Будь першим, хто "
 "прокоментує!\n"
 "                    "
+
+#, fuzzy
+#~| msgid "Categories"
+#~ msgid "categories"
+#~ msgstr "Категорії"
+
+#, fuzzy
+#~| msgid "By tags"
+#~ msgid "tags"
+#~ msgstr "Пошук за тегами"
+
+#~ msgid "updated_at"
+#~ msgstr "Оновлено"
+
+#, fuzzy
+#~| msgid "Published"
+#~ msgid "published"
+#~ msgstr "Опубліковано"
+
+#, fuzzy
+#~| msgid "Title"
+#~ msgid "title"
+#~ msgstr "Заголовок"
+
+#, fuzzy
+#~| msgid "Post text"
+#~ msgid "text"
+#~ msgstr "Текст публікації"
+
+#, fuzzy
+#~| msgid "Description"
+#~ msgid "description"
+#~ msgstr "Опис"

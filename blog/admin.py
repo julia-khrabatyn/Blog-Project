@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 from adminsortable2.admin import SortableAdminMixin
 from constance import config
+from modeltranslation.admin import TabbedTranslationAdmin
 
 from core.admin import BaseExportCsvMixin
 
@@ -29,11 +30,13 @@ class ImageInLine(admin.TabularInline):
                 )
             )
         else:
-            return "No image."
+            return _("No image.")
+
+    show_image.short_description = _("Show image")
 
 
 @admin.register(Post)
-class PostAdmin(admin.ModelAdmin, BaseExportCsvMixin):
+class PostAdmin(TabbedTranslationAdmin, BaseExportCsvMixin):
     """Register Post in django admin."""
 
     def get_queryset(self, request):
@@ -84,7 +87,7 @@ class PostAdmin(admin.ModelAdmin, BaseExportCsvMixin):
         "partial_post_text",
         "published",
     )
-    prepopulated_fields = {"slug": ("title",)}
+    prepopulated_fields = {"slug": ("title_en",)}
     readonly_fields = ("created_at", "updated_at")
     list_filter = (
         "title",
@@ -95,7 +98,7 @@ class PostAdmin(admin.ModelAdmin, BaseExportCsvMixin):
     ordering = ["-updated_at"]
     fieldsets = (
         (
-            "Post info",
+            _("Post info"),
             {
                 "fields": (
                     "user",
@@ -109,9 +112,14 @@ class PostAdmin(admin.ModelAdmin, BaseExportCsvMixin):
             },
         ),
         (
-            "Post details",
+            _("Post details"),
             {
-                "fields": ("title", "slug", "text", "description"),
+                "fields": (
+                    "title",
+                    "slug",
+                    "text",
+                    "description",
+                ),
                 "classes": ("collapse",),
             },
         ),
@@ -125,7 +133,7 @@ class PostAdmin(admin.ModelAdmin, BaseExportCsvMixin):
 
 
 @admin.register(Category)
-class CategoryAdmin(SortableAdminMixin, admin.ModelAdmin):
+class CategoryAdmin(SortableAdminMixin, TabbedTranslationAdmin):
     """Register Category in django-admin."""
 
     def get_queryset(self, request):
@@ -135,11 +143,11 @@ class CategoryAdmin(SortableAdminMixin, admin.ModelAdmin):
             .annotate(posts_count_db=Count("posts"))
         )
 
-    prepopulated_fields = {"slug": ("title",)}
+    prepopulated_fields = {"slug": ("title_en",)}
     readonly_fields = ("created_at", "updated_at", "posts_count_display")
     fieldsets = (
         (
-            "Category info",
+            _("Category info"),
             {
                 "fields": (
                     "title",
@@ -177,7 +185,9 @@ class ImageAdmin(admin.ModelAdmin):
                 )
             )
         else:
-            return "Image not added yet."
+            return _("Image not added yet.")
+
+    show_image.short_description = _("Show image")
 
     list_display = (
         "image_file",
@@ -192,7 +202,7 @@ class ImageAdmin(admin.ModelAdmin):
     list_filter = ("created_at", "updated_at", "alt_text", "post")
     fieldsets = (
         (
-            "Post's image general info",
+            _("Post's image general info"),
             {
                 "fields": (
                     "image_file",
@@ -204,7 +214,7 @@ class ImageAdmin(admin.ModelAdmin):
             },
         ),
         (
-            "Image creation/update time",
+            _("Image creation/update time"),
             {"fields": ("created_at", "updated_at"), "classes": ("collapse",)},
         ),
     )
@@ -213,7 +223,7 @@ class ImageAdmin(admin.ModelAdmin):
 class UserActivityFilter(admin.SimpleListFilter):
     """Help to display filter for likes."""
 
-    title = "User activity"
+    title = _("User activity")
     parameter_name = "activity_level"
 
     @property
@@ -234,7 +244,7 @@ class UserActivityFilter(admin.SimpleListFilter):
         )
 
     def queryset(self, request, queryset):
-        value = self.value
+        value = self.value()
         if value == "low":
             return queryset.filter(user_total_likes_count__lte=self.low_limit)
         if value == "medium":
@@ -242,7 +252,7 @@ class UserActivityFilter(admin.SimpleListFilter):
                 user_total_likes_count__gt=self.low_limit,
                 user_total_likes_count__lte=self.medium_limit,
             )
-        if self.value == "high":
+        if value == "high":
             return queryset.filter(
                 user_total_likes_count__gt=self.medium_limit
             )

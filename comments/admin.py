@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
 
 from core.admin import BaseExportCsvMixin
 
@@ -15,16 +16,28 @@ class CommentAdmin(admin.ModelAdmin, BaseExportCsvMixin):
     list_filter = ("user", "post", "updated_at")
     fieldsets = (
         (
-            "Who created",
+            _("Who created"),
             {
                 "fields": ("user",),
             },
         ),
-        ("To which post", {"fields": ("post",)}),
         (
-            "Date of creation/update",
-            {"fields": ("created_at", "updated_at")},
+            _("To which post"),
+            {
+                "fields": ("post",),
+            },
         ),
-        ("Comment text", {"fields": ("text",)}),
+        (
+            _("Date of creation/update"),
+            {
+                "fields": ("created_at", "updated_at"),
+            },
+        ),
+        (
+            _("Comment text"),
+            {
+                "fields": ("text",),
+            },
+        ),
     )
     actions = ["export_as_csv"]
