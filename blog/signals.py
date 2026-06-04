@@ -1,14 +1,16 @@
 import nh3
 
+
 from django.conf import settings
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
-from .models import Post
+from .models import Category, Post
+from core.services import translate_changed_fields
 
 
 def _clean_post_text(instance):
-    """Private function for cleaning post text with nh3 for safety reasons."""
+    """Protected function for cleaning post text with nh3 for safety reasons."""
 
     if not instance.text:
         return
@@ -41,3 +43,33 @@ def _clean_post_text(instance):
 def handle_post_pre_save(sender, instance, **kwargs):
     """Main function for handling pre_save."""
     _clean_post_text(instance)
+
+
+@receiver(
+    pre_save, sender=Post, dispatch_uid="blog.signals.translate_post_on_save"
+)
+def translate_post_on_save(sender, instance, **kwargs):
+    """Function for handling saving translation for post's title, text, description."""
+    translate_changed_fields(
+        instance=instance,
+        fields_map={
+            "title_en": "title_uk",
+            "text_en": "text_uk",
+            "description_en": "description_uk",
+        },
+    )
+
+
+@receiver(
+    pre_save,
+    sender=Category,
+    dispatch_uid="blog.signals.translate_category_on_save",
+)
+def translate_category_on_save(sender, instance, **kwargs):
+    """Function for handling saving translation for category's title"""
+    translate_changed_fields(
+        instance=instance,
+        fields_map={
+            "title_en": "title_uk",
+        },
+    )

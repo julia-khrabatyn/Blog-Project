@@ -3,14 +3,16 @@ from .models import Category, Post
 
 
 @register(Category)
-class ArticleTranslationOptions(TranslationOptions):
+class CategoryTranslationOptions(TranslationOptions):
     fields = ("title",)
+    required_languages = ("en",)
 
 
 @register(Post)
-class ArticleTranslationOptions(TranslationOptions):
+class PostTranslationOptions(TranslationOptions):
     fields = (
         "title",
         "text",
         "description",
     )
+    required_languages = ("en",)

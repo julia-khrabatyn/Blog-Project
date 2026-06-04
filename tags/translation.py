@@ -3,5 +3,6 @@ from .models import Tag
 
 
 @register(Tag)
-class ArticleTranslationOptions(TranslationOptions):
+class TagTranslationOptions(TranslationOptions):
     fields = ("title",)
+    required_languages = ("en",)
