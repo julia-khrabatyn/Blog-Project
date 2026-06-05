@@ -73,13 +73,13 @@ class PostForm(ModelForm):
             f"{tag_text}<a href='tags/create/' target='_blank' class='text-sky-500 hover:underline'>{tag_link}</a>"
         )
 
-        def save(self, commit=True, user=None):
-            post = super().save(commit=False)
-            if user:
-                post.user = user
+    def save(self, commit=True, user=None):
+        post = super().save(commit=False)
+        if user:
+            post.user = user
 
-            if commit:
-                post.save()
-                self.save_m2m()
+        if commit:
+            post.save()
+            self.save_m2m()
 
-            return post
+        return post
