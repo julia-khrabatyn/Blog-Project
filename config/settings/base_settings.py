@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     "comments",
     "tags",
     "django_countries",
-    "constance",
+    "config.apps.MyConstanceConfig",
     "constance.backends.database",
     "adminsortable2",
     "allauth",

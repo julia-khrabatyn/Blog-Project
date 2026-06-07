@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-03 23:53+0000\n"
+"POT-Creation-Date: 2026-06-07 20:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,6 +81,10 @@ msgstr "Важливі дати"
 msgid "Extra Info"
 msgstr "Додаткова інформація"
 
+#: accounts/apps.py:8
+msgid "Accounts"
+msgstr "Користувачі"
+
 #: accounts/models.py:65
 msgid "Date of birth"
 msgstr "Дата народження"
@@ -134,7 +138,8 @@ msgstr ""
 "Завантажте фото профілю (необов'язково). (Підтримуються лише такі формати: ."
 "png, .jpeg, .jpg, .webp )"
 
-#: accounts/models.py:110 blog/admin.py:52 blog/models.py:54 tags/models.py:22
+#: accounts/models.py:110 blog/admin.py:52 blog/models.py:54 tags/apps.py:7
+#: tags/models.py:22
 msgid "Tags"
 msgstr "Теги"
 
@@ -245,6 +250,10 @@ msgstr "Активність користувача"
 #: blog/admin.py:282
 msgid "Total users likes"
 msgstr "Загальна кількість вподобайок"
+
+#: blog/apps.py:7
+msgid "Blog"
+msgstr "Блог"
 
 #: blog/filters.py:31
 msgid "By title"
@@ -659,6 +668,10 @@ msgstr "Дата створення/оновлення"
 msgid "Comment text"
 msgstr "Текст коментаря"
 
+#: comments/apps.py:7 comments/models.py:36
+msgid "Comments"
+msgstr "Коментарі"
+
 #: comments/models.py:13
 msgid "Your comment"
 msgstr "Ваш коментар"
@@ -675,9 +688,9 @@ msgstr "Автор цього коментаря"
 msgid "Comment"
 msgstr "Коментар"
 
-#: comments/models.py:36
-msgid "Comments"
-msgstr "Коментарі"
+#: config/apps.py:6
+msgid "Constance"
+msgstr "Налаштування констант"
 
 #: config/settings/base_settings.py:132
 msgid "Українська"
