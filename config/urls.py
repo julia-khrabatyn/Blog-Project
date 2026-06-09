@@ -32,7 +32,7 @@ urlpatterns = [
 
 urlpatterns += i18n_patterns(
     path("admin/", admin.site.urls),
-    path("", include("blog.urls")),
+    path("blog/", include("blog.urls")),
     prefix_default_language=True,
 )
 
