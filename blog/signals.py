@@ -2,11 +2,11 @@ import nh3
 
 
 from django.conf import settings
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
 from .models import Category, Post
-from core.services import translate_changed_fields
+from core.services import translate_changed_fields, get_translation_field_map
 
 
 def _clean_post_text(instance):
@@ -46,22 +46,24 @@ def handle_post_pre_save(sender, instance, **kwargs):
 
 
 @receiver(
-    post_save, sender=Post, dispatch_uid="blog.signals.translate_post_on_save"
+    pre_save, sender=Post, dispatch_uid="blog.signals.translate_post_on_save"
 )
 def translate_post_on_save(sender, instance, **kwargs):
     """Function for handling saving translation for post's title, text, description."""
+    import logging
+
+    logger = logging.getLogger("core")
+    from core.middleware import get_current_language
+
+    logger.warning(f"LANGUAGE IN SIGNAL: {get_current_language()}")
     translate_changed_fields(
         instance=instance,
-        fields_map={
-            "title_en": "title_uk",
-            "text_en": "text_uk",
-            "description_en": "description_uk",
-        },
+        fields_map=get_translation_field_map(["title", "text", "description"]),
     )
 
 
 @receiver(
-    post_save,
+    pre_save,
     sender=Category,
     dispatch_uid="blog.signals.translate_category_on_save",
 )
@@ -69,7 +71,5 @@ def translate_category_on_save(sender, instance, **kwargs):
     """Function for handling saving translation for category's title"""
     translate_changed_fields(
         instance=instance,
-        fields_map={
-            "title_en": "title_uk",
-        },
+        fields_map=get_translation_field_map(["title"]),
     )
