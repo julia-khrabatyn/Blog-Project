@@ -1,10 +1,10 @@
 import logging
 import textwrap
+import time
 
 from deep_translator import GoogleTranslator
 from .middleware import get_current_language
 
-# TODO: should I add time module for time sleep between chunks, so error 429 Too Many Requests won't happen?
 logger = logging.getLogger("core")
 
 __all__ = ["translate_changed_fields", "get_translation_field_map"]
@@ -22,7 +22,9 @@ def _translate_text(text: str, source_lang, target_lang) -> str:
             ).translate(text=text)
         chunks = textwrap.wrap(text=text, width=4000, replace_whitespace=False)
         translated_parts = []
-        for chunk in chunks:
+        for i, chunk in enumerate(chunks):
+            if i > 0:
+                time.sleep(1)
             translated_chunk = GoogleTranslator(
                 source=source_lang, target=target_lang
             ).translate(text=chunk)
