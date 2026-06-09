@@ -50,12 +50,6 @@ def handle_post_pre_save(sender, instance, **kwargs):
 )
 def translate_post_on_save(sender, instance, **kwargs):
     """Function for handling saving translation for post's title, text, description."""
-    import logging
-
-    logger = logging.getLogger("core")
-    from core.middleware import get_current_language
-
-    logger.warning(f"LANGUAGE IN SIGNAL: {get_current_language()}")
     translate_changed_fields(
         instance=instance,
         fields_map=get_translation_field_map(["title", "text", "description"]),

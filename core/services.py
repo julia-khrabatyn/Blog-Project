@@ -62,8 +62,6 @@ def translate_changed_fields(instance, fields_map: dict) -> None:
     lang = get_current_language()
     source_lang, target_lang = ("en", "uk") if lang == "en" else ("uk", "en")
     changed = _get_changed_fields(instance, list(fields_map.keys()))
-    logger.warning(f"fields_map: {fields_map}")
-    logger.warning(f"changed: {changed}")
     for source_field, target_field in fields_map.items():
         if source_field in changed and getattr(instance, source_field):
             try:
