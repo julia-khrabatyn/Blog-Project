@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.db.models import Count
+from django.utils.html import strip_tags
 from django.utils.safestring import mark_safe
 from django.utils.text import Truncator
 from django.utils.translation import gettext_lazy as _
@@ -83,7 +84,8 @@ class PostAdmin(TabbedTranslationAdmin, BaseExportCsvMixin):
     @admin.display(description=_("First 10 words from post text"))
     def partial_post_text(self, obj):
         """Show first 10 words of post text."""
-        return Truncator(obj.text).words(10, truncate="...")
+        clean_text = strip_tags(obj.text)
+        return Truncator(clean_text).words(10, truncate="...")
 
     @admin.display(description=_("First 5 tags for post"))
     def partial_post_tags(self, obj):
