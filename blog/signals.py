@@ -2,7 +2,7 @@ import nh3
 
 
 from django.conf import settings
-from django.db.models.signals import pre_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 from .models import Category, Post
@@ -46,7 +46,7 @@ def handle_post_pre_save(sender, instance, **kwargs):
 
 
 @receiver(
-    pre_save, sender=Post, dispatch_uid="blog.signals.translate_post_on_save"
+    post_save, sender=Post, dispatch_uid="blog.signals.translate_post_on_save"
 )
 def translate_post_on_save(sender, instance, **kwargs):
     """Function for handling saving translation for post's title, text, description."""
@@ -61,7 +61,7 @@ def translate_post_on_save(sender, instance, **kwargs):
 
 
 @receiver(
-    pre_save,
+    post_save,
     sender=Category,
     dispatch_uid="blog.signals.translate_category_on_save",
 )
