@@ -7,7 +7,7 @@ from pathlib import Path
 
 from constance.signals import config_updated
 
-logger = logging.getLogger("__name__") # TODO мабуть треба не рядок
+logger = logging.getLogger(__name__)
 
 __all__ = [
     "cleanup_old_default_avatar",
@@ -35,11 +35,11 @@ def cleanup_old_default_avatar(sender, key, old_value, new_value, **kwargs):
                     )
                 except OSError:
                     logger.error(
-                        f"OSError was occured while deleting {old_value_str}",
+                        f"OSError was occurred while deleting {old_value_str}",
                         exc_info=True,
                     )
                 except Exception as e:
                     logger.error(
-                        f"Error: {e} was occured while deleting {old_value_str}",
+                        f"Error: {e} was occurred while deleting {old_value_str}",
                         exc_info=True,
                     )
