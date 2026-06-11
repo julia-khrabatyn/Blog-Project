@@ -33,7 +33,8 @@
         {% trans "Have something to share?" as action_title %}
         {% trans "World needs to hear your story today!" as action_subtitle %}
         {% trans "Start writing" as action_button_text %}
-        {% include "includes/_action_section.html" with title=action_title subtitle=action_subtitle button_text=action_button_text url="#" %}
+        {% url "post_create" as url %}
+        {% include "includes/_action_section.html" with title=action_title subtitle=action_subtitle button_text=action_button_text url=url %}
     {% endif %}
 </div>
 {% endblock %}

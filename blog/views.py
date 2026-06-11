@@ -1,12 +1,16 @@
 from django.db.models import Count
 from django.views.generic import DetailView, ListView, TemplateView
-from django.shortcuts import get_object_or_404
+from django.views.generic.edit import CreateView
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
+from django.urls import reverse_lazy
 
 from constance import config
 
 from .filters import AuthorPostFilter, GlobalPostFilter
+from .forms import PostForm
 from .models import Post, Category
 from .services import (
     get_comments_for_post_view,
@@ -20,8 +24,9 @@ User = get_user_model()
 __all__ = (
     "AuthorPostsListView",
     "HomeView",
+    "PostCreateView",
     "PostDetailView",
-    "PostListview",
+    "PostListView",
 )
 
 
@@ -157,4 +162,22 @@ class PostListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["filter"] = self.filterset
+        return context
+
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+    """Display form for post creation."""
+
+    model = Post
+    form_class = PostForm
+    template_name = "post_create.html"
+    success_url = reverse_lazy("post_list")
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["lang"] = self.request.LANGUAGE_CODE
         return context

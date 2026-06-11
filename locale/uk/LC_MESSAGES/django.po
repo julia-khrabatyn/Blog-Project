@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-09 13:42+0000\n"
+"POT-Creation-Date: 2026-06-11 19:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -138,7 +138,7 @@ msgstr ""
 "Завантажте фото профілю (необов'язково). (Підтримуються лише такі формати: ."
 "png, .jpeg, .jpg, .webp )"
 
-#: accounts/models.py:110 blog/admin.py:68 blog/models.py:54 tags/apps.py:7
+#: accounts/models.py:110 blog/admin.py:69 blog/models.py:54 tags/apps.py:7
 #: tags/models.py:22
 msgid "Tags"
 msgstr "Теги"
@@ -191,63 +191,63 @@ msgstr "Підписка"
 msgid "Follows"
 msgstr "Підписки"
 
-#: blog/admin.py:33
+#: blog/admin.py:34
 msgid "No image."
 msgstr "Немає картинки"
 
-#: blog/admin.py:35 blog/admin.py:221
+#: blog/admin.py:36 blog/admin.py:223
 msgid "Show image"
 msgstr "Попередній вигляд картинки"
 
-#: blog/admin.py:73 blog/models.py:163
+#: blog/admin.py:74 blog/models.py:163
 msgid "Category"
 msgstr "Категорія"
 
-#: blog/admin.py:78 blog/models.py:137
+#: blog/admin.py:79 blog/models.py:137
 msgid "Likes"
 msgstr "Вподобайки"
 
-#: blog/admin.py:83
+#: blog/admin.py:84
 msgid "First 10 words from post text"
 msgstr "Перші 10 слів з тексту публікації"
 
-#: blog/admin.py:88
+#: blog/admin.py:90
 msgid "First 5 tags for post"
 msgstr "Перші 5 тегів публікації"
 
-#: blog/admin.py:117
+#: blog/admin.py:119
 msgid "Post info"
 msgstr "інформація про публікацію"
 
-#: blog/admin.py:131
+#: blog/admin.py:133
 msgid "Post details"
 msgstr "Деталі публікації"
 
-#: blog/admin.py:181
+#: blog/admin.py:183
 msgid "Category info"
 msgstr "інформація про категорію"
 
-#: blog/admin.py:196
+#: blog/admin.py:198
 msgid "Number of posts"
 msgstr "Кількість публікацій"
 
-#: blog/admin.py:219
+#: blog/admin.py:221
 msgid "Image not added yet."
 msgstr "Фото поки не додано"
 
-#: blog/admin.py:236
+#: blog/admin.py:238
 msgid "Post's image general info"
 msgstr "Загальна інформація про картинку"
 
-#: blog/admin.py:248
+#: blog/admin.py:250
 msgid "Image creation/update time"
 msgstr "Час створення/оновлення картинки"
 
-#: blog/admin.py:257
+#: blog/admin.py:259
 msgid "User activity"
 msgstr "Активність користувача"
 
-#: blog/admin.py:313
+#: blog/admin.py:315
 msgid "Total users likes"
 msgstr "Загальна кількість вподобайок"
 
@@ -303,35 +303,35 @@ msgstr "Шукати коментарі..."
 msgid "Enter author's username..."
 msgstr "Введіть ім'я автора "
 
-#: blog/forms.py:21
+#: blog/forms.py:41
 msgid "Post Title"
-msgstr "заголовок публікації"
+msgstr "Заголовок публікації"
 
-#: blog/forms.py:26
+#: blog/forms.py:45
 msgid "Enter a catchy title..."
 msgstr "Введіть ефектний заголовок"
 
-#: blog/forms.py:32
-msgid "Post content"
-msgstr "Вміст публікації"
-
-#: blog/forms.py:35 blog/models.py:34
+#: blog/forms.py:51 blog/models.py:34
 msgid "Post description (optional)"
 msgstr "Опис публікації (необов'язково)"
 
-#: blog/forms.py:42
+#: blog/forms.py:57
 msgid "Short summary for the card..."
 msgstr "Стислий зміст статті"
 
-#: blog/forms.py:62 blog/forms.py:70
+#: blog/forms.py:62
+msgid "Post content"
+msgstr "Вміст публікації"
+
+#: blog/forms.py:75 blog/forms.py:83
 msgid "Don't have the one you need?"
 msgstr "Не знайшли того, що відгукується?"
 
-#: blog/forms.py:63
+#: blog/forms.py:76
 msgid "+ Create Category"
 msgstr "+ Створити категорію"
 
-#: blog/forms.py:71
+#: blog/forms.py:84
 msgid "+ Add New Tag"
 msgstr "+ Додати Тег"
 
@@ -554,6 +554,22 @@ msgstr ""
 #: blog/templates/home.html:110
 msgid "Create New Post"
 msgstr "Створити нову публікацію"
+
+#: blog/templates/post_create.html:6 blog/templates/post_create.html:12
+msgid "Create Post"
+msgstr "Створити публікацію"
+
+#: blog/templates/post_create.html:13
+msgid "Fill in the details below to publish your post."
+msgstr "Будь ласка, заповніть поля для створення публікації"
+
+#: blog/templates/post_create.html:54
+msgid "Cancel"
+msgstr "Відмінити"
+
+#: blog/templates/post_create.html:58
+msgid "Publish"
+msgstr "Оприлюднити"
 
 #: blog/templates/post_detail.html:40
 msgid "About Author:"
