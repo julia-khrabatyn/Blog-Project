@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-11 19:30+0000\n"
+"POT-Creation-Date: 2026-06-12 01:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -323,7 +323,7 @@ msgstr "Стислий зміст статті"
 msgid "Post content"
 msgstr "Вміст публікації"
 
-#: blog/forms.py:75 blog/forms.py:83
+#: blog/forms.py:75 blog/forms.py:90
 msgid "Don't have the one you need?"
 msgstr "Не знайшли того, що відгукується?"
 
@@ -331,9 +331,19 @@ msgstr "Не знайшли того, що відгукується?"
 msgid "+ Create Category"
 msgstr "+ Створити категорію"
 
-#: blog/forms.py:84
+#: blog/forms.py:91
 msgid "+ Add New Tag"
 msgstr "+ Додати Тег"
+
+#: blog/forms.py:112 blog/models.py:149
+msgid "Your category title"
+msgstr "Заголовок категорії"
+
+#: blog/forms.py:116
+#, fuzzy
+#| msgid "Enter a catchy title..."
+msgid "Enter category title..."
+msgstr "Введіть ефектний заголовок"
 
 #: blog/models.py:22 blog/models.py:148 tags/models.py:13
 msgid "Title"
@@ -426,10 +436,6 @@ msgstr "Вподобана публікація"
 #: blog/models.py:136
 msgid "Like"
 msgstr "Вподобайка"
-
-#: blog/models.py:149
-msgid "Your category title"
-msgstr "Заголовок категорії"
 
 #: blog/models.py:154
 msgid "Order"
@@ -555,19 +561,19 @@ msgstr ""
 msgid "Create New Post"
 msgstr "Створити нову публікацію"
 
-#: blog/templates/post_create.html:6 blog/templates/post_create.html:12
+#: blog/templates/post_create.html:10 blog/templates/post_create.html:17
 msgid "Create Post"
 msgstr "Створити публікацію"
 
-#: blog/templates/post_create.html:13
+#: blog/templates/post_create.html:18
 msgid "Fill in the details below to publish your post."
 msgstr "Будь ласка, заповніть поля для створення публікації"
 
-#: blog/templates/post_create.html:54
+#: blog/templates/post_create.html:59
 msgid "Cancel"
 msgstr "Відмінити"
 
-#: blog/templates/post_create.html:58
+#: blog/templates/post_create.html:63
 msgid "Publish"
 msgstr "Оприлюднити"
 
@@ -811,33 +817,41 @@ msgstr "Або"
 msgid "Login with Google"
 msgstr "Увійти за допомогою Google"
 
-#: templates/base.html:32
+#: templates/base.html:37
 msgid "Blog logo"
 msgstr "Логотип Блогу"
 
-#: templates/base.html:37
+#: templates/base.html:42
 msgid "Main"
 msgstr "Головна"
 
-#: templates/base.html:38
+#: templates/base.html:43
 msgid "All Posts"
 msgstr "Всі Пости"
 
-#: templates/base.html:49
+#: templates/base.html:54
 msgid "Welcome, "
 msgstr "Вітаємо, "
 
-#: templates/base.html:54
+#: templates/base.html:59
 msgid "Logout"
 msgstr "Вийти"
 
-#: templates/base.html:60
+#: templates/base.html:65
 msgid "Sign in"
 msgstr "Увійти"
 
-#: templates/base.html:62
+#: templates/base.html:67
 msgid "Sign up"
 msgstr "Зареєструватися"
+
+#: templates/includes/_category_modal.html:16
+msgid "Save"
+msgstr "Зберегти"
+
+#: templates/includes/_category_modal.html:17
+msgid "Close"
+msgstr "Закрити"
 
 #: templates/includes/_filter_form.html:5
 msgid "Available filters"

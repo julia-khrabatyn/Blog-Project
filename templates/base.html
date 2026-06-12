@@ -20,6 +20,11 @@
             }
         }
     </script>
+
+    {% block extra_js %}
+        <script src="{% static 'js/categories.js' %}" defer></script>
+    {% endblock %}
+    
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body class="h-full font-sans antialiased text-gray-900 flex flex-col">

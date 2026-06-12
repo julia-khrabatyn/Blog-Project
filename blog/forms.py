@@ -5,12 +5,13 @@ from django.utils.translation import gettext_lazy as _
 
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
-from core.middleware import get_current_language
+from core.services import get_languages
 
-from .models import Post
+from .models import Post, Category
 
 __all__ = [
     "PostForm",
+    "CategoryForm",
 ]
 
 WIDGET_CLASS = "w-full p-2 border rounded-md focus:ring-sky-500"
@@ -34,8 +35,7 @@ class PostForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        lang = get_current_language()
-        other_lang = "uk" if lang == "en" else "en"
+        lang, other_lang = get_languages()
 
         self.fields[f"title_{lang}"].required = True
         self.fields[f"title_{lang}"].label = _("Post Title")
@@ -74,9 +74,16 @@ class PostForm(ModelForm):
         self.fields["categories"].widget.attrs.update({"class": WIDGET_CLASS})
         category_text = _("Don't have the one you need?")
         category_link = _("+ Create Category")
-        self.fields["categories"].help_text = mark_safe(
-            f"{category_text} <a href='#' target='_blank' class='text-sky-500 hover:underline'>{category_link}</a>"
-        )
+        self.fields["categories"].help_text = mark_safe(f"""
+        {category_text}
+        <button
+            type="button"
+            id="open-category-modal"
+            class="text-sky-500 hover:underline"
+        >
+            {category_link}
+        </button>
+        """)
 
         self.fields["tags"].widget.attrs.update({"class": WIDGET_CLASS})
         self.fields["tags"].required = False
@@ -86,13 +93,29 @@ class PostForm(ModelForm):
             f"{tag_text} <a href='#' target='_blank' class='text-sky-500 hover:underline'>{tag_link}</a>"
         )
 
-    def save(self, commit=True, user=None):
-        post = super().save(commit=False)
-        if user:
-            post.user = user
 
-        if commit:
-            post.save()
-            self.save_m2m()
+class CategoryForm(ModelForm):
+    """Form for creating category. (Include dynamic language switching.)"""
 
-        return post
+    class Meta:
+        model = Category
+        fields = [
+            "title_en",
+            "title_uk",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        lang, other_lang = get_languages()
+        self.fields[f"title_{lang}"].required = True
+        self.fields[f"title_{lang}"].label = _("Your category title")
+        self.fields[f"title_{lang}"].widget = forms.widgets.TextInput(
+            attrs={
+                "class": WIDGET_CLASS,
+                "placeholder": _("Enter category title..."),
+            }
+        )
+
+        self.fields[f"title_{other_lang}"].required = False
+        self.fields[f"title_{other_lang}"].widget = forms.HiddenInput()

@@ -87,3 +87,10 @@ def get_translation_field_map(fields: list[str]) -> dict:
     if lang == "uk":
         return {f"{field}_uk": f"{field}_en" for field in fields}
     return {f"{field}_en": f"{field}_uk" for field in fields}
+
+
+def get_languages():
+    """Helper function for extracting current language and other language."""
+    lang = get_current_language()
+    other_lang = "uk" if lang == "en" else "en"
+    return lang, other_lang

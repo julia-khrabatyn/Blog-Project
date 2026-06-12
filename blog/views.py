@@ -1,4 +1,6 @@
 from django.db.models import Count
+from django.http import JsonResponse
+from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView
 from django.shortcuts import get_object_or_404, redirect
@@ -9,8 +11,9 @@ from django.urls import reverse_lazy
 
 from constance import config
 
+from core.services import get_languages
 from .filters import AuthorPostFilter, GlobalPostFilter
-from .forms import PostForm
+from .forms import PostForm, CategoryForm
 from .models import Post, Category
 from .services import (
     get_comments_for_post_view,
@@ -181,3 +184,26 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context["lang"] = self.request.LANGUAGE_CODE
         return context
+
+
+class CategoryCreateAjaxView(View):
+    """Display form for category creation in post form."""
+
+    def post(self, request):
+        lang, other_lang = get_languages()
+
+        title = request.POST.get(f"title_{lang}")
+        title_other = request.POST.get(f"title_{other_lang}")
+
+        if not title:
+            return JsonResponse({"error": "Title required"}, status=400)
+
+        category = Category.objects.create(
+            **{
+                f"title_{lang}": title,
+                f"title_{other_lang}": title_other or "",
+            }
+        )
+        return JsonResponse(
+            {"id": category.id, "title": getattr(category, f"title_{lang}")}
+        )

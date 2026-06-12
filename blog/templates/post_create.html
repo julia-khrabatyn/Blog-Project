@@ -2,9 +2,14 @@
 {% load static %}
 {% load i18n %}
 
+{% block extra_js %}
+<script src="{% static 'js/categories.js' %}" defer></script>
+{% endblock %} 
+
 {% block title %}
     {% trans "Create Post" %} | Byline Blog
 {% endblock title %}
+
 
 {% block content %}
     <div class="max-w-3xl mx-auto px-4 py-8">
@@ -59,6 +64,6 @@
                 </button>
             </div>
         </form>
+        {% include "includes/_category_modal.html" %}
     </div>
-
 {% endblock content %}
