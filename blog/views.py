@@ -12,6 +12,8 @@ from django.urls import reverse_lazy
 from constance import config
 
 from core.services import get_languages
+from tags.forms import TagForm
+
 from .filters import AuthorPostFilter, GlobalPostFilter
 from .forms import PostForm, CategoryForm
 from .models import Post, Category
@@ -26,6 +28,7 @@ User = get_user_model()
 
 __all__ = (
     "AuthorPostsListView",
+    "_BaseCreateAjaxView",
     "HomeView",
     "PostCreateView",
     "PostDetailView",
@@ -186,8 +189,8 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
-class CategoryCreateAjaxView(View):
-    """Display form for category creation in post form."""
+class _BaseCreateAjaxView(View):
+    model = None
 
     def post(self, request):
         lang, other_lang = get_languages()
@@ -198,12 +201,22 @@ class CategoryCreateAjaxView(View):
         if not title:
             return JsonResponse({"error": "Title required"}, status=400)
 
-        category = Category.objects.create(
+        obj = self.model.objects.create(
             **{
                 f"title_{lang}": title,
                 f"title_{other_lang}": title_other or "",
             }
         )
+
         return JsonResponse(
-            {"id": category.id, "title": getattr(category, f"title_{lang}")}
+            {
+                "id": obj.id,
+                "title": getattr(obj, f"title_{lang}"),
+            }
         )
+
+
+class CategoryCreateAjaxView(_BaseCreateAjaxView):
+    """Display form for category creation in post form."""
+
+    model = Category

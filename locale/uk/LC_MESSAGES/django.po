@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-12 01:33+0000\n"
+"POT-Creation-Date: 2026-06-12 12:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -303,51 +303,53 @@ msgstr "Шукати коментарі..."
 msgid "Enter author's username..."
 msgstr "Введіть ім'я автора "
 
-#: blog/forms.py:41
+#: blog/forms.py:43
 msgid "Post Title"
 msgstr "Заголовок публікації"
 
-#: blog/forms.py:45
+#: blog/forms.py:47
 msgid "Enter a catchy title..."
 msgstr "Введіть ефектний заголовок"
 
-#: blog/forms.py:51 blog/models.py:34
+#: blog/forms.py:53 blog/models.py:34
 msgid "Post description (optional)"
 msgstr "Опис публікації (необов'язково)"
 
-#: blog/forms.py:57
+#: blog/forms.py:59
 msgid "Short summary for the card..."
 msgstr "Стислий зміст статті"
 
-#: blog/forms.py:62
+#: blog/forms.py:64
 msgid "Post content"
 msgstr "Вміст публікації"
 
-#: blog/forms.py:75 blog/forms.py:90
+#: blog/forms.py:77 blog/forms.py:92
 msgid "Don't have the one you need?"
 msgstr "Не знайшли того, що відгукується?"
 
-#: blog/forms.py:76
+#: blog/forms.py:78
 msgid "+ Create Category"
 msgstr "+ Створити категорію"
 
-#: blog/forms.py:91
+#: blog/forms.py:93
 msgid "+ Add New Tag"
 msgstr "+ Додати Тег"
 
-#: blog/forms.py:112 blog/models.py:149
+#: blog/forms.py:103 blog/models.py:22 blog/models.py:148 tags/models.py:13
+msgid "Title"
+msgstr "Заголовок"
+
+#: blog/forms.py:104
+msgid "Enter title"
+msgstr "Введіть заголовок"
+
+#: blog/forms.py:126 blog/models.py:149
 msgid "Your category title"
 msgstr "Заголовок категорії"
 
-#: blog/forms.py:116
-#, fuzzy
-#| msgid "Enter a catchy title..."
-msgid "Enter category title..."
-msgstr "Введіть ефектний заголовок"
-
-#: blog/models.py:22 blog/models.py:148 tags/models.py:13
-msgid "Title"
-msgstr "Заголовок"
+#: blog/forms.py:127
+msgid "Enter category title"
+msgstr "Введіть заголовок категорії"
 
 #: blog/models.py:23
 msgid "Your post title"
@@ -785,6 +787,14 @@ msgstr "Версія заголовка для URL"
 #: tags/admin.py:39
 msgid "Tags info"
 msgstr "Інформація про теги"
+
+#: tags/forms.py:11
+msgid "Your tag title"
+msgstr "Заголовок тегу"
+
+#: tags/forms.py:12
+msgid "Enter tag title"
+msgstr "Введіть заголовок тегу"
 
 #: tags/models.py:13
 msgid "Tag title"

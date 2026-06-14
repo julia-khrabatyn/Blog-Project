@@ -1,3 +1,9 @@
 from django.shortcuts import render
 
-# Create your views here.
+from blog.views import _BaseCreateAjaxView
+
+from .models import Tag
+
+
+class TagCreateAjaxView(_BaseCreateAjaxView):
+    model = Tag

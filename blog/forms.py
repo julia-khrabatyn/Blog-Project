@@ -10,8 +10,10 @@ from core.services import get_languages
 from .models import Post, Category
 
 __all__ = [
+    "_BaseForm",
     "PostForm",
     "CategoryForm",
+    "TagForm",
 ]
 
 WIDGET_CLASS = "w-full p-2 border rounded-md focus:ring-sky-500"
@@ -94,28 +96,36 @@ class PostForm(ModelForm):
         )
 
 
-class CategoryForm(ModelForm):
-    """Form for creating category. (Include dynamic language switching.)"""
+class _BaseForm(ModelForm):
+    """Base class for CategoryForm and TagForm for inheritance.
+    Handle langs and title appearance"""
 
-    class Meta:
-        model = Category
-        fields = [
-            "title_en",
-            "title_uk",
-        ]
+    title_label = _("Title")
+    title_placeholder = _("Enter title")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         lang, other_lang = get_languages()
         self.fields[f"title_{lang}"].required = True
-        self.fields[f"title_{lang}"].label = _("Your category title")
+        self.fields[f"title_{lang}"].label = self.title_label
         self.fields[f"title_{lang}"].widget = forms.widgets.TextInput(
             attrs={
                 "class": WIDGET_CLASS,
-                "placeholder": _("Enter category title..."),
+                "placeholder": self.title_placeholder,
             }
         )
 
         self.fields[f"title_{other_lang}"].required = False
         self.fields[f"title_{other_lang}"].widget = forms.HiddenInput()
+
+
+class CategoryForm(_BaseForm):
+    """Form for creating category. (Include dynamic language switching.)"""
+
+    title_label = _("Your category title")
+    title_placeholder = _("Enter category title")
+
+    class Meta:
+        model = Category
+        fields = ["title_en", "title_uk"]
