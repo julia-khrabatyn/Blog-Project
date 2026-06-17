@@ -11,7 +11,8 @@ from modeltranslation.admin import TabbedTranslationAdmin
 
 from core.admin import BaseExportCsvMixin
 
-from blog.models import Category, Image, Like, Post
+from .forms import PostAdminForm, CategoryAdminForm
+from .models import Category, Image, Like, Post
 
 
 class ImageInLine(admin.TabularInline):
@@ -40,21 +41,7 @@ class ImageInLine(admin.TabularInline):
 class PostAdmin(TabbedTranslationAdmin, BaseExportCsvMixin):
     """Register Post in django admin."""
 
-    def get_form(self, request, obj=None, **kwargs):
-        form = super().get_form(request, obj, **kwargs)
-        lang = request.LANGUAGE_CODE
-
-        # inactivate non-required lang
-        if lang == "uk":
-            for field_name in ("title_en", "text_en", "description_en"):
-                if field_name in form.base_fields:
-                    form.base_fields[field_name].required = False
-        else:
-            for field_name in ("title_uk", "text_uk", "description_uk"):
-                if field_name in form.base_fields:
-                    form.base_fields[field_name].required = False
-
-        return form
+    form = PostAdminForm
 
     def get_queryset(self, request):
         """Handle lazy query -> boost productivity."""
@@ -154,20 +141,7 @@ class PostAdmin(TabbedTranslationAdmin, BaseExportCsvMixin):
 class CategoryAdmin(SortableAdminMixin, TabbedTranslationAdmin):
     """Register Category in django-admin."""
 
-    def get_form(self, request, obj=None, **kwargs):
-        form = super().get_form(request, obj, **kwargs)
-        lang = request.LANGUAGE_CODE
-
-        # inactivate non-required lang
-
-        if lang == "uk":
-            if "title_en" in form.base_fields:
-                form.base_fields["title_en"].required = False
-        else:
-            if "title_uk" in form.base_fields:
-                form.base_fields["title_uk"].required = False
-
-        return form
+    form = CategoryAdminForm
 
     def get_queryset(self, request):
         return (

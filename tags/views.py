@@ -1,9 +1,9 @@
-from django.shortcuts import render
+# from django.shortcuts import render
 
-from blog.views import _BaseCreateAjaxView
+# from blog.views import _BaseCreateAjaxView
 
-from .models import Tag
+# from .models import Tag
 
 
-class TagCreateAjaxView(_BaseCreateAjaxView):
-    model = Tag
+# class TagCreateAjaxView(_BaseCreateAjaxView):
+#     model = Tag

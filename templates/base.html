@@ -2,13 +2,14 @@
 {% load language_tags %}
 {% load i18n %}
 
+
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}" class="h-full bg-gray-50">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Byline-Blog{% endblock %}</title>
-    <link rel="icon" href="data:,"> 
+    <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
     {% comment %} this for solving debug toolbar tracebacks {% endcomment %}
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -21,12 +22,14 @@
         }
     </script>
 
-    {% block extra_js %}
-        <script src="{% static 'js/categories.js' %}" defer></script>
-    {% endblock %}
     
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
+
+{% block extra_js %}
+<script src="{% static 'js/inline_create.js' %}" defer></script>
+{% endblock %}
+
 <body class="h-full font-sans antialiased text-gray-900 flex flex-col">
 
     <nav class="bg-white shadow-sm border-b sticky top-0 z-50">

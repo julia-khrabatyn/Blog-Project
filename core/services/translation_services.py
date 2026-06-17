@@ -3,11 +3,30 @@ import textwrap
 import time
 
 from deep_translator import GoogleTranslator
-from .middleware import get_current_language
+
+from config.settings.base_settings import LANGUAGES
+
+LANGUAGES_LIST = [lang[0] for lang in LANGUAGES]
+
 
 logger = logging.getLogger("core")
 
-__all__ = ["translate_changed_fields", "get_translation_field_map"]
+__all__ = [
+    "get_changed_fields",
+    "get_target_languages",
+    "LANGUAGES_LIST",
+    "translate_changed_fields",
+]
+
+
+def _get_lang_from_field(field_name: str) -> str:
+    """Return source language from changed field by it's end."""
+    return field_name.rsplit("_", 1)[-1]
+
+
+def get_target_languages(source_lang: str) -> list[str]:
+    """Function for generating languages for translation."""
+    return [lang for lang in LANGUAGES_LIST if lang != source_lang]
 
 
 def _translate_text(text: str, source_lang, target_lang) -> str:
@@ -44,53 +63,58 @@ def _translate_text(text: str, source_lang, target_lang) -> str:
         return text
 
 
-def _get_changed_fields(instance, fields: list) -> list:
+def get_changed_fields(instance, fields: list, source_lang: str):
     """Protected function for checking if any field (that should be translated) was changed in DB."""
     if not instance.pk:
         return fields
+
     try:
         old_version = instance.__class__.objects.get(pk=instance.pk)
-        return [
-            f
-            for f in fields
-            if getattr(old_version, f) != getattr(instance, f)
-        ]
+
+        changed = []
+
+        for field in fields:
+            field_name = f"{field}_{source_lang}"
+
+            if getattr(old_version, field_name) != getattr(
+                instance, field_name
+            ):
+                changed.append(field)
+
+        return changed
+
     except instance.__class__.DoesNotExist:
         return fields
 
 
-def translate_changed_fields(instance, fields_map: dict) -> None:
-    """Main function for translation."""
-    lang = get_current_language()
-    source_lang, target_lang = ("en", "uk") if lang == "en" else ("uk", "en")
-    changed = _get_changed_fields(instance, list(fields_map.keys()))
-    for source_field, target_field in fields_map.items():
-        if source_field in changed and getattr(instance, source_field):
+def translate_changed_fields(
+    instance,
+    changed_fields: list[str],
+) -> None:
+
+    for source_field in changed_fields:
+
+        if "_" not in source_field:
+            continue
+
+        field_name, source_lang = source_field.rsplit("_", 1)
+
+        target_langs = get_target_languages(source_lang)
+
+        value = getattr(instance, source_field)
+        if not value:
+            continue
+
+        for target_lang in target_langs:
             try:
                 setattr(
                     instance,
-                    target_field,
+                    f"{field_name}_{target_lang}",
                     _translate_text(
-                        getattr(instance, source_field),
+                        value,
                         source_lang=source_lang,
                         target_lang=target_lang,
                     ),
                 )
             except Exception as e:
                 logger.exception(f"Error {e} was occurred!", exc_info=True)
-
-
-def get_translation_field_map(fields: list[str]) -> dict:
-    """Returns fields map based on current user interface language."""
-    lang = get_current_language()
-
-    if lang == "uk":
-        return {f"{field}_uk": f"{field}_en" for field in fields}
-    return {f"{field}_en": f"{field}_uk" for field in fields}
-
-
-def get_languages():
-    """Helper function for extracting current language and other language."""
-    lang = get_current_language()
-    other_lang = "uk" if lang == "en" else "en"
-    return lang, other_lang

@@ -2,7 +2,6 @@ from django.urls import path
 
 from .views import (
     AuthorPostsListView,
-    CategoryCreateAjaxView,
     HomeView,
     PostCreateView,
     PostDetailView,
@@ -22,10 +21,5 @@ urlpatterns = [
         "post/<uuid:pk>/",
         PostDetailView.as_view(),
         name="post_detail",
-    ),
-    path(
-        "categories/ajax-create/",
-        CategoryCreateAjaxView.as_view(),
-        name="category_ajax_create",
     ),
 ]

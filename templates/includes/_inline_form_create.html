@@ -1,0 +1,16 @@
+
+{% load i18n %}
+
+<div class="flex gap-2 items-start">
+    <button type="button" id="add-{{ model_name }}-btn"
+            class="px-3 py-2 bg-sky-500 text-white rounded-md hover:bg-sky-600">+</button>
+</div>
+<div id="new-{{ model_name }}-form" class="hidden mt-2 flex gap-2">
+    <input type="text" id="new-{{ model_name }}-input"
+           placeholder="{% trans 'Enter title' %}"
+           class="p-2 border rounded-md focus:ring-sky-500">
+    <button type="button" id="save-{{ model_name }}-btn"
+            class="px-3 py-2 bg-green-500 text-white rounded-md">{% trans "Save" %}</button>
+    <button type="button" id="cancel-{{ model_name }}-btn"
+            class="px-3 py-2 bg-gray-300 rounded-md">{% trans "Cancel" %}</button>
+</div>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-12 12:54+0000\n"
+"POT-Creation-Date: 2026-06-16 00:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -303,53 +303,29 @@ msgstr "Шукати коментарі..."
 msgid "Enter author's username..."
 msgstr "Введіть ім'я автора "
 
-#: blog/forms.py:43
+#: blog/forms_config.py:5
 msgid "Post Title"
 msgstr "Заголовок публікації"
 
-#: blog/forms.py:47
+#: blog/forms_config.py:6
 msgid "Enter a catchy title..."
 msgstr "Введіть ефектний заголовок"
 
-#: blog/forms.py:53 blog/models.py:34
+#: blog/forms_config.py:9 blog/models.py:34
 msgid "Post description (optional)"
 msgstr "Опис публікації (необов'язково)"
 
-#: blog/forms.py:59
+#: blog/forms_config.py:10
 msgid "Short summary for the card..."
 msgstr "Стислий зміст статті"
 
-#: blog/forms.py:64
+#: blog/forms_config.py:13
 msgid "Post content"
 msgstr "Вміст публікації"
 
-#: blog/forms.py:77 blog/forms.py:92
-msgid "Don't have the one you need?"
-msgstr "Не знайшли того, що відгукується?"
-
-#: blog/forms.py:78
-msgid "+ Create Category"
-msgstr "+ Створити категорію"
-
-#: blog/forms.py:93
-msgid "+ Add New Tag"
-msgstr "+ Додати Тег"
-
-#: blog/forms.py:103 blog/models.py:22 blog/models.py:148 tags/models.py:13
+#: blog/models.py:22 blog/models.py:148 tags/models.py:13
 msgid "Title"
 msgstr "Заголовок"
-
-#: blog/forms.py:104
-msgid "Enter title"
-msgstr "Введіть заголовок"
-
-#: blog/forms.py:126 blog/models.py:149
-msgid "Your category title"
-msgstr "Заголовок категорії"
-
-#: blog/forms.py:127
-msgid "Enter category title"
-msgstr "Введіть заголовок категорії"
 
 #: blog/models.py:23
 msgid "Your post title"
@@ -438,6 +414,10 @@ msgstr "Вподобана публікація"
 #: blog/models.py:136
 msgid "Like"
 msgstr "Вподобайка"
+
+#: blog/models.py:149
+msgid "Your category title"
+msgstr "Заголовок категорії"
 
 #: blog/models.py:154
 msgid "Order"
@@ -676,6 +656,10 @@ msgstr "Світ повинен почути Вашу історію вже сь
 msgid "Start writing"
 msgstr "Гайда писати!"
 
+#: blog/views.py:186
+msgid "Post created successfully!"
+msgstr ""
+
 #: comments/admin.py:19
 msgid "Who created"
 msgstr "Хто створив (автор)"
@@ -716,11 +700,11 @@ msgstr "Коментар"
 msgid "Constance"
 msgstr "Налаштування констант"
 
-#: config/settings/base_settings.py:133
+#: config/settings/base_settings.py:132
 msgid "Українська"
 msgstr "Українська"
 
-#: config/settings/base_settings.py:134
+#: config/settings/base_settings.py:133
 msgid "English"
 msgstr "English"
 
@@ -787,14 +771,6 @@ msgstr "Версія заголовка для URL"
 #: tags/admin.py:39
 msgid "Tags info"
 msgstr "Інформація про теги"
-
-#: tags/forms.py:11
-msgid "Your tag title"
-msgstr "Заголовок тегу"
-
-#: tags/forms.py:12
-msgid "Enter tag title"
-msgstr "Введіть заголовок тегу"
 
 #: tags/models.py:13
 msgid "Tag title"
@@ -947,6 +923,27 @@ msgstr ""
 "                        Поки немає жодного коментаря. Будь першим, хто "
 "прокоментує!\n"
 "                    "
+
+#~ msgid "Don't have the one you need?"
+#~ msgstr "Не знайшли того, що відгукується?"
+
+#~ msgid "+ Create Category"
+#~ msgstr "+ Створити категорію"
+
+#~ msgid "+ Add New Tag"
+#~ msgstr "+ Додати Тег"
+
+#~ msgid "Enter title"
+#~ msgstr "Введіть заголовок"
+
+#~ msgid "Enter category title"
+#~ msgstr "Введіть заголовок категорії"
+
+#~ msgid "Your tag title"
+#~ msgstr "Заголовок тегу"
+
+#~ msgid "Enter tag title"
+#~ msgstr "Введіть заголовок тегу"
 
 #, fuzzy
 #~| msgid "Categories"

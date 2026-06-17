@@ -1,21 +1,21 @@
+import json
+
 from django.db.models import Count
-from django.http import JsonResponse
-from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 from django.core.paginator import Paginator
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 
 from constance import config
 
-from core.services import get_languages
-from tags.forms import TagForm
 
 from .filters import AuthorPostFilter, GlobalPostFilter
-from .forms import PostForm, CategoryForm
+from .forms import PostForm
 from .models import Post, Category
 from .services import (
     get_comments_for_post_view,
@@ -28,7 +28,6 @@ User = get_user_model()
 
 __all__ = (
     "AuthorPostsListView",
-    "_BaseCreateAjaxView",
     "HomeView",
     "PostCreateView",
     "PostDetailView",
@@ -181,42 +180,8 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        return super().form_valid(form)
+        response = super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["lang"] = self.request.LANGUAGE_CODE
-        return context
+        messages.success(self.request, _("Post created successfully!"))
 
-
-class _BaseCreateAjaxView(View):
-    model = None
-
-    def post(self, request):
-        lang, other_lang = get_languages()
-
-        title = request.POST.get(f"title_{lang}")
-        title_other = request.POST.get(f"title_{other_lang}")
-
-        if not title:
-            return JsonResponse({"error": "Title required"}, status=400)
-
-        obj = self.model.objects.create(
-            **{
-                f"title_{lang}": title,
-                f"title_{other_lang}": title_other or "",
-            }
-        )
-
-        return JsonResponse(
-            {
-                "id": obj.id,
-                "title": getattr(obj, f"title_{lang}"),
-            }
-        )
-
-
-class CategoryCreateAjaxView(_BaseCreateAjaxView):
-    """Display form for category creation in post form."""
-
-    model = Category
+        return response
