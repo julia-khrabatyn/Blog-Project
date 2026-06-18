@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-16 00:04+0000\n"
+"POT-Creation-Date: 2026-06-18 22:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -138,8 +138,8 @@ msgstr ""
 "Завантажте фото профілю (необов'язково). (Підтримуються лише такі формати: ."
 "png, .jpeg, .jpg, .webp )"
 
-#: accounts/models.py:110 blog/admin.py:69 blog/models.py:54 tags/apps.py:7
-#: tags/models.py:22
+#: accounts/models.py:110 blog/admin.py:56 blog/models.py:54 tags/apps.py:7
+#: tags/models.py:25
 msgid "Tags"
 msgstr "Теги"
 
@@ -191,63 +191,63 @@ msgstr "Підписка"
 msgid "Follows"
 msgstr "Підписки"
 
-#: blog/admin.py:34
+#: blog/admin.py:35
 msgid "No image."
 msgstr "Немає картинки"
 
-#: blog/admin.py:36 blog/admin.py:223
+#: blog/admin.py:37 blog/admin.py:197
 msgid "Show image"
 msgstr "Попередній вигляд картинки"
 
-#: blog/admin.py:74 blog/models.py:163
+#: blog/admin.py:61 blog/models.py:164
 msgid "Category"
 msgstr "Категорія"
 
-#: blog/admin.py:79 blog/models.py:137
+#: blog/admin.py:66 blog/models.py:137
 msgid "Likes"
 msgstr "Вподобайки"
 
-#: blog/admin.py:84
+#: blog/admin.py:71
 msgid "First 10 words from post text"
 msgstr "Перші 10 слів з тексту публікації"
 
-#: blog/admin.py:90
+#: blog/admin.py:77
 msgid "First 5 tags for post"
 msgstr "Перші 5 тегів публікації"
 
-#: blog/admin.py:119
+#: blog/admin.py:106
 msgid "Post info"
 msgstr "інформація про публікацію"
 
-#: blog/admin.py:133
+#: blog/admin.py:120
 msgid "Post details"
 msgstr "Деталі публікації"
 
-#: blog/admin.py:183
+#: blog/admin.py:157
 msgid "Category info"
 msgstr "інформація про категорію"
 
-#: blog/admin.py:198
+#: blog/admin.py:172
 msgid "Number of posts"
 msgstr "Кількість публікацій"
 
-#: blog/admin.py:221
+#: blog/admin.py:195
 msgid "Image not added yet."
 msgstr "Фото поки не додано"
 
-#: blog/admin.py:238
+#: blog/admin.py:212
 msgid "Post's image general info"
 msgstr "Загальна інформація про картинку"
 
-#: blog/admin.py:250
+#: blog/admin.py:224
 msgid "Image creation/update time"
 msgstr "Час створення/оновлення картинки"
 
-#: blog/admin.py:259
+#: blog/admin.py:233
 msgid "User activity"
 msgstr "Активність користувача"
 
-#: blog/admin.py:315
+#: blog/admin.py:289
 msgid "Total users likes"
 msgstr "Загальна кількість вподобайок"
 
@@ -323,7 +323,19 @@ msgstr "Стислий зміст статті"
 msgid "Post content"
 msgstr "Вміст публікації"
 
-#: blog/models.py:22 blog/models.py:148 tags/models.py:13
+#: blog/forms_config.py:14
+msgid "Share Your ideas with us!"
+msgstr "Нумо! Ділися своїми думками з нами!"
+
+#: blog/forms_config.py:20 blog/models.py:149
+msgid "Your category title"
+msgstr "Заголовок категорії"
+
+#: blog/forms_config.py:21
+msgid "Enter category title"
+msgstr "Введіть заголовок категорії"
+
+#: blog/models.py:22 blog/models.py:148 tags/models.py:14
 msgid "Title"
 msgstr "Заголовок"
 
@@ -351,7 +363,7 @@ msgstr "Автор"
 msgid "User, created post"
 msgstr "Користувач, що додав публікацію"
 
-#: blog/models.py:47 blog/models.py:164
+#: blog/models.py:47 blog/models.py:165
 msgid "Categories"
 msgstr "Категорії"
 
@@ -415,15 +427,11 @@ msgstr "Вподобана публікація"
 msgid "Like"
 msgstr "Вподобайка"
 
-#: blog/models.py:149
-msgid "Your category title"
-msgstr "Заголовок категорії"
-
-#: blog/models.py:154
+#: blog/models.py:155
 msgid "Order"
 msgstr "Порядок"
 
-#: blog/models.py:155
+#: blog/models.py:156
 msgid "Display order priority (ascending)"
 msgstr "Порядок відображення (за зростанням)"
 
@@ -551,11 +559,20 @@ msgstr "Створити публікацію"
 msgid "Fill in the details below to publish your post."
 msgstr "Будь ласка, заповніть поля для створення публікації"
 
-#: blog/templates/post_create.html:59
+#: blog/templates/post_create.html:35
+msgid "Fields marked with"
+msgstr "Поля, що промарковані "
+
+#: blog/templates/post_create.html:35
+msgid "are required!"
+msgstr "є ОБОВʼЯЗКОВИМИ!"
+
+#: blog/templates/post_create.html:71
+#: templates/includes/_inline_form_create.html:15
 msgid "Cancel"
 msgstr "Відмінити"
 
-#: blog/templates/post_create.html:63
+#: blog/templates/post_create.html:75
 msgid "Publish"
 msgstr "Оприлюднити"
 
@@ -656,9 +673,9 @@ msgstr "Світ повинен почути Вашу історію вже сь
 msgid "Start writing"
 msgstr "Гайда писати!"
 
-#: blog/views.py:186
+#: blog/views.py:185
 msgid "Post created successfully!"
-msgstr ""
+msgstr "Публікація успішно створена"
 
 #: comments/admin.py:19
 msgid "Who created"
@@ -768,23 +785,36 @@ msgstr "Слаг"
 msgid "URL-friendly version of the title"
 msgstr "Версія заголовка для URL"
 
+#: core/services/forms_services.py:87
+#, python-brace-format
+msgid "You should add {field_name}"
+msgstr "Додайте поле {field_name}"
+
 #: tags/admin.py:39
 msgid "Tags info"
 msgstr "Інформація про теги"
 
-#: tags/models.py:13
+#: tags/forms.py:14
+msgid "Your tag title"
+msgstr "Заголовок тегу"
+
+#: tags/forms.py:15
+msgid "Enter tag title"
+msgstr "Введіть заголовок тегу"
+
+#: tags/models.py:15
 msgid "Tag title"
 msgstr "Назва Тегу"
 
-#: tags/models.py:21
+#: tags/models.py:24
 msgid "Tag"
 msgstr "Тег"
 
-#: templates/admin/base_site.html:9
+#: templates/admin/base_site.html:14
 msgid "Byline Logo"
 msgstr "Логотип Byline"
 
-#: templates/admin/base_site.html:12
+#: templates/admin/base_site.html:17
 #, python-format
 msgid ""
 "\n"
@@ -803,41 +833,33 @@ msgstr "Або"
 msgid "Login with Google"
 msgstr "Увійти за допомогою Google"
 
-#: templates/base.html:37
+#: templates/base.html:40
 msgid "Blog logo"
 msgstr "Логотип Блогу"
 
-#: templates/base.html:42
+#: templates/base.html:45
 msgid "Main"
 msgstr "Головна"
 
-#: templates/base.html:43
+#: templates/base.html:46
 msgid "All Posts"
 msgstr "Всі Пости"
 
-#: templates/base.html:54
+#: templates/base.html:57
 msgid "Welcome, "
 msgstr "Вітаємо, "
 
-#: templates/base.html:59
+#: templates/base.html:62
 msgid "Logout"
 msgstr "Вийти"
 
-#: templates/base.html:65
+#: templates/base.html:68
 msgid "Sign in"
 msgstr "Увійти"
 
-#: templates/base.html:67
+#: templates/base.html:70
 msgid "Sign up"
 msgstr "Зареєструватися"
-
-#: templates/includes/_category_modal.html:16
-msgid "Save"
-msgstr "Зберегти"
-
-#: templates/includes/_category_modal.html:17
-msgid "Close"
-msgstr "Закрити"
 
 #: templates/includes/_filter_form.html:5
 msgid "Available filters"
@@ -850,6 +872,14 @@ msgstr "Застосувати"
 #: templates/includes/_filter_form.html:19
 msgid "Clear"
 msgstr "Очистити"
+
+#: templates/includes/_inline_form_create.html:10
+msgid "Enter title"
+msgstr "Введіть заголовок"
+
+#: templates/includes/_inline_form_create.html:13
+msgid "Save"
+msgstr "Зберегти"
 
 #: templates/includes/_pagination.html:7 templates/includes/_pagination.html:11
 msgid "Previous"
@@ -924,6 +954,9 @@ msgstr ""
 "прокоментує!\n"
 "                    "
 
+#~ msgid "Close"
+#~ msgstr "Закрити"
+
 #~ msgid "Don't have the one you need?"
 #~ msgstr "Не знайшли того, що відгукується?"
 
@@ -932,18 +965,6 @@ msgstr ""
 
 #~ msgid "+ Add New Tag"
 #~ msgstr "+ Додати Тег"
-
-#~ msgid "Enter title"
-#~ msgstr "Введіть заголовок"
-
-#~ msgid "Enter category title"
-#~ msgstr "Введіть заголовок категорії"
-
-#~ msgid "Your tag title"
-#~ msgstr "Заголовок тегу"
-
-#~ msgid "Enter tag title"
-#~ msgstr "Введіть заголовок тегу"
 
 #, fuzzy
 #~| msgid "Categories"
