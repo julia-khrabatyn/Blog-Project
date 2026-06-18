@@ -147,6 +147,7 @@ class Category(AbstractBaseModel, SlugMixin):
         max_length=255,
         verbose_name=_("Title"),
         help_text=_("Your category title"),
+        unique=True,
     )
     order = models.PositiveIntegerField(
         default=0,

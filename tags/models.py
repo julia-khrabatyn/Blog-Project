@@ -10,7 +10,10 @@ class Tag(AbstractBaseModel, SlugMixin):
     """Represent Tag object"""
 
     title = models.CharField(
-        max_length=50, verbose_name=_("Title"), help_text=_("Tag title")
+        max_length=50,
+        verbose_name=_("Title"),
+        help_text=_("Tag title"),
+        unique=True,
     )
 
     def __str__(self):

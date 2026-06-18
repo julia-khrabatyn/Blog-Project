@@ -45,8 +45,18 @@ function setupInlineCreate(modelName) {
                     form.classList.remove('flex');
                     form.classList.add('hidden');
                     input.value = '';
+
+                    const existingError = form.querySelector('.error-msg');
+                    if (existingError) existingError.remove();
                 } else {
-                    alert('Error: ' + JSON.stringify(data.errors));
+                    let errorDiv = form.querySelector('.error-msg');
+                    if (!errorDiv) {
+                        errorDiv = document.createElement('p');
+                        errorDiv.className = 'error-msg text-xs text-red-500 mt-1';
+                        form.appendChild(errorDiv);
+                    }
+                    const firstError = Object.values(data.errors)[0];
+                    errorDiv.textContent = firstError;
                 }
             })
             .catch(err => console.error('Error:', err));
@@ -55,3 +65,4 @@ function setupInlineCreate(modelName) {
 
 setupInlineCreate('category');
 setupInlineCreate('tag');
+
