@@ -93,6 +93,8 @@
 {% trans "Click the button below and write your story!" as action_subtitle %}
 {% trans "Start posting" as action_button_text %}
 
-{% include "includes/_action_section.html" with title=action_title subtitle=action_subtitle button_text=action_button_text url="#" %}
+
+{% url "post_create" as post_create_url %}
+{% include "includes/_action_section.html" with title=action_title subtitle=action_subtitle button_text=action_button_text url=post_create_url %}
 
 {% endblock content %}

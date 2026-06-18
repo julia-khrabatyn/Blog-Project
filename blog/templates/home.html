@@ -109,5 +109,6 @@
 {% trans "Click the button below and create your new post. Your thoughts might be the spark someone else needs today." as action_subtitle %}
 {% trans "Create New Post" as action_button_text %}
 
-{% include "includes/_action_section.html" with title=action_title subtitle=action_subtitle button_text=action_button_text url="#" %}
+{% url "post_create" as post_create_url %}
+{% include "includes/_action_section.html" with title=action_title subtitle=action_subtitle button_text=action_button_text url=post_create_url %}
 {% endblock content%}
