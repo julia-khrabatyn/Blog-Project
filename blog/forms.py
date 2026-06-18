@@ -24,6 +24,7 @@ class PostForm(BaseTranslationForm):
 
     translatable_fields = ["title", "description", "text"]
     optional_fields = ["description", "categories", "tags"]
+    required_translatable_fields = ["title", "text"]
     UI = POST_FIELD_UI
 
     class Meta:
@@ -60,6 +61,7 @@ class CategoryForm(BaseTranslationForm):
     """Form for creating category. (Include dynamic language switching.)"""
 
     translatable_fields = ["title"]
+    required_translatable_fields = ["title"]
     UI = CATEGORY_FIELD_UI
 
     class Meta:

@@ -12,6 +12,7 @@ class BaseTranslationForm(ModelForm):
 
     translatable_fields = []
     optional_fields = []
+    required_translatable_fields = []
     UI = None
 
     def _hide_non_current_language_fields(self):
@@ -76,19 +77,15 @@ class BaseTranslationForm(ModelForm):
     def clean(self):
         cleaned_data = super().clean()
 
-        title_filled = any(
-            cleaned_data.get(f"title_{lang}") for lang in LANGUAGES_LIST
-        )
-
-        if not title_filled:
-            self.add_error("title_en", _("You should add title"))
-
-        text_filled = any(
-            cleaned_data.get(f"text_{lang}") for lang in LANGUAGES_LIST
-        )
-
-        if not text_filled:
-            self.add_error("text_en", _("You should add text"))
+        for field_name in self.required_translatable_fields:
+            filled = any(
+                cleaned_data.get(f"{field_name}_{lang}")
+                for lang in LANGUAGES_LIST
+            )
+            if not filled:
+                self.add_error(
+                    f"{field_name}_en", _(f"You should add {field_name}")
+                )
 
         return cleaned_data
 

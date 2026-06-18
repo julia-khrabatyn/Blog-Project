@@ -37,7 +37,8 @@ function setupInlineCreate(modelName) {
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'ok') {
-                    const select = document.getElementById(`id_${modelName}s`);
+                    const selectId = modelName === 'category' ? 'id_categories' : `id_${modelName}s`;
+                    const select = document.getElementById(selectId);
                     const option = new Option(data.text, data.id, true, true);
                     select.append(option);
 

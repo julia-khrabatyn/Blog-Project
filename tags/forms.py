@@ -21,6 +21,7 @@ class TagForm(BaseTranslationForm):
     """Form for creating tag. (Include dynamic language switching.)"""
 
     translatable_fields = ["title"]
+    required_translatable_fields = ["title"]
     UI = TAG_FIELD_UI
 
     class Meta:
