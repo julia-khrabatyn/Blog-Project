@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-18 22:38+0000\n"
+"POT-Creation-Date: 2026-06-19 14:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -126,7 +126,7 @@ msgid "Your valid email address"
 msgstr "Дійсна адреса електронної пошти"
 
 #: accounts/models.py:101 templates/includes/_user_avatar.html:5
-#: templates/includes/comments/_comments_section.html:10
+#: templates/includes/comments/_comments_section.html:20
 msgid "Avatar"
 msgstr "Фото профілю"
 
@@ -551,49 +551,49 @@ msgstr ""
 msgid "Create New Post"
 msgstr "Створити нову публікацію"
 
-#: blog/templates/post_create.html:10 blog/templates/post_create.html:17
+#: blog/templates/post_create.html:11 blog/templates/post_create.html:18
 msgid "Create Post"
 msgstr "Створити публікацію"
 
-#: blog/templates/post_create.html:18
+#: blog/templates/post_create.html:19
 msgid "Fill in the details below to publish your post."
 msgstr "Будь ласка, заповніть поля для створення публікації"
 
-#: blog/templates/post_create.html:35
+#: blog/templates/post_create.html:36
 msgid "Fields marked with"
 msgstr "Поля, що промарковані "
 
-#: blog/templates/post_create.html:35
+#: blog/templates/post_create.html:36
 msgid "are required!"
 msgstr "є ОБОВʼЯЗКОВИМИ!"
 
-#: blog/templates/post_create.html:71
+#: blog/templates/post_create.html:72
 #: templates/includes/_inline_form_create.html:15
 msgid "Cancel"
 msgstr "Відмінити"
 
-#: blog/templates/post_create.html:75
+#: blog/templates/post_create.html:76
 msgid "Publish"
 msgstr "Оприлюднити"
 
-#: blog/templates/post_detail.html:40
+#: blog/templates/post_detail.html:46
 msgid "About Author:"
 msgstr "Про Автора"
 
-#: blog/templates/post_detail.html:41
+#: blog/templates/post_detail.html:47
 msgid "Name:"
 msgstr "Ім'я"
 
-#: blog/templates/post_detail.html:46
+#: blog/templates/post_detail.html:52
 msgid "This author is a mystery! They haven't shared their story yet."
 msgstr ""
 "Цей автор — справжня таємниця! Він ще не встиг розповісти свою історію."
 
-#: blog/templates/post_detail.html:50
+#: blog/templates/post_detail.html:56
 msgid "Author's approximate location"
 msgstr "Приблизне місцезнаходження автора"
 
-#: blog/templates/post_detail.html:61
+#: blog/templates/post_detail.html:67
 #, python-format
 msgid ""
 "\n"
@@ -604,7 +604,7 @@ msgstr ""
 "                    Нещодавні інші публікації автора @%(username)s:\n"
 "                "
 
-#: blog/templates/post_detail.html:71
+#: blog/templates/post_detail.html:77
 #, python-format
 msgid ""
 "\n"
@@ -617,7 +617,7 @@ msgstr ""
 "font-semibold\">@%(username)s</span> поки що немає.\n"
 "                        "
 
-#: blog/templates/post_detail.html:79
+#: blog/templates/post_detail.html:85
 #, python-format
 msgid ""
 "\n"
@@ -629,15 +629,15 @@ msgstr ""
 "→\n"
 "                        "
 
-#: blog/templates/post_detail.html:92
+#: blog/templates/post_detail.html:98
 msgid "Have any ideas to share with us?"
 msgstr "Маєте ідеї, якими хочете поділитися з нами?"
 
-#: blog/templates/post_detail.html:93
+#: blog/templates/post_detail.html:99
 msgid "Click the button below and write your story!"
 msgstr "Сміливо натискайте на кнопочку нижче та пишіть свою історію!"
 
-#: blog/templates/post_detail.html:94
+#: blog/templates/post_detail.html:100
 msgid "Start posting"
 msgstr "Створити публікацію"
 
@@ -689,13 +689,19 @@ msgstr "(До якої публікації)"
 msgid "Date of creation/update"
 msgstr "Дата створення/оновлення"
 
-#: comments/admin.py:37
+#: comments/admin.py:37 comments/forms.py:28
 msgid "Comment text"
 msgstr "Текст коментаря"
 
 #: comments/apps.py:7 comments/models.py:36
 msgid "Comments"
 msgstr "Коментарі"
+
+#: comments/forms.py:24 templates/includes/comments/_comments_section.html:8
+#, fuzzy
+#| msgid "Your comment"
+msgid "Add Your comment here:"
+msgstr "Ваш коментар"
 
 #: comments/models.py:13
 msgid "Your comment"
@@ -942,12 +948,22 @@ msgstr "Поки немає жодної вподобайки"
 msgid "Comments:"
 msgstr "Коментарі:"
 
-#: templates/includes/comments/_comments_section.html:22
+#: templates/includes/comments/_comments_section.html:12
+msgid "Log in to leave a comment."
+msgstr "Увійдіть у Ваш профіль, щоб залишити коментар."
+
+#: templates/includes/comments/_comments_section.html:32
+#, fuzzy
+#| msgid ""
+#| "\n"
+#| "                        There are not any comments yet. Be the first to "
+#| "write one!\n"
+#| "                    "
 msgid ""
 "\n"
-"                        There are not any comments yet. Be the first to "
-"write one!\n"
-"                    "
+"                    There are not any comments yet. Be the first to write "
+"one!\n"
+"                "
 msgstr ""
 "\n"
 "                        Поки немає жодного коментаря. Будь першим, хто "
