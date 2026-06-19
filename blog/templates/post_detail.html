@@ -2,6 +2,12 @@
 {% load static %}
 {% load i18n %}
 
+{% block extra_js %}
+<script src="{% static 'js/inline_create.js' %}" defer></script>
+<script src="{% static 'js/categories_tags_init.js' %}" defer></script>
+<script src="{% static 'js/comments_init.js' %}" defer></script>
+{% endblock %}
+
 {% block content %}
 {% with h1_style="text-center text-4xl md:text-5xl font-black text-gray-900 mb-6 tracking-tight leading-tight" %}
 {% with card_style="mt-16 p-8 bg-white border border-gray-100 rounded-[2.5rem] shadow-sm hover:shadow-md transition-shadow duration-300" %}

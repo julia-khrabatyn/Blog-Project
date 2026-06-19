@@ -4,7 +4,13 @@ function getCsrfToken() {
         ?.split('=')[1];
 }
 
-function setupInlineCreate(modelName) {
+function setupInlineCreate(modelName, options = {}) {
+    const {
+        url,
+        buildPayload,
+        onSuccess,
+    } = options;
+
     const btn = document.getElementById(`add-${modelName}-btn`);
     const form = document.getElementById(`new-${modelName}-form`);
     const input = document.getElementById(`new-${modelName}-input`);
@@ -23,24 +29,21 @@ function setupInlineCreate(modelName) {
     });
 
     document.getElementById(`save-${modelName}-btn`).addEventListener('click', () => {
-        const title = input.value.trim();
-        if (!title) return;
+        const value = input.value.trim();
+        if (!value) return;
 
-        fetch(`/core/inline-create/${modelName}/`, {
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': getCsrfToken()
             },
-            body: JSON.stringify({ 'title_en': title })
+            body: JSON.stringify(buildPayload(value))
         })
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'ok') {
-                    const selectId = modelName === 'category' ? 'id_categories' : `id_${modelName}s`;
-                    const select = document.getElementById(selectId);
-                    const option = new Option(data.text, data.id, true, true);
-                    select.append(option);
+                    onSuccess(data, form, input);
 
                     form.classList.remove('flex');
                     form.classList.add('hidden');
@@ -62,7 +65,3 @@ function setupInlineCreate(modelName) {
             .catch(err => console.error('Error:', err));
     });
 }
-
-setupInlineCreate('category');
-setupInlineCreate('tag');
-

@@ -26,6 +26,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/", include("allauth.urls")),
     path("blog/", include("blog.urls")),
+    path("comments/", include("comments.urls")),
     path("core/", include("core.urls")),
     path("ckeditor/", include("ckeditor_uploader.urls")),
     path("i18n/", include("django.conf.urls.i18n")),
@@ -34,6 +35,7 @@ urlpatterns = [
 urlpatterns += i18n_patterns(
     path("admin/", admin.site.urls),
     path("blog/", include("blog.urls")),
+    path("comments/", include("comments.urls")),
     path("core/", include("core.urls")),
     prefix_default_language=True,
 )
