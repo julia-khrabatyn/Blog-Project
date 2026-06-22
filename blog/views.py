@@ -39,7 +39,7 @@ class AuthorPostsListView(ListView):
     """Display all posts created by this author."""
 
     model = Post
-    template_name = "author_posts_list.html"
+    template_name = "blog/author_posts_list.html"
     context_object_name = "posts"
     allow_empty = True
 
@@ -71,7 +71,7 @@ class AuthorPostsListView(ListView):
 class HomeView(TemplateView):
     """Display main page of Byline-Blog."""
 
-    template_name = "home.html"
+    template_name = "blog/home.html"
 
     def get_context_data(self, **kwargs):
         """Show sorted categories by popularity (number of posts in category)"""
@@ -108,7 +108,7 @@ class PostDetailView(DetailView):
     """Display Post details."""
 
     model = Post
-    template_name = "post_detail.html"
+    template_name = "blog/post_detail.html"
     context_object_name = "post"
 
     def get_queryset(self):
@@ -143,7 +143,7 @@ class PostListView(ListView):
     """Display published posts."""
 
     model = Post
-    template_name = "post_list.html"
+    template_name = "blog/post_list.html"
     context_object_name = "posts"
     allow_empty = True
 
@@ -175,7 +175,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
     model = Post
     form_class = PostForm
-    template_name = "post_create.html"
+    template_name = "blog/post_create.html"
     success_url = reverse_lazy("post_list")
 
     def form_valid(self, form):
