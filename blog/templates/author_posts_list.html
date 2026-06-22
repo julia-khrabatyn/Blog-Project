@@ -14,9 +14,9 @@
 
     <div class="mt-8 space-y-6">
         {% for post in posts%}
-            {% include "includes/_post_card.html" with words_count=50 post=post show_likes=True%}
-        {% empty %}
-            <p class="text-center text-gray-500">{% trans "This author hasn't published any posts yet." %}</p>
+                {% include "includes/_post_card.html" with words_count=50 post=post show_likes=True%}
+            {% empty %}
+                <p class="text-center text-gray-500">{% trans "This author hasn't published any posts yet." %}</p>
         {% endfor %}
     </div>
 {% endblock content %}

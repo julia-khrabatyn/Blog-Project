@@ -1,18 +1,15 @@
 import django_filters
 
 from django import forms
-from django.apps import (
-    apps,
-)  # TODO: better use it for avoiding cycle import? do not use: from .models import Post and so on???
-from django.contrib.auth import get_user_model
+
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy as _p
 
-User = get_user_model()
-Post = apps.get_model("blog", "Post")
-Tag = apps.get_model("tags", "Tag")
-Comment = apps.get_model("comments", "Comment")
-Category = apps.get_model("blog", "Category")
+from accounts.models import User
+from comments.models import Comment
+from tags.models import Tag
+
+from .models import Post, Category
 
 __all__ = [
     "AuthorPostFilter",
@@ -85,7 +82,6 @@ class BasePostFilter(django_filters.FilterSet):
 class GlobalPostFilter(BasePostFilter):
     """For sorting Post in general templates."""
 
-    # TODO: Should I change it to Charfield?
     author = django_filters.ModelChoiceFilter(
         field_name="user",
         queryset=User.objects.all(),
