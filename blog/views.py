@@ -23,6 +23,7 @@ from .services import (
     generate_users_heatmap,
     generate_single_user_map,
 )
+from .utils import truncate_html_text
 
 User = get_user_model()
 
@@ -63,6 +64,9 @@ class AuthorPostsListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        posts = context["posts"]
+        for post in posts:
+            post.preview_text = truncate_html_text(post.text)
         context["author"] = self.author
         context["filter"] = self.filterset
         return context
