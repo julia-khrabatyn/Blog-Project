@@ -1,5 +1,3 @@
-import json
-
 from django.db.models import Count
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView
