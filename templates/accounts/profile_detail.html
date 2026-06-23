@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+    {{ profile_user.username }} | Byline Blog
+{% endblock title %}
+
+{% block content %}
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex items-center gap-5 mb-8">
+        
+        {% include "includes/_user_avatar.html" with user_obj=profile_user %}
+      
+
+        <div class="flex-1">
+            <h1 class="text-2xl font-black text-gray-900">{{ profile_user }}</h1>
+            {% block user_info %}
+            <div class="text-sm text-gray-500">
+                {% if profile_user.country and profile_user.city %}
+                    <p>{{ profile_user.country.name }}, {{ profile_user.city }} </p>
+                {% elif profile_user.country and not profile_user.city %}
+                    <p> {{ profile_user.country.name }}, {% trans "You didn't add your city yet." %} </p>
+                {% elif profile_user.city and not profile_user.country  %}
+                    <p> {% trans "You didn't add your city yet." %} {{ profile_user.city }} </p>
+                {% else %}
+                    <p> {% trans "You didn't add any location info" %}</p>
+                {% endif %}
+            </div>
+            {% endblock user_info %}
+            {% if profile_user.bio %}
+                <div class="text-sm text-gray-600 mt-2 prose-sm">{{ profile_user.bio|safe }}</div>
+            {% else %}
+                <div class="text-sm text-gray-600 mt-2 prose-sm"> 
+                    <p> {% trans "You didn't add your bio yet. Please, share some info about yourself!" %}</p>
+                </div>
+            {% endif %}
+        </div>
+        {% if location %}
+             <div class="rounded-xl overflow-hidden shadow-md border border-gray-100 h-[300px]">
+                {{ location|safe }}
+            </div>
+        {% endif %}
+        {% comment %} {% if is_own_profile %}
+            <a href="{% url 'profile_edit' %}"
+               class="bg-sky-600 text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-sky-700 transition-all active:scale-95 whitespace-nowrap">
+                {% trans "Edit Profile" %}
+            </a>
+        {% endif %} {% endcomment %}
+    </div>
+
+    <div class="flex gap-2 border-b border-gray-100 mb-6 overflow-x-auto" id="profile-tabs">
+        <button data-tab="published" class="tab-btn px-4 py-2 text-sm font-bold border-b-2 border-sky-600 text-sky-600">
+            {% trans "Published" %} ({{ published_posts.count }})
+        </button>
+        {% if is_own_profile %}
+        <button data-tab="drafts" class="tab-btn px-4 py-2 text-sm font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700">
+            {% trans "Drafts" %} ({{ draft_posts.count }})
+        </button>
+        {% endif %}
+        <button data-tab="categories" class="tab-btn px-4 py-2 text-sm font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700">
+            {% trans "Categories" %} ({{ categories.count }})
+        </button>
+        <button data-tab="tags" class="tab-btn px-4 py-2 text-sm font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700">
+            {% trans "Tags" %} ({{ tags.count }})
+        </button>
+        {% if is_own_profile %}
+        <button data-tab="likes" class="tab-btn px-4 py-2 text-sm font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700">
+            {% trans "Likes" %} ({{ liked_posts.count }})
+        </button>
+        {% endif %}
+    </div>
+
+    <div data-panel="published" class="tab-panel space-y-3">
+        {% for post in published_posts %}
+            {% include "includes/_post_card.html" with words_count=50 post=post show_likes=True%}
+        {% empty %}
+            <p class="text-sm text-gray-400">{% trans "No published posts yet." %}</p>
+        {% endfor %}
+    </div>
+
+    {% if is_own_profile %}
+    <div data-panel="drafts" class="tab-panel space-y-3 hidden">
+        {% for post in draft_posts %}
+            {% include "includes/_post_card.html" with words_count=50 post=post show_likes=True%}
+        {% empty %}
+            <p class="text-sm text-gray-400">{% trans "No drafts." %}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div data-panel="categories" class="tab-panel space-y-2 hidden">
+        <div class="flex flex-wrap gap-2">
+            {% for category in categories %}
+                <span class="px-3 py-1.5 bg-sky-50 text-sky-700 rounded-full text-sm font-semibold">{{ category.title }}</span>
+            {% empty %}
+                <p class="text-sm text-gray-400">{% trans "No categories used yet." %}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div data-panel="tags" class="tab-panel space-y-2 hidden">
+        <div class="flex flex-wrap gap-2">
+            {% for tag in tags %}
+                <span class="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm font-semibold">{{ tag.title }}</span>
+            {% empty %}
+                <p class="text-sm text-gray-400">{% trans "No tags used yet." %}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if is_own_profile %}
+    <div data-panel="likes" class="tab-panel space-y-3 hidden">
+        {% for post in liked_posts %}
+            <a href="{{ post.get_absolute_url }}" class="block bg-white rounded-xl border border-gray-100 p-4 hover:border-sky-200 transition-colors">
+                <p class="font-bold text-gray-900">{% include "includes/_post_card.html" with words_count=50 post=post show_likes=True%}</p>
+                <p class="text-xs text-gray-400">{% trans "by" %} @{{ post.user }}</p>
+            </a>
+        {% empty %}
+            <p class="text-sm text-gray-400">{% trans "No liked posts yet." %}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const buttons = document.querySelectorAll(".tab-btn");
+    const panels = document.querySelectorAll(".tab-panel");
+
+    buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            buttons.forEach((b) => {
+                b.classList.remove("border-sky-600", "text-sky-600");
+                b.classList.add("border-transparent", "text-gray-500");
+            });
+            btn.classList.add("border-sky-600", "text-sky-600");
+            btn.classList.remove("border-transparent", "text-gray-500");
+
+            panels.forEach((p) => p.classList.add("hidden"));
+            document
+                .querySelector(`[data-panel="${btn.dataset.tab}"]`)
+                .classList.remove("hidden");
+        });
+    });
+});
+</script>
+{% endblock content %}

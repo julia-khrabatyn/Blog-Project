@@ -43,6 +43,12 @@
             <div class="hidden sm:flex sm:space-x-8 h-16"> 
                 {% trans "Main" as main_label %}
                 {% trans "All Posts" as all_posts_label %}
+                {% trans "My Profile"  as my_profile %}
+                {% if user.is_authenticated %}
+                    {% include 'includes/_nav_link.html' with url_name='profile_detail' url_arg=user.username label=my_profile %}
+                        {% else %}
+                    {% include 'includes/_nav_link.html' with url_name='account_signup' label=my_profile %}
+                {% endif %}
                 {% include "includes/_nav_link.html" with url_name='home' label=main_label %}
                 {% include "includes/_nav_link.html" with url_name='post_list' label=all_posts_label %}
             </div>

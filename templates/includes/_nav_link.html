@@ -1,4 +1,4 @@
-<a href="{% url url_name %}" 
+<a href="{% if url_arg %}{% url url_name url_arg %}{% else %}{% url url_name %}{% endif %}" 
     class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors 
     {% if request.resolver_match.url_name == url_name %}
     border-sky-500 text-gray-900
