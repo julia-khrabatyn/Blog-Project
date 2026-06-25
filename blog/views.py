@@ -28,6 +28,7 @@ __all__ = (
     "AuthorPostsListView",
     "HomeView",
     "PostCreateView",
+    "PostDeleteView",
     "PostDetailView",
     "PostListView",
     "PostUpdateView",
@@ -217,12 +218,37 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     #         raise PermissionDenied(_("You can not edit other user's post!"))
     #     return super().form_valid(form)
 
+    def get_queryset(self):
+        return Post.objects.filter(author=self.request.user)
+
     def get_success_url(self):
         return reverse_lazy("post_detail", kwargs={"pk": self.object.pk})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["cancel_redirect"] = reverse(
+            "profile_detail", kwargs={"username": self.request.user.username}
+        )
+        return context
+
+
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    """View for deleting post by it's own Author."""
+
+    model = Post
+    template_name = "blog/post_delete.html"
+
+    def get_queryset(self):
+        return Post.objects.filter(user=self.request.user)
+
+    def get_success_url(self):
+        return reverse(
+            "profile_detail", kwargs={"username": self.request.user.username}
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse(
             "profile_detail", kwargs={"username": self.request.user.username}
         )
         return context

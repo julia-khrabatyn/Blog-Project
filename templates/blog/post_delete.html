@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+    {% trans "Delete Post" %}| Byline Blog
+{% endblock title %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 py-10">
+
+    <div class="bg-white rounded-2xl shadow-sm border border-red-100 p-8">
+        <div class="mb-6">
+            <h1 class="text-3xl font-black text-gray-900">
+                {% trans "Delete Post" %}
+            </h1>
+
+            <p class="mt-2 text-gray-600">
+                {% blocktrans with title=post.title %}
+                    Are you sure you want to permanently delete "<strong>{{ title }}</strong>"?
+                {% endblocktrans %}
+            </p>
+
+            <p class="mt-2 text-sm text-red-600 font-medium">
+                {% trans "This action cannot be undone." %}
+            </p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="flex justify-end gap-3 pt-6 border-t border-gray-100">
+                <a href="{{ cancel_url }}"
+                   class="px-5 py-2 text-sm font-semibold text-gray-500 hover:text-gray-700 transition-colors">
+                    {% trans "Cancel" %}
+                </a>
+
+                <button
+                    type="submit"
+                    class="px-5 py-2 rounded-xl bg-red-600 text-white text-sm font-bold hover:bg-red-700 transition-all active:scale-95">
+                    {% trans "Delete Post" %}
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock content %}
