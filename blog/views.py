@@ -1,12 +1,12 @@
 from django.db.models import Count
 from django.views.generic import DetailView, ListView, TemplateView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
-from django.core.paginator import Paginator
-from django.urls import reverse_lazy
+from django.core.exceptions import PermissionDenied
+from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from constance import config
@@ -30,6 +30,7 @@ __all__ = (
     "PostCreateView",
     "PostDetailView",
     "PostListView",
+    "PostUpdateView",
 )
 
 
@@ -128,7 +129,7 @@ class PostDetailView(DetailView):
         context["comment_filter"] = comment_filter
 
         context["latest_author_posts"] = (
-            Post.objects.filter(user=author)
+            Post.objects.filter(user=author, published=True)
             .exclude(id=self.object.id)
             .order_by("-created_at")[:3]
         )
@@ -189,3 +190,39 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         )
 
         return response
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_redirect"] = reverse_lazy("post_list")
+        return context
+
+
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    """View for updating Post content (updates one field in db by user -> other's automatically thought translation request)."""
+
+    model = Post
+    form_class = PostForm
+    template_name = "blog/post_update.html"
+    success_url = reverse_lazy("post_list")
+    slug_field = "pk"
+    slug_url_kwarg = "pk"
+
+    def test_func(self):
+        """For allowing to update post only by it's own Author!"""
+        return self.request.user == self.get_object().user
+
+    # def form_valid(self, form):
+    #     # for additional check (read about possible race condition):
+    #     if self.request.user != self.object.author:
+    #         raise PermissionDenied(_("You can not edit other user's post!"))
+    #     return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("post_detail", kwargs={"pk": self.object.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_redirect"] = reverse(
+            "profile_detail", kwargs={"username": self.request.user.username}
+        )
+        return context

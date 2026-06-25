@@ -6,6 +6,7 @@ from .views import (
     PostCreateView,
     PostDetailView,
     PostListView,
+    PostUpdateView,
 )
 
 urlpatterns = [
@@ -22,4 +23,5 @@ urlpatterns = [
         PostDetailView.as_view(),
         name="post_detail",
     ),
+    path("post/<uuid:pk>/edit/", PostUpdateView.as_view(), name="post_update"),
 ]
