@@ -13,7 +13,7 @@ from constance import config
 
 
 from .filters import AuthorPostFilter, GlobalPostFilter
-from .forms import PostForm
+from .forms import PostForm, CategoryForm
 from .models import Post, Category
 from .services import (
     get_comments_for_post_view,
@@ -26,6 +26,7 @@ User = get_user_model()
 
 __all__ = (
     "AuthorPostsListView",
+    "CategoryCreateView",
     "HomeView",
     "PostCreateView",
     "PostDeleteView",
@@ -170,6 +171,30 @@ class PostListView(ListView):
         return context
 
 
+class CategoryCreateView(LoginRequiredMixin, CreateView):
+    """Display form for creating category."""
+
+    model = Category
+    form_class = CategoryForm
+    template_name = "blog/category_create.html"
+    slug_field = ("pk",)
+    slug_url_kwarg = "pk"
+
+    def get_success_url(self):
+        return reverse_lazy("category_create", kwargs={"pk": self.object.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_redirect"] = reverse(
+            "profile_detail", kwargs={"username": self.request.user.username}
+        )
+        return context
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
 class PostCreateView(LoginRequiredMixin, CreateView):
     """Display form for post creation."""
 
@@ -232,11 +257,18 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return context
 
 
-class PostDeleteView(LoginRequiredMixin, DeleteView):
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     """View for deleting post by it's own Author."""
 
     model = Post
     template_name = "blog/post_delete.html"
+    slug_field = "pk"
+    slug_url_kwarg = "pk"
+
+    def test_func(self):
+        """For allowing to delete post only by it's own Author!"""
+        post = self.get_object()
+        return self.request.user == post.user
 
     def get_queryset(self):
         return Post.objects.filter(user=self.request.user)

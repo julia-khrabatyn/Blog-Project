@@ -1,7 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Count
+from django.core.paginator import Paginator
+from django.db.models import Count, Prefetch
 from django.views.generic import DetailView
 
+from constance import config
 
 from blog.models import Category, Post, Like
 from blog.services import generate_single_user_map
@@ -23,6 +25,12 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
     slug_field = "username"
     slug_url_kwarg = "username"
 
+    def _paginate(self, queryset, param_name="page"):
+        """Help method for pagination."""
+        paginator = Paginator(queryset, config.PAGINATE_BY)
+        page_number = self.request.GET.get(param_name)
+        return paginator.get_page(page_number)
+
     def get_queryset(self):
         qs = User.objects.prefetch_related("posts").prefetch_related()
         return qs
@@ -36,11 +44,15 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
             "tags",
         )
         published_posts = post_qs.filter(published=True)
+        pub_page_obj = self._paginate(published_posts, "page")
+
         draft_posts = (
             post_qs.filter(published=False)
             if is_own_profile
             else Post.objects.none()
         )
+        draft_page_obj = self._paginate(draft_posts, "draft_page")
+
         if profile_user.latitude and profile_user.longitude:
             user_location = generate_single_user_map(profile_user)
 
@@ -55,10 +67,14 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
         context.update(
             {
                 "is_own_profile": is_own_profile,
-                "published_posts": published_posts,
-                "draft_posts": draft_posts,
+                "page_obj": pub_page_obj,
+                "published_posts": pub_page_obj.object_list,
+                "published_posts_count": published_posts.count(),
+                "draft_page_obj": draft_page_obj,
+                "draft_posts": draft_page_obj.object_list,
+                "draft_posts_count": draft_posts.count(),
                 "categories": Category.objects.filter(
-                    posts__in=post_qs
+                    posts__user=profile_user,
                 ).distinct(),
                 "tags": Tag.objects.filter(posts__in=post_qs).distinct(),
                 "liked_posts": liked_posts,

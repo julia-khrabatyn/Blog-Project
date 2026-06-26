@@ -21,7 +21,7 @@
             {% trans "Be the first to share your story with us!" as action_title %}
             {% trans "Click the button below and start your writing journey!" as action_subtitle %}
             {% trans "Create First Post" as action_button_text %}
-            {% include "includes/_action_section.html" with title=action_title subtitle=action_subtitle button_text=action_button_text url="#" %}
+            {% include "includes/_action_section.html" with title=action_title subtitle=action_subtitle button_text=action_button_text url=post_create_url %}
         {% endfor %}
     </div>
 

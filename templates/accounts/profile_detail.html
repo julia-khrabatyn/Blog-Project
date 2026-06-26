@@ -50,11 +50,11 @@
 
     <div class="flex gap-2 border-b border-gray-100 mb-6 overflow-x-auto" id="profile-tabs">
         <button data-tab="published" class="tab-btn px-4 py-2 text-sm font-bold border-b-2 border-sky-600 text-sky-600">
-            {% trans "Published" %} ({{ published_posts.count }})
+            {% trans "Published" %} ({{ published_posts_count }})
         </button>
         {% if is_own_profile %}
         <button data-tab="drafts" class="tab-btn px-4 py-2 text-sm font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700">
-            {% trans "Drafts" %} ({{ draft_posts.count }})
+            {% trans "Drafts" %} ({{ draft_posts_count }})
         </button>
         {% endif %}
         <button data-tab="categories" class="tab-btn px-4 py-2 text-sm font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700">
@@ -71,7 +71,7 @@
     </div>
 
     <div data-panel="published" class="tab-panel space-y-3">
-        {% for post in published_posts %}
+        {% for post in page_obj %}
             {% include "includes/_post_card.html" with words_count=50 post=post show_likes=True%}
             <button class="bg-sky-200 rounded-full tab-btn px-4 py-2 text-sm font-bold border-b-2 border-transparent text-cyan-700 hover:text-sky-900"> 
                 <a href="{% url "post_update" post.pk %}" class="button-link">{% trans "Update post" %}</a>
@@ -82,11 +82,12 @@
         {% empty %}
             <p class="text-sm text-gray-400">{% trans "No published posts yet." %}</p>
         {% endfor %}
+        {% include "includes/_pagination.html"%}
     </div>
 
     {% if is_own_profile %}
     <div data-panel="drafts" class="tab-panel space-y-3 hidden">
-        {% for post in draft_posts %}
+        {% for post in draft_page_obj %}
             {% include "includes/_post_card.html" with words_count=50 post=post show_likes=True%}
             <button class="bg-sky-200 rounded-full tab-btn px-4 py-2 text-sm font-bold border-b-2 border-transparent text-gray-500 hover:text-cyan-700"> 
                 <a href="{% url "post_update" post.pk %}" class="button-link">{% trans "Update post" %}</a>
@@ -97,6 +98,7 @@
         {% empty %}
             <p class="text-sm text-gray-400">{% trans "No drafts." %}</p>
         {% endfor %}
+        {% include "includes/_pagination.html"%}
     </div>
     {% endif %}
 
@@ -107,6 +109,11 @@
             {% empty %}
                 <p class="text-sm text-gray-400">{% trans "No categories used yet." %}</p>
             {% endfor %}
+        </div>
+        <div class="space-y-4">
+            <button class="bg-sky-200 rounded-full tab-btn px-4 py-2 text-sm font-bold border-b-2 border-transparent text-cyan-700 hover:text-sky-900"> 
+                <a href="{% url "category_create" %}" class="button-link">{% trans "+ Add Category" %}</a>
+            </button>
         </div>
     </div>
 
@@ -137,4 +144,11 @@
 {% block extra_js %}
 <script src="{% static 'js/tabs.js' %}" defer></script>
 {% endblock %}
+
+{% trans "Didn't write any posts today?" as action_title %}
+{% trans "What are you waiting for?" as action_subtitle %}
+{% trans "Start sharing ideas!" as action_button_text %}
+{% url "post_create" as url %}
+{% include "includes/_action_section.html" with title=action_title subtitle=action_subtitle button_text=action_button_text url=url %} 
+
 {% endblock content %}
