@@ -20,8 +20,10 @@ def get_user_avatar(user_obj):
         return user_obj.avatar.url
 
     # if user didn't upload avatar, but logged in using Google social account and have profile avatar in it -> get it.
-
-    social = user_obj.socialaccount_set.filter(provider="google").first()
+    if hasattr(user_obj, "google_social"):
+        social = user_obj.google_social[0] if user_obj.google_social else None
+    else:
+        social = user_obj.socialaccount_set.filter(provider="google").first()
     if social:
         google_url = social.extra_data.get("picture")
         if google_url:

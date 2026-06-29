@@ -1,8 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count, F, Prefetch
 from django.core.paginator import Paginator
-from django.db.models import Count, Prefetch
 from django.views.generic import DetailView
 
+
+from allauth.socialaccount.models import SocialAccount
 from constance import config
 
 from blog.models import Category, Post, Like
@@ -14,6 +16,8 @@ from .models import User
 __all__ = [
     "ProfileDetailView",
 ]
+
+PAGINATE_POSTS = config.PAGINATE_BY
 
 
 class ProfileDetailView(LoginRequiredMixin, DetailView):
@@ -27,31 +31,39 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
 
     def _paginate(self, queryset, param_name="page"):
         """Help method for pagination."""
-        paginator = Paginator(queryset, config.PAGINATE_BY)
+        paginator = Paginator(queryset, PAGINATE_POSTS)
         page_number = self.request.GET.get(param_name)
         return paginator.get_page(page_number)
 
     def get_queryset(self):
-        qs = User.objects.prefetch_related("posts").prefetch_related()
-        return qs
+        return User.objects.prefetch_related(
+            Prefetch(
+                "socialaccount_set",
+                queryset=SocialAccount.objects.filter(provider="google"),
+                to_attr="google_social",
+            )
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         profile_user = self.object
         is_own_profile = self.request.user == profile_user
-        post_qs = profile_user.posts.prefetch_related(
-            "categories",
-            "tags",
-        )
-        published_posts = post_qs.filter(published=True)
-        pub_page_obj = self._paginate(published_posts, "page")
 
+        base_posts = (
+            profile_user.posts.select_related("user")
+            .prefetch_related("categories", "tags")
+            .order_by("-created_at")
+        )
+
+        published_posts = base_posts.filter(published=True)
         draft_posts = (
-            post_qs.filter(published=False)
+            base_posts.filter(published=False)
             if is_own_profile
             else Post.objects.none()
         )
-        draft_page_obj = self._paginate(draft_posts, "draft_page")
+
+        pub_page = self._paginate(published_posts, "page")
+        draft_page = self._paginate(draft_posts, "draft_page")
 
         if profile_user.latitude and profile_user.longitude:
             user_location = generate_single_user_map(profile_user)
@@ -61,23 +73,35 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
             liked_post_ids = Like.objects.filter(
                 user=profile_user
             ).values_list("post_id", flat=True)
-            liked_posts = Post.objects.filter(id__in=liked_post_ids).annotate(
-                likes_count=Count("likes")
+            liked_posts = Post.objects.filter(
+                id__in=liked_post_ids
+            ).select_related("user")
+
+            liked_posts_count = (
+                Like.objects.filter(user=profile_user)
+                .values("post_id")
+                .distinct()
+                .count()
             )
+
+        categories = list(
+            Category.objects.filter(posts__in=base_posts).distinct()
+        )
+        tags = list(Tag.objects.filter(posts__in=base_posts).distinct())
+
         context.update(
             {
                 "is_own_profile": is_own_profile,
-                "page_obj": pub_page_obj,
-                "published_posts": pub_page_obj.object_list,
-                "published_posts_count": published_posts.count(),
-                "draft_page_obj": draft_page_obj,
-                "draft_posts": draft_page_obj.object_list,
-                "draft_posts_count": draft_posts.count(),
-                "categories": Category.objects.filter(
-                    posts__user=profile_user,
-                ).distinct(),
-                "tags": Tag.objects.filter(posts__in=post_qs).distinct(),
+                "page_obj": pub_page,
+                "published_posts": pub_page.object_list,
+                "published_posts_count": pub_page.paginator.count,
+                "draft_page_obj": draft_page,
+                "draft_posts": draft_page.object_list,
+                "draft_posts_count": draft_page.paginator.count,
+                "categories": categories,
+                "tags": tags,
                 "liked_posts": liked_posts,
+                "liked_posts_count": liked_posts_count,
                 "location": user_location,
             }
         )

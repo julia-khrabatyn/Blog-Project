@@ -177,11 +177,11 @@ class CategoryCreateView(LoginRequiredMixin, CreateView):
     model = Category
     form_class = CategoryForm
     template_name = "blog/category_create.html"
-    slug_field = ("pk",)
-    slug_url_kwarg = "pk"
 
     def get_success_url(self):
-        return reverse_lazy("category_create", kwargs={"pk": self.object.pk})
+        return reverse_lazy(
+            "profile_detail", kwargs={"username": self.request.user.username}
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -237,14 +237,17 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         """For allowing to update post only by it's own Author!"""
         return self.request.user == self.get_object().user
 
-    # def form_valid(self, form):
-    #     # for additional check (read about possible race condition):
-    #     if self.request.user != self.object.author:
-    #         raise PermissionDenied(_("You can not edit other user's post!"))
-    #     return super().form_valid(form)
+    def form_valid(self, form):
+        action = self.request.POST.get("action")
+        if action == "publish":
+            form.instance.published = True
+        elif action == "draft":
+            form.instance.published = False
+
+        return super().form_valid(form)
 
     def get_queryset(self):
-        return Post.objects.filter(author=self.request.user)
+        return Post.objects.filter(user=self.request.user)
 
     def get_success_url(self):
         return reverse_lazy("post_detail", kwargs={"pk": self.object.pk})
