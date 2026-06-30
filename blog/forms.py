@@ -38,7 +38,6 @@ class PostForm(BaseTranslationForm):
             "text_uk",
             "categories",
             "tags",
-            "published",
         ]
         widgets = {
             "title": forms.TextInput(attrs={"class": WIDGET_CLASS}),

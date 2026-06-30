@@ -52,7 +52,7 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
         base_posts = (
             profile_user.posts.select_related("user")
             .prefetch_related("categories", "tags")
-            .order_by("-created_at")
+            .order_by("-updated_at")
         )
 
         published_posts = base_posts.filter(published=True)
