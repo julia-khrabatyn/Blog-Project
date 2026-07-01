@@ -268,6 +268,14 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     slug_field = "pk"
     slug_url_kwarg = "pk"
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        if not form.instance.birth_date:
+            form.fields["birth_date"].initial = None
+        if not form.instance.city:
+            form.fields["city"].initial = None
+        return form
+
     def test_func(self):
         """For allowing to delete post only by it's own Author!"""
         post = self.get_object()

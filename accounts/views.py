@@ -1,8 +1,12 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Count, F, Prefetch
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db.models import Prefetch
 from django.core.paginator import Paginator
+from django.core.exceptions import PermissionDenied
 from django.views.generic import DetailView
-
+from django.views.generic.edit import UpdateView
+from django.shortcuts import get_object_or_404
+from django.urls import reverse, reverse_lazy
+from django.utils.translation import gettext_lazy as _
 
 from allauth.socialaccount.models import SocialAccount
 from constance import config
@@ -11,10 +15,12 @@ from blog.models import Category, Post, Like
 from blog.services import generate_single_user_map
 from tags.models import Tag
 
+from .forms import UserProfileForm
 from .models import User
 
 __all__ = [
     "ProfileDetailView",
+    "ProfileUpdateView",
 ]
 
 PAGINATE_POSTS = config.PAGINATE_BY
@@ -104,5 +110,42 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
                 "liked_posts_count": liked_posts_count,
                 "location": user_location,
             }
+        )
+        return context
+
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    """View for updating user's info."""
+
+    model = User
+    form_class = UserProfileForm
+    template_name = "accounts/profile_update.html"
+    slug_field = "username"
+    slug_url_kwarg = "username"
+
+    def get_queryset(self):
+        return User.objects.prefetch_related(
+            Prefetch(
+                "socialaccount_set",
+                queryset=SocialAccount.objects.filter(provider="google"),
+                to_attr="google_social",
+            )
+        ).filter(username=self.kwargs.get(self.slug_url_kwarg))
+
+    def get_object(self, queryset=None):
+        if self.kwargs["username"] != self.request.user.username:
+            raise PermissionDenied(_("You can edit only your profile!"))
+
+        return self.request.user
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "profile_detail", kwargs={"username": self.request.user.username}
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_redirect"] = reverse(
+            "profile_detail", kwargs={"username": self.request.user.username}
         )
         return context

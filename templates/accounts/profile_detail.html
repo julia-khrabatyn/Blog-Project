@@ -2,35 +2,55 @@
 {% load static %}
 {% load i18n %}
 
+
 {% block title %}
     {{ profile_user.username }} | Byline Blog
 {% endblock title %}
+
 
 {% block content %}
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex items-center gap-5 mb-8">
         
         {% include "includes/_user_avatar.html" with user_obj=profile_user %}
       
-
+        <a href="{% url 'profile_update' username=profile_user.username %}" class="Btn">
+    {% trans "Edit Profile" %}
+    <svg class="svg" viewBox="0 0 512 512">
+        <path d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path>
+    </svg>
+</a>
+            
         <div class="flex-1">
-            <h1 class="text-2xl font-black text-gray-900">{{ profile_user }}</h1>
+            <h1 class="text-2xl font-black text-gray-900">@{{ profile_user }}</h1>
+            <h3 class="text-l font-semibold text-sky-700">
+                {% trans "Date of birth:" %} 
+                {% if profile_user.birth_date %}
+                    {{ profile_user.birth_date }}
+                {% else %}
+                    {% trans "You didn't add your date of birth yet." %}
+                {% endif %}
+            </h3>
             {% block user_info %}
-            <div class="text-sm text-gray-500">
+            <div class="text-l text-gray-700 font-semibold">
+                {% trans "Location details:" %}
                 {% if profile_user.country and profile_user.city %}
                     <p>{{ profile_user.country.name }}, {{ profile_user.city }} </p>
                 {% elif profile_user.country and not profile_user.city %}
-                    <p> {{ profile_user.country.name }}, {% trans "You didn't add your city yet." %} </p>
+                    <p> {{ profile_user.country.name }}; </p>
+                    <p> {% trans "You didn't add your city yet." %} </p>
                 {% elif profile_user.city and not profile_user.country  %}
-                    <p> {% trans "You didn't add your city yet." %} {{ profile_user.city }} </p>
+                    <p> {% trans "You didn't add your country yet." %}; </p>
+                    <p> {{ profile_user.city }} </p>
                 {% else %}
                     <p> {% trans "You didn't add any location info" %}</p>
                 {% endif %}
             </div>
             {% endblock user_info %}
+            <h3 class="text-l font-semibold text-sky-700">{% trans "Bio:" %}</h3>
             {% if profile_user.bio %}
-                <div class="text-sm text-gray-600 mt-2 prose-sm">{{ profile_user.bio|safe }}</div>
+                <div class="text-l font-semibold text-sky-700 prose-sm">{{ profile_user.bio|safe }}</div>
             {% else %}
-                <div class="text-sm text-gray-600 mt-2 prose-sm"> 
+                <div class="text-l font-semibold text-sky-700 prose-sm"> 
                     <p> {% trans "You didn't add your bio yet. Please, share some info about yourself!" %}</p>
                 </div>
             {% endif %}
