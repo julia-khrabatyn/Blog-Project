@@ -30,6 +30,10 @@
 <script src="{% static 'js/inline_create.js' %}" defer></script>
 {% endblock %}
 
+{% block additional_js %}
+<script src="{% static 'js/change_avatar.js' %}" defer></script>
+{% endblock additional_js %}
+
 <body class="h-full font-sans antialiased text-gray-900 flex flex-col">
     <body data-post-id="{% if post %}{{ post.pk }}{% endif %}" class="h-full font-sans antialiased text-gray-900 flex flex-col">
     <nav class="bg-white shadow-sm border-b sticky top-0 z-50">

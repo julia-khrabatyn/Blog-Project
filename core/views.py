@@ -11,6 +11,10 @@ from blog.models import Category
 from tags.forms import TagForm
 from tags.models import Tag
 
+__all__ = [
+    "InlineCreateAjaxView",
+]
+
 ALLOWED_MODELS = {
     "category": (Category, CategoryForm),
     "tag": (Tag, TagForm),

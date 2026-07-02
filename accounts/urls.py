@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import ProfileDetailView, ProfileUpdateView
+from .views import ProfileDetailView, ProfileUpdateView, AvatarUpdateAjaxView
 
 urlpatterns = [
     path(
@@ -10,5 +10,10 @@ urlpatterns = [
         "<str:username>/profile/update/",
         ProfileUpdateView.as_view(),
         name="profile_update",
+    ),
+    path(
+        "<str:username>/avatar/update/",
+        AvatarUpdateAjaxView.as_view(),
+        name="change_avatar",
     ),
 ]

@@ -4,11 +4,13 @@ from django.core.validators import MaxLengthValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+
 from ckeditor.fields import RichTextField
 from django_countries.fields import CountryField
 
 from core.models import AbstractBaseModel
 from .services import get_coordinates
+from .templatetags.user_tags import get_user_avatar
 
 from accounts.validators import validate_birth_date
 
@@ -133,6 +135,9 @@ class User(AbstractUser, AbstractBaseModel):
         if full_name:
             return full_name
         return self.username
+
+    def get_avatar_url(self):
+        return get_user_avatar(self)
 
     class Meta:
         verbose_name = _("User")

@@ -8,6 +8,7 @@ from django_countries.widgets import CountrySelectWidget
 from .models import User
 
 __all__ = [
+    "AvatarUpdateForm",
     "UserProfileForm",
 ]
 
@@ -31,11 +32,11 @@ class UserProfileForm(forms.ModelForm):
         label=_("Date of Birth"),
         required=False,
         widget=forms.DateInput(
+            format="%Y-%m-%d",
             attrs={
-                "class": WIDGET_CLASS,
                 "type": "date",
-                "placeholder": _("DD/MM/YYYY"),
-            }
+                "class": WIDGET_CLASS,
+            },
         ),
     )
 
@@ -63,3 +64,11 @@ class UserProfileForm(forms.ModelForm):
             }
         ),
     )
+
+
+class AvatarUpdateForm(forms.ModelForm):
+    """Form for updating user's avatar (profile photo)."""
+
+    class Meta:
+        model = User
+        fields = ("avatar",)
