@@ -1,20 +1,22 @@
-from django.db.models import Count
+from django.db.models import Count, Exists, OuterRef
+from django.http import JsonResponse
+from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
-from django.core.exceptions import PermissionDenied
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from constance import config
 
+from core.services.like_services import add_liked_annotation
 
 from .filters import AuthorPostFilter, GlobalPostFilter
 from .forms import PostForm, CategoryForm
-from .models import Post, Category
+from .models import Category, Like, Post
 from .services import (
     get_comments_for_post_view,
     get_filtered_posts,
@@ -33,6 +35,7 @@ __all__ = (
     "PostDetailView",
     "PostListView",
     "PostUpdateView",
+    "ToggleLikeView",
 )
 
 
@@ -57,6 +60,8 @@ class AuthorPostsListView(ListView):
             .prefetch_related("categories")
             .annotate(likes_count=Count("likes"))
         )
+        qs = add_liked_annotation(qs, self.request.user)
+
         self.filterset = get_filtered_posts(
             self.request.GET, queryset=qs, filter_class=AuthorPostFilter
         )
@@ -77,23 +82,34 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         """Show sorted categories by popularity (number of posts in category)"""
         context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        liked_subquery = Like.objects.filter(user=user, post=OuterRef("pk"))
+
+        base_queryset = Post.objects.filter(published=True).select_related(
+            "user"
+        )
+
         context["categories"] = Category.objects.annotate(
             posts_count=Count("posts")
         ).order_by("-posts_count")[:5]
 
         context["popular_posts"] = (
-            Post.objects.filter(published=True)
-            .select_related("user")
-            .prefetch_related("categories")
-            .annotate(likes_count=Count("likes"))
+            base_queryset.prefetch_related("categories")
+            .annotate(
+                likes_count=Count("likes"),
+                is_liked=Exists(liked_subquery),
+            )
             .order_by("-likes_count", "-updated_at")[:3]
         )
         context["latest_posts"] = (
-            Post.objects.filter(published=True)
-            .select_related("user")
-            .prefetch_related("categories")
+            base_queryset.prefetch_related("categories")
+            .annotate(
+                is_liked=Exists(liked_subquery),
+            )
             .order_by("-created_at")[:3]
         )
+
         # generate users_map
         users_with_coordinates = User.objects.filter(
             latitude__isnull=False,
@@ -115,7 +131,7 @@ class PostDetailView(DetailView):
     def get_queryset(self):
         """Extract all info about User (post author)."""
         qs = Post.objects.select_related("user")
-        return qs
+        return add_liked_annotation(qs, self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -137,6 +153,7 @@ class PostDetailView(DetailView):
         )
         if author.latitude and author.longitude:
             context["author_map"] = generate_single_user_map(user=author)
+
         return context
 
 
@@ -160,10 +177,12 @@ class PostListView(ListView):
             .annotate(likes_count=Count("likes"))
         )
         self.filterset = get_filtered_posts(
-            self.request.GET, filter_class=GlobalPostFilter
+            self.request.GET, queryset=qs, filter_class=GlobalPostFilter
         )
 
-        return self.filterset.qs
+        qs = self.filterset.qs
+        qs = add_liked_annotation(qs, self.request.user)
+        return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -295,3 +314,27 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             "profile_detail", kwargs={"username": self.request.user.username}
         )
         return context
+
+
+class ToggleLikeView(LoginRequiredMixin, View):
+    """View for switching like for post."""
+
+    def post(self, request, pk):
+
+        post = get_object_or_404(Post, pk=pk)
+
+        like = Like.objects.filter(user=request.user, post=post).first()
+
+        if like:
+            like.delete()
+            liked = False
+        else:
+            Like.objects.create(user=request.user, post=post)
+            liked = True
+
+        return JsonResponse(
+            {
+                "liked": liked,
+                "likes_count": post.likes.count(),
+            }
+        )

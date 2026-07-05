@@ -13,12 +13,12 @@ from constance import config
 
 from blog.models import Category, Post, Like
 from blog.services import generate_single_user_map
+from core.services.like_services import add_liked_annotation
 from tags.models import Tag
 
 from .forms import AvatarUpdateForm, UserProfileForm
 from .mixins import UserOwnerMixin
 from .models import User
-from .templatetags.user_tags import get_user_avatar
 
 __all__ = [
     "ProfileDetailView",
@@ -62,6 +62,7 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
             .prefetch_related("categories", "tags")
             .order_by("-updated_at")
         )
+        base_posts = add_liked_annotation(base_posts, self.request.user)
 
         published_posts = base_posts.filter(published=True)
         draft_posts = (
@@ -73,24 +74,40 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
         pub_page = self._paginate(published_posts, "page")
         draft_page = self._paginate(draft_posts, "draft_page")
 
+        user_location = None
         if profile_user.latitude and profile_user.longitude:
             user_location = generate_single_user_map(profile_user)
 
         liked_posts = None
         if is_own_profile:
-            liked_post_ids = Like.objects.filter(
-                user=profile_user
-            ).values_list("post_id", flat=True)
-            liked_posts = Post.objects.filter(
-                id__in=liked_post_ids
-            ).select_related("user")
-
-            liked_posts_count = (
-                Like.objects.filter(user=profile_user)
-                .values("post_id")
-                .distinct()
-                .count()
+            # liked_posts = add_liked_annotation(
+            #     Post.objects.filter(likes__user=profile_user),
+            #     self.request.user,
+            # )
+            # liked_posts_count = Like.objects.filter(user=profile_user).count()
+            liked_posts = add_liked_annotation(
+                Post.objects.filter(likes__user=profile_user)
+                .select_related("user")
+                .prefetch_related("categories", "tags"),
+                self.request.user,
             )
+            liked_posts_count = liked_posts.count()
+        else:
+            liked_posts = Post.objects.none()
+            liked_posts_count = 0
+        # liked_post_ids = Like.objects.filter(
+        #     user=profile_user
+        # ).values_list("post_id", flat=True)
+        # liked_posts = Post.objects.filter(
+        #     id__in=liked_post_ids
+        # ).select_related("user")
+
+        # liked_posts_count = (
+        #     Like.objects.filter(user=profile_user)
+        #     .values("post_id")
+        #     .distinct()
+        #     .count()
+        # )
 
         categories = list(
             Category.objects.filter(posts__in=base_posts).distinct()

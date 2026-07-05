@@ -28,8 +28,8 @@
                 name="avatar"
                 hidden>
             <div class="bg-center, text-center font-semibold text-gray-700">    
-                <h6>Click on avatar</h6>
-                <h6>to update it!</h6>
+                <h6>{% trans "Click on avatar" %}</h6>
+                <h6>{% trans "to update it!" %}</h6>
             </div>
         </div>
 
@@ -107,7 +107,7 @@
 
     <div data-panel="published" class="tab-panel space-y-3">
         {% for post in page_obj %}
-            {% include "includes/_post_card.html" with words_count=50 post=post show_likes=True%}
+            {% include "includes/_post_card.html" with words_count=50 post=post show_likes=True %}
             <button class="bg-sky-200 rounded-full tab-btn px-4 py-2 text-sm font-bold border-b-2 border-transparent text-cyan-700 hover:text-sky-900"> 
                 <a href="{% url "post_update" post.pk %}" class="button-link">{% trans "Update post" %}</a>
             </button>

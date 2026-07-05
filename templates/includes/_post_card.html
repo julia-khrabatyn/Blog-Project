@@ -4,13 +4,13 @@
 {% with is_even=forloop.counter|divisibleby:2 %}
 <div class="{% if is_even %}bg-sky-50{% else %}bg-white{% endif %} p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
     <span class="text-xs font-bold text-sky-500 uppercase tracking-widest">
-        {% with categories=post.categories.all %}
-            {% if categories %}
-                {{ categories.0.title }}
+        {% for category in post.categories.all %}
+            {% if category %}
+                {{ category.title }}
             {% else %}
                 {% trans "Article" %}
             {% endif %}
-        {% endwith %}
+        {% endfor %}
     </span>
     <h3 class="text-xl font-bold mt-2 mb-3">{{ post.title }}</h3>
     <p class="text-gray-500 text-sm mb-4">{{ post.text|preview:50|safe }}
@@ -37,5 +37,8 @@
             </span>
         {% endif %}
     </div>
+    <div class="py-3 justify-normal">
+    </div>
+    {% include "includes/_toggle_like.html" %}
 </div>
 {% endwith %}

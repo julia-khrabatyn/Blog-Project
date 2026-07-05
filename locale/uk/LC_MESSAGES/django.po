@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#: templates/accounts/profile_update.html:14
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-25 23:42+0000\n"
+"POT-Creation-Date: 2026-07-03 14:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -85,52 +86,60 @@ msgstr "Додаткова інформація"
 msgid "Accounts"
 msgstr "Користувачі"
 
-#: accounts/models.py:65
-msgid "Date of birth"
+#: accounts/forms.py:25 accounts/forms.py:32
+msgid "Date of Birth"
 msgstr "Дата народження"
 
-#: accounts/models.py:66
-msgid "Your date of birth. Must be 13+ years for registration"
-msgstr "Ваша дата народження. Ваш вік повинен бути 13+ для реєстрації"
-
-#: accounts/models.py:71
+#: accounts/forms.py:26 accounts/models.py:73
 msgid "Country"
 msgstr "Країна"
 
-#: accounts/models.py:72
-msgid "Your country code"
-msgstr "Код країни"
-
-#: accounts/models.py:82
-msgid "Bio"
-msgstr "Біо"
-
-#: accounts/models.py:83
-msgid "Your bio (optional)"
-msgstr "Про себе (необов'язково)"
-
-#: accounts/models.py:89
+#: accounts/forms.py:27 accounts/forms.py:48 accounts/models.py:91
 msgid "City"
 msgstr "Місто"
 
-#: accounts/models.py:90
+#: accounts/forms.py:28 accounts/forms.py:59 accounts/models.py:84
+msgid "Bio"
+msgstr "Біо"
+
+#: accounts/forms.py:53
+msgid "Enter your city"
+msgstr "Введіть місто, де Ви проживаєте"
+
+#: accounts/models.py:67
+msgid "Date of birth"
+msgstr "Дата народження"
+
+#: accounts/models.py:68
+msgid "Your date of birth. Must be 13+ years for registration"
+msgstr "Ваша дата народження. Ваш вік повинен бути 13+ для реєстрації"
+
+#: accounts/models.py:74
+msgid "Your country code"
+msgstr "Код країни"
+
+#: accounts/models.py:85
+msgid "Your bio (optional)"
+msgstr "Про себе (необов'язково)"
+
+#: accounts/models.py:92
 msgid "Your city (optional)"
 msgstr "Ваше місто (необов'язково)"
 
-#: accounts/models.py:94
+#: accounts/models.py:96
 msgid "Email"
 msgstr "Електронна пошта"
 
-#: accounts/models.py:95
+#: accounts/models.py:97
 msgid "Your valid email address"
 msgstr "Дійсна адреса електронної пошти"
 
-#: accounts/models.py:101 templates/includes/_user_avatar.html:5
+#: accounts/models.py:103 templates/includes/_user_avatar.html:5
 #: templates/includes/comments/_comments_section.html:20
 msgid "Avatar"
 msgstr "Фото профілю"
 
-#: accounts/models.py:103
+#: accounts/models.py:105
 msgid ""
 "Upload profile photo (optional) (Support only .png, .jpeg, .jpg, .webp "
 "extensions)"
@@ -138,56 +147,56 @@ msgstr ""
 "Завантажте фото профілю (необов'язково). (Підтримуються лише такі формати: ."
 "png, .jpeg, .jpg, .webp )"
 
-#: accounts/models.py:110 blog/admin.py:56 blog/models.py:54 tags/apps.py:7
-#: tags/models.py:25 templates/accounts/profile_detail.html:65
+#: accounts/models.py:112 blog/admin.py:56 blog/models.py:54 tags/apps.py:7
+#: tags/models.py:25 templates/accounts/profile_detail.html:99
 msgid "Tags"
 msgstr "Теги"
 
-#: accounts/models.py:111
+#: accounts/models.py:113
 msgid "Add tag (optional)"
 msgstr "Додайте тег (необов'язково)"
 
-#: accounts/models.py:116
+#: accounts/models.py:118
 msgid "Latitude coordinate in decimal format"
 msgstr "Координата широти в десятковому форматі"
 
-#: accounts/models.py:117 accounts/models.py:125
+#: accounts/models.py:119 accounts/models.py:127
 msgid "Geo data"
 msgstr "Гео дані"
 
-#: accounts/models.py:124
+#: accounts/models.py:126
 msgid "Longitude coordinate in decimal format"
 msgstr "Координата довготи в десятковому форматі"
 
-#: accounts/models.py:138 blog/models.py:116 comments/models.py:26
+#: accounts/models.py:143 blog/models.py:116 comments/models.py:26
 msgid "User"
 msgstr "Користувач"
 
-#: accounts/models.py:139
+#: accounts/models.py:144
 msgid "Users"
 msgstr "Користувачі"
 
-#: accounts/models.py:150
+#: accounts/models.py:155
 msgid "Follower"
 msgstr "Підписник"
 
-#: accounts/models.py:151
+#: accounts/models.py:156
 msgid "User, who follows"
 msgstr "Користувач, який підписався"
 
-#: accounts/models.py:156
+#: accounts/models.py:161
 msgid "Following"
 msgstr "Підписка"
 
-#: accounts/models.py:158
+#: accounts/models.py:163
 msgid "User, who is followed"
 msgstr "Користувач, на якого підписалися"
 
-#: accounts/models.py:178
+#: accounts/models.py:183
 msgid "Follow"
 msgstr "Підписка"
 
-#: accounts/models.py:179
+#: accounts/models.py:184
 msgid "Follows"
 msgstr "Підписки"
 
@@ -204,7 +213,6 @@ msgid "Category"
 msgstr "Категорія"
 
 #: blog/admin.py:66 blog/models.py:137
-#: templates/accounts/profile_detail.html:69
 msgid "Likes"
 msgstr "Вподобайки"
 
@@ -250,7 +258,7 @@ msgstr "Активність користувача"
 
 #: blog/admin.py:289
 msgid "Total users likes"
-msgstr "Загальна кількість вподобайок"
+msgstr "Загальна кількість вподобайок, поставлених користувачем"
 
 #: blog/apps.py:7
 msgid "Blog"
@@ -365,7 +373,7 @@ msgid "User, created post"
 msgstr "Користувач, що додав публікацію"
 
 #: blog/models.py:47 blog/models.py:165
-#: templates/accounts/profile_detail.html:62
+#: templates/accounts/profile_detail.html:96
 msgid "Categories"
 msgstr "Категорії"
 
@@ -437,11 +445,11 @@ msgstr "Порядок"
 msgid "Display order priority (ascending)"
 msgstr "Порядок відображення (за зростанням)"
 
-#: blog/views.py:188
+#: blog/views.py:215
 msgid "Post published successfully!"
 msgstr "Публікація оприлюднена успішно!"
 
-#: blog/views.py:190
+#: blog/views.py:217
 msgid "Post successfully saved as a draft!"
 msgstr "Публікація успішно збережена в якості чернетки!"
 
@@ -545,7 +553,7 @@ msgstr "Дата створення"
 msgid "Date of update"
 msgstr "Дата оновлення"
 
-#: core/models.py:44 templates/accounts/profile_detail.html:54
+#: core/models.py:44 templates/accounts/profile_detail.html:88
 msgid "Published"
 msgstr "Опубліковано"
 
@@ -582,59 +590,125 @@ msgstr "Назва Тегу"
 msgid "Tag"
 msgstr "Тег"
 
-#: templates/accounts/profile_detail.html:22
-#: templates/accounts/profile_detail.html:24
+#: templates/accounts/profile_detail.html:31
+msgid "Click on avatar"
+msgstr "Тицяй на аватар"
+
+#: templates/accounts/profile_detail.html:32
+msgid "to update it!"
+msgstr "щоб оновити фото!"
+
+#: templates/accounts/profile_detail.html:37
+msgid "Edit Profile"
+msgstr "Редагувати профіль"
+
+#: templates/accounts/profile_detail.html:47
+msgid "Date of birth:"
+msgstr "Дата народження"
+
+#: templates/accounts/profile_detail.html:51
+msgid "You didn't add your date of birth yet."
+msgstr "Ви поки не додали свою дату народження"
+
+#: templates/accounts/profile_detail.html:56
+msgid "Location details:"
+msgstr "Деталі місцезнаходження"
+
+#: templates/accounts/profile_detail.html:61
 msgid "You didn't add your city yet."
 msgstr "Ви поки не додали своє місто."
 
-#: templates/accounts/profile_detail.html:26
+#: templates/accounts/profile_detail.html:63
+msgid "You didn't add your country yet."
+msgstr "Ви поки не додали країну, де ви проживаєте."
+
+#: templates/accounts/profile_detail.html:66
 msgid "You didn't add any location info"
 msgstr "Ви поки не додали жодної інформації стосовно місцезнаходження"
 
-#: templates/accounts/profile_detail.html:34
+#: templates/accounts/profile_detail.html:70
+msgid "Bio:"
+msgstr "Біо"
+
+#: templates/accounts/profile_detail.html:75
 msgid "You didn't add your bio yet. Please, share some info about yourself!"
 msgstr ""
 "Ви поки не додали свою біографію. Будь ласка, поділіться з нами інформацією "
 "про себе!"
 
-#: templates/accounts/profile_detail.html:58
+#: templates/accounts/profile_detail.html:92
 msgid "Drafts"
 msgstr "Чернетки"
 
-#: templates/accounts/profile_detail.html:78
-#: templates/accounts/profile_detail.html:93
+#: templates/accounts/profile_detail.html:103
+msgid "Liked Posts"
+msgstr " Вподобані Публікації"
+
+#: templates/accounts/profile_detail.html:112
+#: templates/accounts/profile_detail.html:128
 msgid "Update post"
 msgstr "Оновити публікацію"
 
-#: templates/accounts/profile_detail.html:81
-#: templates/accounts/profile_detail.html:96 templates/blog/post_delete.html:6
+#: templates/accounts/profile_detail.html:115
+#: templates/accounts/profile_detail.html:131 templates/blog/post_delete.html:6
 #: templates/blog/post_delete.html:15 templates/blog/post_delete.html:41
 msgid "Delete Post"
 msgstr "Видалити публікацію"
 
-#: templates/accounts/profile_detail.html:84
+#: templates/accounts/profile_detail.html:118
 msgid "No published posts yet."
 msgstr "Поки немає оприлюднених публікацій."
 
-#: templates/accounts/profile_detail.html:99
+#: templates/accounts/profile_detail.html:134
 msgid "No drafts."
 msgstr "Поки немає жодної чернетки."
 
-#: templates/accounts/profile_detail.html:109
+#: templates/accounts/profile_detail.html:145
 msgid "No categories used yet."
 msgstr "Поки не використано жодної категорії."
 
-#: templates/accounts/profile_detail.html:119
+#: templates/accounts/profile_detail.html:150
+msgid "+ Add Category"
+msgstr "+ Додати Категорію"
+
+#: templates/accounts/profile_detail.html:160
 msgid "No tags used yet."
 msgstr "Поки не використано жодного тегу."
 
-#: templates/accounts/profile_detail.html:129
-msgid "by"
-msgstr "стоворено"
+#: templates/accounts/profile_detail.html:165
+msgid "+ Add Tag"
+msgstr "+ Додати Тег"
 
-#: templates/accounts/profile_detail.html:132
+#: templates/accounts/profile_detail.html:176
 msgid "No liked posts yet."
 msgstr "Поки немає жодної вподобаної публікації."
+
+#: templates/accounts/profile_detail.html:186
+msgid "Didn't write any posts today?"
+msgstr "Ви ше не створили жодної публікації сьогодні?"
+
+#: templates/accounts/profile_detail.html:187
+msgid "What are you waiting for?"
+msgstr "Не чекайте!"
+
+#: templates/accounts/profile_detail.html:188
+msgid "Start sharing ideas!"
+msgstr "Почати ділитися своїми ідеями!"
+
+#: templates/accounts/profile_update.html:6
+msgid "Update Profile info"
+msgstr "Особиста інформація профілю користувача"
+
+#: templates/accounts/profile_update.html:47 templates/blog/post_delete.html:35
+#: templates/includes/_base_cat_tag.html:50
+#: templates/includes/_base_post.html:72
+#: templates/includes/_inline_form_create.html:15
+msgid "Cancel"
+msgstr "Відмінити"
+
+#: templates/accounts/profile_update.html:51
+msgid "Save changes"
+msgstr "Зберегти зміни"
 
 #: templates/admin/base_site.html:14
 msgid "Byline Logo"
@@ -659,35 +733,35 @@ msgstr "Або"
 msgid "Login with Google"
 msgstr "Увійти за допомогою Google"
 
-#: templates/base.html:40
+#: templates/base.html:49
 msgid "Blog logo"
 msgstr "Логотип Блогу"
 
-#: templates/base.html:45
+#: templates/base.html:54
 msgid "Main"
 msgstr "Головна"
 
-#: templates/base.html:46
+#: templates/base.html:55
 msgid "All Posts"
 msgstr "Всі Пости"
 
-#: templates/base.html:47
+#: templates/base.html:56
 msgid "My Profile"
 msgstr "Мій профіль"
 
-#: templates/base.html:63
+#: templates/base.html:72
 msgid "Welcome, "
 msgstr "Вітаємо, "
 
-#: templates/base.html:68
+#: templates/base.html:77
 msgid "Logout"
 msgstr "Вийти"
 
-#: templates/base.html:74
+#: templates/base.html:83
 msgid "Sign in"
 msgstr "Увійти"
 
-#: templates/base.html:76
+#: templates/base.html:85
 msgid "Sign up"
 msgstr "Зареєструватися"
 
@@ -698,6 +772,14 @@ msgstr "Всі публікації автора "
 #: templates/blog/author_posts_list.html:19
 msgid "This author hasn't published any posts yet."
 msgstr "Цей автор поки нічого не опублікував."
+
+#: templates/blog/category_create.html:6
+msgid "Category Create"
+msgstr "Створити категорію"
+
+#: templates/blog/category_create.html:10
+msgid "Create Category"
+msgstr "Створити категорію"
 
 #: templates/blog/home.html:8
 msgid "Welcome to"
@@ -816,6 +898,7 @@ msgid "Fill in the details below to publish your post."
 msgstr "Будь ласка, заповніть поля для створення публікації"
 
 #: templates/blog/post_delete.html:19
+#, python-format
 msgid ""
 "\n"
 "                    Are you sure you want to permanently delete "
@@ -830,11 +913,6 @@ msgstr ""
 #: templates/blog/post_delete.html:25
 msgid "This action cannot be undone."
 msgstr "Цю дію не можна відмінити"
-
-#: templates/blog/post_delete.html:35 templates/includes/_base_post.html:72
-#: templates/includes/_inline_form_create.html:15
-msgid "Cancel"
-msgstr "Відмінити"
 
 #: templates/blog/post_detail.html:46
 msgid "About Author:"
@@ -1060,17 +1138,22 @@ msgstr ""
 "прокоментує!\n"
 "                    "
 
+#: templates/tags/tag_create.html:6
+msgid "Tag Create"
+msgstr "Створити Тег"
+
+#: templates/tags/tag_create.html:10
+msgid "Create Tag"
+msgstr "Створити тег"
+
+#~ msgid "by"
+#~ msgstr "стоворено"
+
 #~ msgid "Close"
 #~ msgstr "Закрити"
 
 #~ msgid "Don't have the one you need?"
 #~ msgstr "Не знайшли того, що відгукується?"
-
-#~ msgid "+ Create Category"
-#~ msgstr "+ Створити категорію"
-
-#~ msgid "+ Add New Tag"
-#~ msgstr "+ Додати Тег"
 
 #, fuzzy
 #~| msgid "By tags"

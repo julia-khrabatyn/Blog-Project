@@ -8,6 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <title>{% block title %}Byline-Blog{% endblock %}</title>
     <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
     {% comment %} this for solving debug toolbar tracebacks {% endcomment %}
@@ -33,6 +34,11 @@
 {% block additional_js %}
 <script src="{% static 'js/change_avatar.js' %}" defer></script>
 {% endblock additional_js %}
+
+{% block like_js %}
+<script src="{% static 'js/toggle_like.js' %}" defer></script>
+{% endblock %}
+
 
 <body class="h-full font-sans antialiased text-gray-900 flex flex-col">
     <body data-post-id="{% if post %}{{ post.pk }}{% endif %}" class="h-full font-sans antialiased text-gray-900 flex flex-col">

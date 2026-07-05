@@ -3,7 +3,9 @@ import json
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.views.generic import View
+from django.shortcuts import get_object_or_404
 
+from blog.models import Post
 
 from .forms import CommentForm
 
@@ -14,6 +16,7 @@ class CommentCreateAjaxModelFormView(LoginRequiredMixin, View):
     """Create Comment View with Ajax."""
 
     def post(self, request, post_id):
+        post = get_object_or_404(Post, pk=post_id)
         try:
             data = json.loads(request.body)
         except json.JSONDecodeError:
@@ -24,7 +27,7 @@ class CommentCreateAjaxModelFormView(LoginRequiredMixin, View):
         form = CommentForm(data)
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.post_id = post_id
+            comment.post = post
             comment.user = request.user
             comment.save()
             return JsonResponse({"status": "ok", "text": comment.text})

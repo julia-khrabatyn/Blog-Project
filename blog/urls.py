@@ -9,6 +9,7 @@ from .views import (
     PostDetailView,
     PostListView,
     PostUpdateView,
+    ToggleLikeView,
 )
 
 urlpatterns = [
@@ -34,4 +35,5 @@ urlpatterns = [
         CategoryCreateView.as_view(),
         name="category_create",
     ),
+    path("post/<uuid:pk>/like/", ToggleLikeView.as_view(), name="post_like"),
 ]
