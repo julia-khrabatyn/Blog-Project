@@ -87,7 +87,9 @@
                         {% endblocktrans %}
                     </a>
                 {% endif %}
-                {% include "includes/_toggle_like.html" %}
+                {% if user.is_authenticated %}
+                    {% include "includes/_toggle_like.html" %}
+                {% endif %}
             </div>
         </section>
     </section>

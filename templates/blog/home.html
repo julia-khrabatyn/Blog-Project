@@ -67,7 +67,9 @@
                                 {% endwith %}
                             </span>
                             <div class="flex items-center mx-2">
-                                {% include "includes/_toggle_like.html" %}
+                                {% if user.is_authenticated %}
+                                    {% include "includes/_toggle_like.html" %}
+                                {% endif %}
                             </div>
                         </div>
                     </div>

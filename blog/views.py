@@ -1,4 +1,4 @@
-from django.db.models import Count, Exists, OuterRef
+from django.db.models import Count, Exists, OuterRef, BooleanField, Value
 from django.http import JsonResponse
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
@@ -80,41 +80,36 @@ class HomeView(TemplateView):
     template_name = "blog/home.html"
 
     def get_context_data(self, **kwargs):
-        """Show sorted categories by popularity (number of posts in category)"""
+        """Show sorted categories by popularity (number of posts in category)."""
         context = super().get_context_data(**kwargs)
+
         user = self.request.user
 
-        liked_subquery = Like.objects.filter(user=user, post=OuterRef("pk"))
-
-        base_queryset = Post.objects.filter(published=True).select_related(
-            "user"
+        base_queryset = (
+            Post.objects.filter(published=True)
+            .select_related("user")
+            .prefetch_related("categories")
         )
 
         context["categories"] = Category.objects.annotate(
             posts_count=Count("posts")
         ).order_by("-posts_count")[:5]
 
-        context["popular_posts"] = (
-            base_queryset.prefetch_related("categories")
-            .annotate(
-                likes_count=Count("likes"),
-                is_liked=Exists(liked_subquery),
-            )
-            .order_by("-likes_count", "-updated_at")[:3]
-        )
-        context["latest_posts"] = (
-            base_queryset.prefetch_related("categories")
-            .annotate(
-                is_liked=Exists(liked_subquery),
-            )
-            .order_by("-created_at")[:3]
-        )
+        context["popular_posts"] = add_liked_annotation(
+            base_queryset.annotate(likes_count=Count("likes")),
+            user,
+        ).order_by("-likes_count", "-updated_at")[:3]
 
-        # generate users_map
+        context["latest_posts"] = add_liked_annotation(
+            base_queryset,
+            self.request.user,
+        ).order_by("-created_at")[:3]
+
         users_with_coordinates = User.objects.filter(
             latitude__isnull=False,
             longitude__isnull=False,
-        ).distinct()
+        )
+
         if users_with_coordinates.exists():
             context["heatmap"] = generate_users_heatmap(users_with_coordinates)
 

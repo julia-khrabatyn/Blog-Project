@@ -28,7 +28,7 @@ __all__ = [
 PAGINATE_POSTS = config.PAGINATE_BY
 
 
-class ProfileDetailView(LoginRequiredMixin, DetailView):
+class ProfileDetailView(LoginRequiredMixin, UserOwnerMixin, DetailView):
     """Display profile info about registered user."""
 
     model = User
