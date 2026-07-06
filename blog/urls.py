@@ -1,5 +1,11 @@
 from django.urls import path
 
+from core.services.autocomplete import (
+    AuthorAutocomplete,
+    CategoryAutocomplete,
+    PostAutocomplete,
+    TagAutocomplete,
+)
 from .views import (
     AuthorPostsListView,
     CategoryCreateView,
@@ -36,4 +42,22 @@ urlpatterns = [
         name="category_create",
     ),
     path("post/<uuid:pk>/like/", ToggleLikeView.as_view(), name="post_like"),
+    path(
+        "category-autocomplete/",
+        CategoryAutocomplete.as_view(),
+        name="category-autocomplete",
+    ),
+    path(
+        "tag-autocomplete/", TagAutocomplete.as_view(), name="tag-autocomplete"
+    ),
+    path(
+        "title-autocomplete/",
+        PostAutocomplete.as_view(),
+        name="post-title-autocomplete",
+    ),
+    path(
+        "author-autocomplete/",
+        AuthorAutocomplete.as_view(),
+        name="author-autocomplete",
+    ),
 ]

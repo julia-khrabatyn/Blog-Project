@@ -35,6 +35,8 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "modeltranslation",
     "allauth_ui",
+    "dal",
+    "dal_alight",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

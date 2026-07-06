@@ -11,7 +11,7 @@ from django.utils.translation import gettext_lazy as _
 from allauth.socialaccount.models import SocialAccount
 from constance import config
 
-from blog.models import Category, Post, Like
+from blog.models import Category, Post
 from blog.services import generate_single_user_map
 from core.services.like_services import add_liked_annotation
 from tags.models import Tag
@@ -65,6 +65,7 @@ class ProfileDetailView(LoginRequiredMixin, UserOwnerMixin, DetailView):
         base_posts = add_liked_annotation(base_posts, self.request.user)
 
         published_posts = base_posts.filter(published=True)
+
         draft_posts = (
             base_posts.filter(published=False)
             if is_own_profile

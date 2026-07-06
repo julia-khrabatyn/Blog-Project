@@ -1,4 +1,4 @@
-from django.db.models import Count, Exists, OuterRef, BooleanField, Value
+from django.db.models import Count
 from django.http import JsonResponse
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
@@ -59,6 +59,7 @@ class AuthorPostsListView(ListView):
             .select_related("user")
             .prefetch_related("categories")
             .annotate(likes_count=Count("likes"))
+            .annotate(comments_count=Count("comments", distinct=True))
         )
         qs = add_liked_annotation(qs, self.request.user)
 
@@ -170,6 +171,7 @@ class PostListView(ListView):
             .select_related("user")
             .prefetch_related("categories")
             .annotate(likes_count=Count("likes"))
+            .annotate(comments_count=Count("comments", distinct=True))
         )
         self.filterset = get_filtered_posts(
             self.request.GET, queryset=qs, filter_class=GlobalPostFilter

@@ -5,6 +5,8 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy as _p
 
+from dal import autocomplete
+
 from accounts.models import User
 from comments.models import Comment
 from tags.models import Tag
@@ -22,25 +24,25 @@ __all__ = [
 class BasePostFilter(django_filters.FilterSet):
     """Class for filtering Posts by django-filters."""
 
-    # Filter post by title in alphabetic order
-    title = django_filters.CharFilter(
-        lookup_expr="icontains",
+    # Filter post by title using autocomplete
+    title = django_filters.ModelChoiceFilter(
+        queryset=Post.objects.all(),
         label=_("By title"),
-        widget=forms.TextInput(
+        widget=autocomplete.ModelAlight(
+            url="post-title-autocomplete",
             attrs={
                 "class": "form-control",
                 "placeholder": _("Enter title to filter..."),
-            }
+            },
         ),
     )
 
-    # Filter by tags (when use multiple tags -> find all post that have all provided tags)
-    # TODO: Should I change it to Charfield?
+    # Filter by tags (when use multiple tags -> find all post that have at least one of the provided tags)
     tags = django_filters.ModelMultipleChoiceFilter(
         queryset=Tag.objects.all(),
-        conjoined=True,
+        conjoined=False,
         label=_("By tags"),
-        widget=forms.CheckboxSelectMultiple(),
+        widget=autocomplete.ModelAlightMultiple(url="tag-autocomplete"),
     )
 
     # Filter by date
@@ -60,12 +62,13 @@ class BasePostFilter(django_filters.FilterSet):
             attrs={"class": "form-control", "type": "date"}
         ),
     )
+    # Filter by categories (when use multiple categories -> find all post that have at least one of the provided)
     category = django_filters.ModelMultipleChoiceFilter(
         field_name="categories",
         queryset=Category.objects.all(),
-        conjoined=True,
+        conjoined=False,
         label=_("By category"),
-        widget=forms.CheckboxSelectMultiple(),
+        widget=autocomplete.ModelAlightMultiple(url="category-autocomplete"),
     )
 
     class Meta:
@@ -79,43 +82,51 @@ class BasePostFilter(django_filters.FilterSet):
         ]
 
 
-class GlobalPostFilter(BasePostFilter):
+class AuthorPostFilter(BasePostFilter):
+    """For filtering posts created by Author (without choosing Author)."""
+
+    ORDERING_FIELDS = (
+        ("created_at", "date"),
+        ("likes_count", "likes"),
+        ("comments_count", "discussion_popularity"),
+    )
+
+    ORDERING_LABELS = {
+        "created_at": _("By date"),
+        "likes_count": _p("filter", "Likes"),
+        "comments_count": _("By discussion popularity"),
+    }
+
+    order_by = django_filters.OrderingFilter(
+        fields=ORDERING_FIELDS,
+        label=_("Order by"),
+        field_labels=ORDERING_LABELS,
+    )
+
+
+class GlobalPostFilter(AuthorPostFilter):
     """For sorting Post in general templates."""
+
+    ORDERING_FIELDS = AuthorPostFilter.ORDERING_FIELDS + (
+        ("user__username", "author"),
+    )
+
+    ORDERING_LABELS = {
+        **AuthorPostFilter.ORDERING_LABELS,
+        "user__username": _p("filter", "By Author"),
+    }
+
+    order_by = django_filters.OrderingFilter(
+        fields=ORDERING_FIELDS,
+        label=_("Order by"),
+        field_labels=ORDERING_LABELS,
+    )
 
     author = django_filters.ModelChoiceFilter(
         field_name="user",
         queryset=User.objects.all(),
-        label=_p("filter", "Author"),
-    )
-
-    order_by = django_filters.OrderingFilter(
-        fields=(
-            ("created_at", "date"),
-            ("likes_count", "likes"),
-            ("user__username", "author"),
-        ),
-        label=_("Order by"),
-        field_labels={
-            "created_at": _("By date"),
-            "likes_count": _p("filter", "Likes"),
-            "user__username": _("By Author"),
-        },
-    )
-
-
-class AuthorPostFilter(BasePostFilter):
-    """For filtering posts created by Author (without choosing Author)."""
-
-    order_by = django_filters.OrderingFilter(
-        fields=(
-            ("created_at", "date"),
-            ("likes_count", "likes"),
-        ),
-        label=_("Order by"),
-        field_labels={
-            "created_at": _("By date"),
-            "likes_count": _p("filter", "Likes"),
-        },
+        label=_p("filter", "By Author"),
+        widget=autocomplete.ModelAlight(url="author-autocomplete"),
     )
 
 
@@ -145,16 +156,11 @@ class CommentFilter(django_filters.FilterSet):
         label=_("To Date"),
     )
 
-    author = django_filters.CharFilter(
-        field_name="user__username",
-        lookup_expr="icontains",
-        label=_p("filter", "Author"),
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": _("Enter author's username..."),
-            },
-        ),
+    author = django_filters.ModelChoiceFilter(
+        field_name="user",
+        queryset=User.objects.all(),
+        label=_p("filter", "By Author"),
+        widget=autocomplete.ModelAlight(url="author-autocomplete"),
     )
 
     class Meta:

@@ -685,7 +685,7 @@ msgstr "Поки немає жодної вподобаної публікаці
 
 #: templates/accounts/profile_detail.html:186
 msgid "Didn't write any posts today?"
-msgstr "Ви ше не створили жодної публікації сьогодні?"
+msgstr "Ви ще не створили жодної публікації сьогодні?"
 
 #: templates/accounts/profile_detail.html:187
 msgid "What are you waiting for?"
